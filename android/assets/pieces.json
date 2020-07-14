@@ -1,0 +1,52 @@
+{
+  "pieces": [
+    {
+      "name": "Ice",
+      "hp": 1,
+      "attack": 1,
+      "attackRange": "melee",
+      "ability": "deal 1 damage to an opposing piece",
+      "cost": 1
+    },
+    {
+      "name": "Mummy",
+      "hp": 5,
+      "attack": 0,
+      "attackRange": "melee",
+      "ability": "",
+      "cost": 1
+    },
+    {
+      "name": "Boar Soldier",
+      "hp": 1,
+      "attack": 3,
+      "attackRange": "ranged",
+      "ability": "",
+      "cost": 1
+    },
+    {
+      "name": "Sea Urchin",
+      "hp": 3,
+      "attack": 2,
+      "attackRange": "melee",
+      "ability": "",
+      "cost": 2
+    },
+    {
+      "name": "Pineapple Grandpa",
+      "hp": 1,
+      "attack": 1,
+      "attackRange": "ranged",
+      "ability": "deal 5 damage to all opposing pieces",
+      "cost": 3
+    },
+    {
+      "name": "Boar Soldier",
+      "hp": 7,
+      "attack": 4,
+      "attackRange": "melee",
+      "ability": "",
+      "cost": 3
+    }
+  ]
+}

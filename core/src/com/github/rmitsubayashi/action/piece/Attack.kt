@@ -1,0 +1,37 @@
+package com.github.rmitsubayashi.action.piece
+
+import com.github.rmitsubayashi.action.Action
+import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventActor
+import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.entity.Piece
+import com.github.rmitsubayashi.game.AttackRangeCalculator
+import com.github.rmitsubayashi.game.Game
+
+class Attack(eventActor: EventActor): Action(eventActor) {
+
+    override fun conditionMet(game: Game, event: Event): Boolean {
+        if (event.type != EventType.pieceAttacks) { return false }
+        if (event.actor != eventActor) { return false }
+        if (event.actor !is Piece) { return false }
+        if (event.actedUpon !is Piece) { return false }
+        if (event.actor.isDead()) { return false }
+        if (event.actedUpon.isDead()) { return false }
+        if (!game.board.isOnBoard(event.actor)) { return false }
+        if (!game.board.isOnBoard(event.actedUpon)) { return false }
+        if (!AttackRangeCalculator.isInRange(game.board, event.actor, event.actedUpon)) { return false }
+        return true
+    }
+
+    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+        val piece = event.actor as Piece
+        val enemyPiece = event.actedUpon as Piece
+        enemyPiece.currHP = enemyPiece.currHP - piece.currStats.attack
+        val damagedEvent = Event(EventType.pieceDamaged, enemyPiece, null)
+        return listOf(damagedEvent)
+    }
+
+    override fun copy(): Attack {
+        return Attack(eventActor)
+    }
+}
