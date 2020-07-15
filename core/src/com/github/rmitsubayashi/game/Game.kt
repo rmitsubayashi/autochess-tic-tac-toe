@@ -8,6 +8,7 @@ import com.github.rmitsubayashi.action.phase.BattlePhase
 import com.github.rmitsubayashi.action.player.BuyPiece
 import com.github.rmitsubayashi.action.player.PlacePiece
 import com.github.rmitsubayashi.action.player.Reroll
+import com.github.rmitsubayashi.action.player.SellPiece
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.setup.PlayerLevelCostReader
@@ -53,6 +54,7 @@ class Game(
         actions.add(Reroll(player1))
         actions.add(BuyPiece(player1))
         actions.add(PlacePiece(player1))
+        actions.add(SellPiece(player1))
 
         actionObservable.subscribeActions(actions)
     }

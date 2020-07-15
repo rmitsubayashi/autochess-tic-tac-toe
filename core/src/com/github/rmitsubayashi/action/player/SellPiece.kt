@@ -1,9 +1,6 @@
 package com.github.rmitsubayashi.action.player
 
-import com.github.rmitsubayashi.action.Action
-import com.github.rmitsubayashi.action.Event
-import com.github.rmitsubayashi.action.EventActor
-import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
@@ -14,8 +11,8 @@ class SellPiece(eventActor: EventActor): Action(eventActor) {
         if (event.actor !is Player) return false
         if (eventActor != event.actor) return false
         if (event.actedUpon !is Piece) return false
-        if (!event.actor.pieces.contains(event.actedUpon)
-                || !game.board.contains(event.actedUpon)) return false
+        if (!event.actor.pieces.contains(event.actedUpon)) return false
+        if (event.data?.get(EventDataKey.DONE) == true) return false
         return true
     }
 
@@ -26,7 +23,8 @@ class SellPiece(eventActor: EventActor): Action(eventActor) {
         player.pieces.remove(piece)
         player.money += piece.cost
         return listOf(
-                Event(EventType.moneyChanged, event.actor, null)
+                Event(EventType.moneyChanged, event.actor, null),
+                Event(EventType.sellPiece, event.actor, piece, mapOf(Pair(EventDataKey.DONE, true)))
         )
     }
 

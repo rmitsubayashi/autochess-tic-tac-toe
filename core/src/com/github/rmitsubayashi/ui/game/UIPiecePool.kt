@@ -85,7 +85,7 @@ class UIPiecePool(private val game: Game, private val player: Player): Table() {
         }
     }
 
-    private fun returnPieceToPool(piece: UIPiece) {
+    fun returnPieceToPool(piece: UIPiece) {
         val piecePool = getPiecePool(piece.pieceType)
         piecePool?.free(piece)
         pieceSlots.firstOrNull { it.piece == piece }?.removePiece()
