@@ -42,22 +42,16 @@ class UIPiecePool(private val game: Game, private val player: Player): Table() {
     }
 
     private fun allocatePieceSlots(slots: Int) {
-        val slotDim = (Gdx.graphics.width / slots+1).toFloat()
-        this.height = slotDim
-        this.width = Gdx.graphics.width.toFloat()
         val tempList = mutableListOf<UIPiecePoolSlot>()
         for (i in 1 .. slots) {
             val slot = UIPiecePoolSlot(player, game)
-            slot.width = slotDim
-            slot.height = slotDim
-            this.add(slot)
+            this.add(slot).grow().uniform()
+            slot.debug()
             tempList.add(slot)
         }
         val textButtonStyle = TextButton.TextButtonStyle()
         textButtonStyle.font = BitmapFont()
         val rerollButton = TextButton("R", textButtonStyle)
-        rerollButton.height = slotDim
-        rerollButton.width = slotDim
         rerollButton.addListener(
                 UIClickListener(
                         rerollButton,
@@ -68,7 +62,7 @@ class UIPiecePool(private val game: Game, private val player: Player): Table() {
                         }
                 )
         )
-        this.add(rerollButton)
+        this.add(rerollButton).grow().uniform()
         pieceSlots = tempList
 
     }

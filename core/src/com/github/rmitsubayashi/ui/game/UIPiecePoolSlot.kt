@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.ui.game
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.Scaling
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Player
@@ -13,6 +14,7 @@ class UIPiecePoolSlot(private val player: Player, private val game: Game): Table
 
     fun placePiece(piece: UIPiece) {
         this.add(piece)
+        piece.setScaling(Scaling.fit)
         this.piece = piece
         // we attach the listener to the piece, not the slot
         // so we can better manage long click vs click listener conflict

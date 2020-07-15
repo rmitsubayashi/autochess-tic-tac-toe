@@ -3,6 +3,7 @@ package com.github.rmitsubayashi.ui.game
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.Scaling
 import com.github.rmitsubayashi.entity.Piece
 
 class UIPlayerPiece(private val uiPiece: UIPiece): Table() {
@@ -12,6 +13,7 @@ class UIPlayerPiece(private val uiPiece: UIPiece): Table() {
 
     init {
         this.add(uiPiece)
+        uiPiece.setScaling(Scaling.fit)
     }
 
     fun setSelected(selected: Boolean) {
@@ -21,7 +23,7 @@ class UIPlayerPiece(private val uiPiece: UIPiece): Table() {
             background = if (selected) {
                 Image(Texture("badlogic.jpg")).drawable
             } else {
-                Image(Texture("tictactoe.jpg")).drawable
+                Image(Texture("tictactoe.png")).drawable
             }
         }
     }

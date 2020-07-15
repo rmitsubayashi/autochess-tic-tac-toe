@@ -1,5 +1,8 @@
 package com.github.rmitsubayashi.ui.game
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.GdxGame
 import com.github.rmitsubayashi.ui.game.action.*
@@ -10,15 +13,16 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
     private val uiHUD = UIHUD(game.game.player1)
     private val uiPlayerPieces = UIPlayerPieces()
     private val uiPiecePool = UIPiecePool(game.game, game.game.player1)
+    private val uiPiecesToggle = UIPiecesToggle(uiPlayerPieces, uiPiecePool)
     private val uiPieceInfoTooltip = UIPieceInfoTooltip()
 
     init {
         val table = Table()
         table.setFillParent(true)
+        table.background = Image(Texture("grassfield.jpg")).drawable
         table.add(uiHUD).row()
         table.add(uiBoard).width(400f).height(400f).row()
-        table.add(uiPlayerPieces).height(100f).row()
-        table.add(uiPiecePool).row()
+        table.add(uiPiecesToggle).height(150f).width(Gdx.graphics.width.toFloat()).row()
         stage.addActor(table)
         stage.addActor(uiPieceInfoTooltip)
 

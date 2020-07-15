@@ -18,7 +18,6 @@ class MainMenuScreen(game: GdxGame): IStageScreen(game) {
             game.setScreen(GameScreen(game))
             dispose()
         }
-        singlePlayer.debug()
         menuTable.add(singlePlayer).row()
         val multiplayer = createMenuItem("Online") { }
         menuTable.add(multiplayer).row()
