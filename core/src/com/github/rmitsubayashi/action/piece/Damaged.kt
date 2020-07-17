@@ -4,10 +4,11 @@ import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventActor
 import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.entity.EmptyEventActor
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 
-class Damaged(eventActor: EventActor): Action(eventActor) {
+class Damaged: Action(EmptyEventActor()) {
     override fun conditionMet(game: Game, event: Event): Boolean {
         return event.type == EventType.pieceDamaged
     }
@@ -24,6 +25,6 @@ class Damaged(eventActor: EventActor): Action(eventActor) {
     }
 
     override fun copy(): Action {
-        return Damaged(eventActor)
+        return Damaged()
     }
 }

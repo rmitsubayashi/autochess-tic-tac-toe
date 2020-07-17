@@ -7,6 +7,7 @@ import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.action.phase.BattlePhase
 import com.github.rmitsubayashi.action.phase.SetupPhase
+import com.github.rmitsubayashi.action.piece.Damaged
 import com.github.rmitsubayashi.action.player.BuyPiece
 import com.github.rmitsubayashi.action.player.PlacePiece
 import com.github.rmitsubayashi.action.player.Reroll
@@ -65,6 +66,7 @@ class Game(
         actions.add(PlacePiece(player2))
         actions.add(SellPiece(player1))
         actions.add(GameAIAction(player2, CrudeAI()))
+        actions.add(Damaged())
 
         actionObservable.subscribeActions(actions)
     }
