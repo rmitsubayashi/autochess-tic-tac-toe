@@ -1,9 +1,6 @@
 package com.github.rmitsubayashi.action.phase
 
-import com.github.rmitsubayashi.action.Action
-import com.github.rmitsubayashi.action.Event
-import com.github.rmitsubayashi.action.EventActor
-import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.action.piece.Damaged
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
@@ -11,7 +8,11 @@ import com.github.rmitsubayashi.game.*
 
 class SetupPhase(eventActor: EventActor): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
-        return event.type == EventType.enterSetupPhase && event.actor == eventActor
+        if (event.type != EventType.enterSetupPhase) return false
+        if (event.actor != eventActor) return false
+        if (event.data?.get(EventDataKey.DONE) == true) return false
+
+        return true
     }
 
     override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
@@ -44,15 +45,30 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
         for (toDamagePiece in uniquePieces) {
             toDamagePiece.currHP -= damage
         }
+        val newEvents = mutableListOf<Event>()
         val damagedEvents = uniquePieces.map {
             Event(EventType.pieceDamaged, it, null)
         }
+        newEvents.addAll(damagedEvents)
 
         //add money for that turn
         player.money = player.money + MoneyCalculator.calculateStartOfTurnMoney(player)
-        //the player gets new pieces from the pool
+        newEvents.add(
+                Event(EventType.moneyChanged, player, null)
+        )
+        //the player gets new pieces from the pool.
+        //note that this is different from a regular roll because no money is spent
         game.piecePool.refresh(player)
-        return damagedEvents
+        newEvents.add(
+                Event(EventType.reroll, player, null, mapOf(Pair(EventDataKey.DONE, true)))
+        )
+        newEvents.add(
+                // this marks the end of the automatic actions regarding the set up phase.
+                // the user can still roll for pieces and place them on board.
+                // when the user is done with all manual setup, enterBattlePhase is triggered
+                Event(EventType.enterSetupPhase, player, null, mapOf(Pair(EventDataKey.DONE, true)))
+        )
+        return newEvents
     }
 
     override fun copy(): Action {

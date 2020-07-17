@@ -4,11 +4,15 @@ import com.github.rmitsubayashi.ability.AbilityList
 import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.ActionObservable
 import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.action.phase.BattlePhase
+import com.github.rmitsubayashi.action.phase.SetupPhase
 import com.github.rmitsubayashi.action.player.BuyPiece
 import com.github.rmitsubayashi.action.player.PlacePiece
 import com.github.rmitsubayashi.action.player.Reroll
 import com.github.rmitsubayashi.action.player.SellPiece
+import com.github.rmitsubayashi.ai.CrudeAI
+import com.github.rmitsubayashi.ai.GameAIAction
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.setup.PlayerLevelCostReader
@@ -49,12 +53,18 @@ class Game(
 
     private fun loadInitialActions() {
         val actions = mutableListOf<Action>()
+        actions.add(SetupPhase(player1))
+        actions.add(SetupPhase(player2))
         actions.add(BattlePhase(player1))
         actions.add(BattlePhase(player2))
         actions.add(Reroll(player1))
+        actions.add(Reroll(player2))
         actions.add(BuyPiece(player1))
+        actions.add(BuyPiece(player2))
         actions.add(PlacePiece(player1))
+        actions.add(PlacePiece(player2))
         actions.add(SellPiece(player1))
+        actions.add(GameAIAction(player2, CrudeAI()))
 
         actionObservable.subscribeActions(actions)
     }

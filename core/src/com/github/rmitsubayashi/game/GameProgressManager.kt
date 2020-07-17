@@ -8,8 +8,10 @@ class GameProgressManager(
         private val game: Game
 ) {
     val currPlayer: Player get() = _currPlayer
-    private var _currPlayer = game.player1
-    private var nextPlayer = game.player2
+    // since we call nextPlayerTurn(),
+    // player 1 will go first
+    private var _currPlayer = game.player2
+    private var nextPlayer = game.player1
     val turn: Int get() = _turn
     private var _turn: Int = 1
     val phase: Phase get() = _phase
@@ -17,10 +19,10 @@ class GameProgressManager(
 
 
     fun toBattlePhase() {
+        _phase = Phase.BATTLE
         game.notifyEvent(
                 Event(EventType.enterBattlePhase, currPlayer, null)
         )
-        _phase = Phase.BATTLE
     }
 
     fun nextPlayerTurn() {
@@ -30,10 +32,10 @@ class GameProgressManager(
         _currPlayer = temp
         //next turn
         _turn ++
+        _phase = Phase.SETUP
         game.notifyEvent(
                 Event(EventType.enterSetupPhase, currPlayer, null)
         )
-        _phase = Phase.SETUP
     }
 
     enum class Phase {

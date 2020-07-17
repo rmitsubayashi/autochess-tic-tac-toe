@@ -77,10 +77,8 @@ class UIPiecePool(private val game: Game, private val player: Player): Table() {
             if (oldPiece != null) {
                 returnPieceToPool(oldPiece)
             }
-            val piecePool = getPiecePool(piece)
-            piecePool ?: continue
-            val uiPiece = piecePool.obtain()
-            uiPiece.setActualPiece(piece)
+            val uiPiece = createUIPiece(piece)
+            uiPiece ?: continue
             slot.placePiece(uiPiece)
         }
     }
@@ -98,6 +96,14 @@ class UIPiecePool(private val game: Game, private val player: Player): Table() {
             }
         }
         return null
+    }
+
+    fun createUIPiece(piece: Piece): UIPiece? {
+        val piecePool = getPiecePool(piece)
+        piecePool ?: return null
+        val uiPiece = piecePool.obtain()
+        uiPiece.setActualPiece(piece)
+        return uiPiece
     }
 
     private fun getPiecePool(piece: Piece): Pool<UIPiece>? {

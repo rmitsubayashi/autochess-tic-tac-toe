@@ -8,6 +8,8 @@ class ActionObservable(private val game: Game) {
     private val actionList = mutableListOf<Action>()
     private var actionWaitingForUserInput: Action? = null
     private lateinit var currEvent: Event
+    private val tempActionQueue = PriorityQueue<Action>()
+
 
     fun subscribeAction(action: Action) {
         actionList.add(action)
@@ -35,9 +37,13 @@ class ActionObservable(private val game: Game) {
             currEvent = eventQueue.pop()
             for (action in actionList) {
                 if (action.conditionMet(game, currEvent)) {
-                    val newEvents = action.execute(game, currEvent)
-                    eventQueue.addAll(newEvents)
+                    tempActionQueue.add(action)
                 }
+            }
+            while (tempActionQueue.isNotEmpty()) {
+                val action = tempActionQueue.remove()
+                val newEvents = action.execute(game, currEvent)
+                eventQueue.addAll(newEvents)
             }
         }
     }

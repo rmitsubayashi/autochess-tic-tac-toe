@@ -9,7 +9,7 @@ class Reroll(eventActor: EventActor): Action(eventActor) {
         if (event.type != EventType.reroll) return false
         if (event.data != null && event.data[EventDataKey.DONE] == true) return false
         if (eventActor !is Player) return false
-        if (event.actor !== eventActor) return false
+        if (event.actor != eventActor) return false
         if ((event.actor as Player).money < game.piecePool.getRerollCost()) return false
 
         return true

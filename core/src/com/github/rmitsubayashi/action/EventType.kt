@@ -11,7 +11,7 @@ enum class EventType {
     moneyChanged,
     pieceLongClicked,
     boardClicked,
-    // phase events
+    // phase events. events should be indirectly fired from the manager
     enterBattlePhase,
     enterSetupPhase,
     // piece events

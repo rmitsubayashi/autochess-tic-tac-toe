@@ -12,22 +12,9 @@ object AttackRangeCalculator {
         if (attacker.attackRange == AttackRange.ranged) {
             return true
         }
-        //the rest is melee (can attack top, right, bottom, left squares)
-        val adjacentSquares = mutableSetOf<Int>()
-        val attackerIndex = board.indexOf(attacker)
-        //top
-        adjacentSquares.add(attackerIndex-3)
-        //bottom
-        adjacentSquares.add(attackerIndex+3)
-        //left
-        if (attackerIndex % 3 != 0) {
-            adjacentSquares.add(attackerIndex-1)
-        }
-        //right
-        if (attackerIndex % 3 != 2) {
-            adjacentSquares.add(attackerIndex+1)
-        }
+        //the rest is melee
         val attackedIndex = board.indexOf(attacked)
+        val adjacentSquares = getAdjacentSquares(attackedIndex)
         return attackedIndex in adjacentSquares
     }
 
@@ -41,4 +28,38 @@ object AttackRangeCalculator {
         }
         return possiblePieces
     }
+
+    fun getAdjacentSquares(square: Int): List<Int> {
+        val adjacentSquares = mutableSetOf<Int>()
+        if (hasTop(square)) {
+            adjacentSquares.add(square - 3)
+        }
+        if (hasBottom(square)) {
+            adjacentSquares.add(square + 3)
+        }
+        if (hasLeft(square)) {
+            adjacentSquares.add(square-1)
+        }
+        if (hasRight(square)) {
+            adjacentSquares.add(square+1)
+        }
+        if (hasTop(square) && hasRight(square)) {
+            adjacentSquares.add(square - 2)
+        }
+        if (hasTop(square) && hasLeft(square)) {
+            adjacentSquares.add(square - 4)
+        }
+        if (hasBottom(square) && hasRight(square)) {
+            adjacentSquares.add(square + 4)
+        }
+        if (hasBottom(square) && hasLeft(square)) {
+            adjacentSquares.add(square + 2)
+        }
+        return adjacentSquares.toList()
+    }
+
+    private fun hasTop(index: Int) = index > 2
+    private fun hasBottom(index: Int) = index < 6
+    private fun hasLeft(index: Int) = index % 3 != 0
+    private fun hasRight(index: Int) = index % 3 != 2
 }

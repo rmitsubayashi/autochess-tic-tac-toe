@@ -9,6 +9,7 @@ class PlacePiece(eventActor: EventActor): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.placePiece) return false
         if (event.actor !is Player) return false
+        if (event.actor != eventActor) return false
         if (event.actedUpon !is Piece) return false
         if (!event.actor.pieces.contains(event.actedUpon)) return false
         val square = event.data?.get(EventDataKey.SQUARE)
