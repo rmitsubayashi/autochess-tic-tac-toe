@@ -24,6 +24,11 @@ class UIBoard(game: Game): Table() {
 
     }
 
+    fun findPiece(piece: Piece): UIPiece? {
+        val square = squares.firstOrNull { it.piece?.actualPiece == piece }
+        return square?.piece
+    }
+
     fun placePiece(uiPiece: UIPiece, square: Int) {
         val uiBoardSquare = getUIBoardSquare(square)
         uiBoardSquare.placePiece(uiPiece)

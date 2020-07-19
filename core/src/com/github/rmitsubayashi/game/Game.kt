@@ -4,7 +4,6 @@ import com.github.rmitsubayashi.ability.AbilityList
 import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.ActionObservable
 import com.github.rmitsubayashi.action.Event
-import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.action.phase.BattlePhase
 import com.github.rmitsubayashi.action.phase.SetupPhase
 import com.github.rmitsubayashi.action.piece.Attack
@@ -34,6 +33,7 @@ class Game(
     val player2 = Player(2)
     val gameJudge = GameJudge(5, player1, player2)
     val gameProgressManager = GameProgressManager(this)
+    val animationQueue = AnimationQueue()
     lateinit var playerLevelManager: PlayerLevelManager
     lateinit var piecePool: PiecePool
 

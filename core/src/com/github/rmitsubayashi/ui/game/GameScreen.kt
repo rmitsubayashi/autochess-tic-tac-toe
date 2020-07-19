@@ -34,6 +34,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         subscribeAction(SoldPiece(game.game.player1, uiPlayerPieces, uiPiecePool))
         subscribeAction(ToggleSetupPhaseButtons(game.game.player1, uiHUD))
         subscribeAction(UpdatePieceState(game.game.board, uiBoard, uiPiecePool))
+        subscribeAction(AnimateAttack(uiBoard))
 
         game.game.gameProgressManager.nextPlayerTurn()
     }

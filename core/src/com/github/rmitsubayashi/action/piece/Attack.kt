@@ -11,12 +11,6 @@ class Attack: Action(EmptyEventActor()) {
         if (event.type != EventType.pieceAttacks) { return false }
         if (event.actor !is Piece) { return false }
         if (event.actedUpon !is Piece) { return false }
-        if (event.actor.isDead()) { return false }
-        if (event.actedUpon.isDead()) { return false }
-        if (!game.board.isOnBoard(event.actor)) { return false }
-        if (!game.board.isOnBoard(event.actedUpon)) { return false }
-        if (event.actor.player == event.actedUpon.player) { return false }
-        if (!AttackRangeCalculator.isInRange(game.board, event.actor, event.actedUpon)) { return false }
         return true
     }
 
