@@ -46,7 +46,6 @@ class UIPiecePool(private val game: Game, private val player: Player): Table() {
         for (i in 1 .. slots) {
             val slot = UIPiecePoolSlot(player, game)
             this.add(slot).grow().uniform()
-            slot.debug()
             tempList.add(slot)
         }
         val textButtonStyle = TextButton.TextButtonStyle()

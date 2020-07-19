@@ -18,5 +18,4 @@ enum class EventType {
     pieceDeclaresAttack,
     pieceAttacks,
     pieceDamaged,
-    pieceDead,
 }

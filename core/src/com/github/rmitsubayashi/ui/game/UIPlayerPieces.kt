@@ -8,6 +8,7 @@ import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.util.UIClickListener
+import com.github.rmitsubayashi.ui.util.removeActorAndUpdateCellStructure
 
 class UIPlayerPieces(game: Game): Table() {
     private val pieceSlots = mutableListOf<UIPlayerPiece>()
@@ -45,14 +46,14 @@ class UIPlayerPieces(game: Game): Table() {
 
         pieceSlots.add(newSlot)
         this.add(newSlot).width(100f)
-        newSlot.debug()
     }
 
     fun removePiece(piece: Piece): UIPiece? {
         val slot = pieceSlots.firstOrNull { it.piece.isSamePieceType(piece)}
         pieceSlots.remove(slot)
-        slot?.remove()
-        return slot?.removePiece()
+        val uiPiece = slot?.removePiece()
+        removeActorAndUpdateCellStructure(slot)
+        return uiPiece
     }
 
     fun getSelectedPiece(): Piece? {

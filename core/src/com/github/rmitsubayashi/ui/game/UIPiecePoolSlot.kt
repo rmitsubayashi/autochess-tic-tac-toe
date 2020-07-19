@@ -38,7 +38,7 @@ class UIPiecePoolSlot(private val player: Player, private val game: Game): Table
             piece?.removeListener(clickListener)
         }
         clickListener = null
-        this.piece?.remove()
+        this.clearChildren()
         val tempPiece = this.piece
         this.piece = null
         return tempPiece

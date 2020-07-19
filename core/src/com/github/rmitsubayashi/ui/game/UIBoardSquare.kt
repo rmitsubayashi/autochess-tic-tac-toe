@@ -46,7 +46,7 @@ class UIBoardSquare(val squareIndex: Int, private val player: Player,
     }
 
     fun placePiece(piece: UIPiece) {
-        this.removeActor(placeHolder)
+        this.clearChildren()
         this.piece = piece
         piece.setScaling(Scaling.fit)
         updatePieceState()
@@ -55,10 +55,10 @@ class UIBoardSquare(val squareIndex: Int, private val player: Player,
     }
 
     fun removePiece(): UIPiece? {
-        this.removeActor(piece)
-        this.add(placeHolder)
         pieceState.clearChildren()
-        this.removeActor(pieceState)
+        // if we call removeActor(actor) instead of this, the cells aren't properly cleared
+        this.clearChildren()
+        this.add(placeHolder).grow()
         return piece
     }
 

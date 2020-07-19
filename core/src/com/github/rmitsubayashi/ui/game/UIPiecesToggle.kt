@@ -28,7 +28,6 @@ class UIPiecesToggle(private val uiPlayerPieces: UIPlayerPieces, private val uiP
         piecePoolShown = true
         uiPlayerPieces.isVisible = false
         this.add(piecesStack).height(100f).width(Gdx.graphics.width.toFloat())
-        piecesStack.debug()
 
         showPiecesButton.addListener(
                 UIClickListener(showPiecesButton, {

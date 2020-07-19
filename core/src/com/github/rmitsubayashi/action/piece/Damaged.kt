@@ -4,7 +4,7 @@ import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventActor
 import com.github.rmitsubayashi.action.EventType
-import com.github.rmitsubayashi.entity.EmptyEventActor
+import com.github.rmitsubayashi.action.EmptyEventActor
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 
@@ -19,7 +19,7 @@ class Damaged: Action(EmptyEventActor()) {
             game.board.removePiece(piece)
             game.piecePool.putBackInPool(piece)
             game.actionObservable.unsubscribeActions(piece.actions)
-            return listOf(Event(EventType.pieceDead, piece, null))
+            return emptyList()
         }
         return emptyList()
     }

@@ -13,8 +13,9 @@ object AttackRangeCalculator {
             return true
         }
         //the rest is melee
+        val attackerIndex = board.indexOf(attacker)
         val attackedIndex = board.indexOf(attacked)
-        val adjacentSquares = getAdjacentSquares(attackedIndex)
+        val adjacentSquares = getAdjacentSquares(attackerIndex)
         return attackedIndex in adjacentSquares
     }
 
@@ -22,6 +23,7 @@ object AttackRangeCalculator {
         val possiblePieces = mutableListOf<Piece>()
         for (piece in board) {
             if (piece == null) continue
+            if (attacker.player == piece.player) continue
             if (isInRange(board, attacker, piece)) {
                 possiblePieces.add(piece)
             }

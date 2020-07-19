@@ -29,8 +29,7 @@ class UIPlayerPiece(private val uiPiece: UIPiece): Table() {
     }
 
     fun removePiece(): UIPiece {
-        this.clear()
-        this.remove()
+        this.clearChildren()
         return uiPiece
     }
 }
