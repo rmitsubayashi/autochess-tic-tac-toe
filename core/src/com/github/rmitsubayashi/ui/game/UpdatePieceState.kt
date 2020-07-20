@@ -1,10 +1,12 @@
 package com.github.rmitsubayashi.ui.game
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.action.EmptyEventActor
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
+import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
 
 class UpdatePieceState(private val board: Board,
@@ -27,10 +29,20 @@ class UpdatePieceState(private val board: Board,
             EventType.pieceDamaged -> {
                 val piece = event.actor as Piece
                 if (piece.isDead()) {
-                    val uiPiece = uiBoard.removePiece(piece)
-                    if (uiPiece != null) {
-                        uiPiecePool.returnPieceToPool(uiPiece)
-                    }
+                    val uiPiece = uiBoard.findPiece(piece)
+                    uiPiece ?: return emptyList()
+                    game.animationQueue.addAnimation(
+                            AnimationConfig(
+                                    Actions.alpha(0f, 0.3f),
+                                    uiPiece,
+                                    0.3f
+                            ) {
+                                val toRemoveUIPiece = uiBoard.removePiece(piece)
+                                if (toRemoveUIPiece != null) {
+                                    uiPiecePool.returnPieceToPool(toRemoveUIPiece)
+                                }
+                            }
+                    )
                 } else {
                     uiBoard.updatePieceState(piece)
                 }
