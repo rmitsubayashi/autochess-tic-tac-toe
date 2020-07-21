@@ -6,6 +6,7 @@ import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
+import com.github.rmitsubayashi.ui.util.SoundUtils
 import com.github.rmitsubayashi.ui.util.UIClickListener
 
 class UIPiecePoolSlot(private val player: Player, private val game: Game): Table() {
@@ -18,7 +19,7 @@ class UIPiecePoolSlot(private val player: Player, private val game: Game): Table
         this.piece = piece
         // we attach the listener to the piece, not the slot
         // so we can better manage long click vs click listener conflict
-        clickListener = UIClickListener(piece, { onClick() })
+        clickListener = UIClickListener(piece, { onClick() }, SoundUtils.getSound(piece.pieceType))
         piece.addListener(clickListener)
 
     }

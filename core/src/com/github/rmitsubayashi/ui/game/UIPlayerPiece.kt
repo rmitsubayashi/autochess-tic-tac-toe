@@ -21,9 +21,9 @@ class UIPlayerPiece(private val uiPiece: UIPiece): Table() {
         if (diff) {
             _selected = selected
             background = if (selected) {
-                Image(Texture("badlogic.jpg")).drawable
+                Image(Texture("image/badlogic.jpg")).drawable
             } else {
-                Image(Texture("tictactoe.png")).drawable
+                Image(Texture("image/tictactoe.png")).drawable
             }
         }
     }

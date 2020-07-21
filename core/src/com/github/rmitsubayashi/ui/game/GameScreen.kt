@@ -19,7 +19,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
     init {
         val table = Table()
         table.setFillParent(true)
-        table.background = Image(Texture("grassfield.jpg")).drawable
+        table.background = Image(Texture("image/grassfield.jpg")).drawable
         table.add(uiHUD).row()
         table.add(uiBoard).width(400f).height(400f).row()
         table.add(uiPiecesToggle).height(150f).width(Gdx.graphics.width.toFloat()).row()

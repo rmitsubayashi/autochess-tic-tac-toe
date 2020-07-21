@@ -13,7 +13,7 @@ class UIPieceInfoTooltip: Table() {
     private val pieceAbility: Label
     private val pieceStats: Label
     init {
-        this.background = Image(Texture("badlogic.jpg")).drawable
+        this.background = Image(Texture("image/badlogic.jpg")).drawable
         val labelStyle = Label.LabelStyle()
         labelStyle.font = BitmapFont()
         pieceName = Label("", labelStyle)

@@ -8,6 +8,6 @@ object ImageUtils {
         val path = piece.name
                 .toLowerCase(Locale.ROOT)
                 .replace(' ', '_')
-        return "pieces/$path.png"
+        return "image/pieces/$path.png"
     }
 }

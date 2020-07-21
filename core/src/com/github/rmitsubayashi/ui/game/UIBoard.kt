@@ -10,7 +10,7 @@ class UIBoard(game: Game): Table() {
     private val squares: List<UIBoardSquare>
 
     init {
-        background = Image(Texture("tictactoe.png")).drawable
+        background = Image(Texture("image/tictactoe.png")).drawable
         val tempList = mutableListOf<UIBoardSquare>()
         for (i in 0..2) {
             for (j in 0..2) {
