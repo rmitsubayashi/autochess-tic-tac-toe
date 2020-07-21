@@ -1,16 +1,18 @@
 package com.github.rmitsubayashi.ui.game
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
+import com.github.rmitsubayashi.ui.assets.ImageAssets
 
-class UIBoard(game: Game): Table() {
+class UIBoard(assetManager: AssetManager, game: Game): Table() {
     private val squares: List<UIBoardSquare>
 
     init {
-        background = Image(Texture("image/tictactoe.png")).drawable
+        background = Image(assetManager.get(ImageAssets.ticTacToe)).drawable
         val tempList = mutableListOf<UIBoardSquare>()
         for (i in 0..2) {
             for (j in 0..2) {

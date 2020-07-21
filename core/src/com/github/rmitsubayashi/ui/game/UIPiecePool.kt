@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.ui.game
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -15,7 +16,7 @@ import com.github.rmitsubayashi.ui.util.UIClickListener
 
 // serves as the pool of piece UI objects
 // and the part of the UI that shows the pieces the player rolled
-class UIPiecePool(private val game: Game, private val player: Player): Table() {
+class UIPiecePool(private val assetManager: AssetManager, private val game: Game, private val player: Player): Table() {
     // each piece has its own piece pool
     private lateinit var piecePools: List<Pair<Piece, Pool<UIPiece>>>
     private lateinit var pieceSlots: List<UIPiecePoolSlot>
@@ -33,7 +34,7 @@ class UIPiecePool(private val game: Game, private val player: Player): Table() {
                 Pair(
                     piece,
                     object: Pool<UIPiece>() {
-                        override fun newObject(): UIPiece = UIPiece.create(piece, game)
+                        override fun newObject(): UIPiece = UIPiece.create(assetManager, piece, game)
                     }
                 )
             )
@@ -44,7 +45,7 @@ class UIPiecePool(private val game: Game, private val player: Player): Table() {
     private fun allocatePieceSlots(slots: Int) {
         val tempList = mutableListOf<UIPiecePoolSlot>()
         for (i in 1 .. slots) {
-            val slot = UIPiecePoolSlot(player, game)
+            val slot = UIPiecePoolSlot(assetManager, player, game)
             this.add(slot).grow().uniform()
             tempList.add(slot)
         }

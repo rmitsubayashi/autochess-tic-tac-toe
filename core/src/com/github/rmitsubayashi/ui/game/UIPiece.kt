@@ -1,5 +1,6 @@
 package com.github.rmitsubayashi.ui.game
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.Pool
@@ -8,6 +9,7 @@ import com.github.rmitsubayashi.action.EventDataKey
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
+import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.util.ImageUtils
 import com.github.rmitsubayashi.ui.util.UILongClickListener
 
@@ -49,9 +51,8 @@ class UIPiece private constructor(val pieceType: Piece, texture: Texture, game: 
     }
 
     companion object {
-        fun create(pieceType: Piece, game: Game): UIPiece {
-            val imagePath = ImageUtils.getImagePath(pieceType)
-            val texture = Texture(imagePath)
+        fun create(assetManager: AssetManager, pieceType: Piece, game: Game): UIPiece {
+            val texture = assetManager.get(ImageAssets.fromPiece(pieceType))
             return UIPiece(pieceType, texture, game)
         }
     }

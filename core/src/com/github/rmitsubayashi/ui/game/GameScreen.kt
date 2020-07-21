@@ -5,21 +5,23 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.GdxGame
+import com.github.rmitsubayashi.ui.assets.ImageAssets
+import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.game.action.*
 import com.github.rmitsubayashi.ui.util.IStageScreen
 
 class GameScreen(game: GdxGame): IStageScreen(game) {
-    private val uiBoard = UIBoard(game.game)
+    private val uiBoard = UIBoard(game.assetManager, game.game)
     private val uiHUD = UIHUD(game.game, game.game.player1)
     private val uiPlayerPieces = UIPlayerPieces(game.game)
-    private val uiPiecePool = UIPiecePool(game.game, game.game.player1)
+    private val uiPiecePool = UIPiecePool(game.assetManager, game.game, game.game.player1)
     private val uiPiecesToggle = UIPiecesToggle(uiPlayerPieces, uiPiecePool)
     private val uiPieceInfoTooltip = UIPieceInfoTooltip()
 
     init {
         val table = Table()
         table.setFillParent(true)
-        table.background = Image(Texture("image/grassfield.jpg")).drawable
+        table.background = Image(game.assetManager.get(ImageAssets.field)).drawable
         table.add(uiHUD).row()
         table.add(uiBoard).width(400f).height(400f).row()
         table.add(uiPiecesToggle).height(150f).width(Gdx.graphics.width.toFloat()).row()
