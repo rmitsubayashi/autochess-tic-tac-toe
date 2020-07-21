@@ -24,7 +24,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         table.background = Image(game.assetManager.get(ImageAssets.field)).drawable
         table.add(uiHUD).row()
         table.add(uiBoard).width(400f).height(400f).row()
-        table.add(uiPiecesToggle).height(150f).width(Gdx.graphics.width.toFloat()).row()
+        table.add(uiPiecesToggle).height(150f).width(480f).row()
         stage.addActor(table)
         stage.addActor(uiPieceInfoTooltip)
 

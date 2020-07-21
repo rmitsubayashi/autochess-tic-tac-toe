@@ -27,7 +27,7 @@ class UIPiecesToggle(private val uiPlayerPieces: UIPlayerPieces, private val uiP
         //default should be pool since the player doesn't own any pieces
         piecePoolShown = true
         uiPlayerPieces.isVisible = false
-        this.add(piecesStack).height(100f).width(Gdx.graphics.width.toFloat())
+        this.add(piecesStack).height(100f).fillX()
 
         showPiecesButton.addListener(
                 UIClickListener(showPiecesButton, {
