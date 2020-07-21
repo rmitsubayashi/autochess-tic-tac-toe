@@ -1,17 +1,14 @@
 package com.github.rmitsubayashi.ui.game
 
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Scaling
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
-import com.github.rmitsubayashi.ui.assets.SoundAssets
-import com.github.rmitsubayashi.ui.util.SoundUtils
 import com.github.rmitsubayashi.ui.util.UIClickListener
 
-class UIPiecePoolSlot(private val assetManager: AssetManager, private val player: Player, private val game: Game): Table() {
+class UIPiecePoolSlot(private val player: Player, private val game: Game): Table() {
     var piece: UIPiece? = null
     private var clickListener: UIClickListener? = null
 
@@ -23,8 +20,7 @@ class UIPiecePoolSlot(private val assetManager: AssetManager, private val player
         // so we can better manage long click vs click listener conflict
         clickListener = UIClickListener(
                 piece,
-                { onClick() },
-                assetManager.get(SoundAssets.fromPiece(piece.pieceType))
+                { onClick() }
         )
         piece.addListener(clickListener)
 

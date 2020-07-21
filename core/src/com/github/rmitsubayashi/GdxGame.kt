@@ -3,6 +3,7 @@ package com.github.rmitsubayashi
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.github.rmitsubayashi.ability.AbilityList
 import com.github.rmitsubayashi.setup.JSONPieceFileReader
 import com.github.rmitsubayashi.setup.JSONPiecePoolConfigReader
 import com.github.rmitsubayashi.setup.TextPlayerLevelCostReader
@@ -35,6 +36,9 @@ class GdxGame : Game() {
     // call after game is initialized
     private fun loadAssets() {
         assetManager.load(SoundAssets.attack)
+        assetManager.load(SoundAssets.click)
+        assetManager.load(SoundAssets.sell)
+        assetManager.load(SoundAssets.refresh)
         assetManager.load(ImageAssets.field)
         assetManager.load(ImageAssets.ticTacToe)
         val pieces = game.piecePool.getAllPieces()

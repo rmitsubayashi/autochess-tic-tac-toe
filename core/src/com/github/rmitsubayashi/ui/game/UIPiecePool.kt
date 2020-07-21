@@ -45,7 +45,7 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
     private fun allocatePieceSlots(slots: Int) {
         val tempList = mutableListOf<UIPiecePoolSlot>()
         for (i in 1 .. slots) {
-            val slot = UIPiecePoolSlot(assetManager, player, game)
+            val slot = UIPiecePoolSlot(player, game)
             this.add(slot).grow().uniform()
             tempList.add(slot)
         }

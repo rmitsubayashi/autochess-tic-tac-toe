@@ -1,5 +1,6 @@
 package com.github.rmitsubayashi.ui.game
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -7,10 +8,11 @@ import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
+import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.util.UIClickListener
 import com.github.rmitsubayashi.ui.util.removeActorAndUpdateCellStructure
 
-class UIPlayerPieces(game: Game): Table() {
+class UIPlayerPieces(private val assetManager: AssetManager, game: Game): Table() {
     private val pieceSlots = mutableListOf<UIPlayerPiece>()
     private val sellButton: TextButton
 
@@ -41,7 +43,8 @@ class UIPlayerPieces(game: Game): Table() {
                         slot.setSelected(false)
                     }
                 }
-            }
+            },
+            assetManager.get(SoundAssets.click)
         ))
 
         pieceSlots.add(newSlot)

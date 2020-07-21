@@ -38,7 +38,6 @@ class UIClickListener(private val actor: Actor, private val onClick: () -> Unit,
         }
         if (sound != null) thread(name="Sound") {
             sound.play()
-            sound.dispose()
         }
         onClick()
     }

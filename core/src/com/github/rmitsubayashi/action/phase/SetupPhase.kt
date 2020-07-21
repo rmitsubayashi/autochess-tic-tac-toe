@@ -60,7 +60,8 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
         //note that this is different from a regular roll because no money is spent
         game.piecePool.refresh(player)
         newEvents.add(
-                Event(EventType.reroll, player, null, mapOf(Pair(EventDataKey.DONE, true)))
+                Event(EventType.reroll, player, null,
+                        mapOf(Pair(EventDataKey.DONE, true), Pair(EventDataKey.IS_USER_EVENT, false)))
         )
         newEvents.add(
                 // this marks the end of the automatic actions regarding the set up phase.

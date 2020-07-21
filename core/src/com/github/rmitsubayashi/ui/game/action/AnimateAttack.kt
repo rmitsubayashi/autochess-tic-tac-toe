@@ -1,5 +1,6 @@
 package com.github.rmitsubayashi.ui.game.action
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -7,9 +8,11 @@ import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
+import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.game.UIBoard
+import kotlin.concurrent.thread
 
-class AnimateAttack(private val uiBoard: UIBoard): Action(EmptyEventActor()) {
+class AnimateAttack(private val assetManager: AssetManager, private val uiBoard: UIBoard): Action(EmptyEventActor()) {
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.pieceAttacks) return false
         if (event.actor !is Piece) return false
@@ -37,7 +40,11 @@ class AnimateAttack(private val uiBoard: UIBoard): Action(EmptyEventActor()) {
                         Actions.moveBy(-destX, -destY, 0.5f, Interpolation.slowFast),
                         attackingUIPiece,
                         0.5f
-                )
+                ) {
+                    thread(name = "Sound") {
+                        assetManager.get(SoundAssets.attack).play()
+                    }
+                }
         )
         game.animationQueue.addAnimation(
                 AnimationConfig(
@@ -58,6 +65,6 @@ class AnimateAttack(private val uiBoard: UIBoard): Action(EmptyEventActor()) {
     }
 
     override fun copy(): Action {
-        return AnimateAttack(uiBoard)
+        return AnimateAttack(assetManager, uiBoard)
     }
 }

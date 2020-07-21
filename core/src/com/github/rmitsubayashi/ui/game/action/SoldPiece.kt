@@ -1,17 +1,20 @@
 package com.github.rmitsubayashi.ui.game.action
 
+import com.badlogic.gdx.assets.AssetManager
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
+import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.game.UIPiecePool
 import com.github.rmitsubayashi.ui.game.UIPlayerPieces
 
-class SoldPiece(eventActor: EventActor, private val uiPlayerPieces: UIPlayerPieces, private val uiPiecePool: UIPiecePool)
+class SoldPiece(eventActor: EventActor, private val assetManager: AssetManager, private val uiPlayerPieces: UIPlayerPieces, private val uiPiecePool: UIPiecePool)
     : Action(eventActor){
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.sellPiece) return false
         if (event.actor !is Player) return false
+        if (event.actor != eventActor) return false
         if (event.actedUpon !is Piece) return false
         if (event.data?.get(EventDataKey.DONE) != true) return false
 
@@ -23,11 +26,12 @@ class SoldPiece(eventActor: EventActor, private val uiPlayerPieces: UIPlayerPiec
         val uiPiece = uiPlayerPieces.removePiece(piece)
         if (uiPiece != null) {
             uiPiecePool.returnPieceToPool(uiPiece)
+            assetManager.get(SoundAssets.sell).play()
         }
         return emptyList()
     }
 
     override fun copy(): Action {
-        return SoldPiece(eventActor, uiPlayerPieces, uiPiecePool)
+        return SoldPiece(eventActor, assetManager, uiPlayerPieces, uiPiecePool)
     }
 }
