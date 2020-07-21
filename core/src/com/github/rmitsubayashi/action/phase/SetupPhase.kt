@@ -17,14 +17,18 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
 
     override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
         val player = event.actor as Player
+        val newEvents = mutableListOf<Event>()
         //secure pieces that are currently on board
         val playerPieces = game.board.filter { it?.player?.id == player.id }
         for (p in playerPieces) {
             if (p != null){
-                game.board.secure(p)
+                if (!game.board.isSecured(p)) {
+                    game.board.secure(p)
+                    newEvents.add(Event(EventType.pieceSecured, p, null))
+                }
             }
         }
-        //check for winner
+        //check for tic tac toes
         val ticTacToes = TicTacToeJudge.listTicTacToeIndexes(game.board, player)
         player.score += ticTacToes.size
         val gameProgress = game.gameJudge.checkWinner()
@@ -45,7 +49,6 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
         for (toDamagePiece in uniquePieces) {
             toDamagePiece.currHP -= damage
         }
-        val newEvents = mutableListOf<Event>()
         val damagedEvents = uniquePieces.map {
             Event(EventType.pieceDamaged, it, null)
         }
@@ -62,6 +65,9 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
         newEvents.add(
                 Event(EventType.reroll, player, null,
                         mapOf(Pair(EventDataKey.DONE, true), Pair(EventDataKey.IS_USER_EVENT, false)))
+        )
+        newEvents.add(
+                Event(EventType.shouldAnimate, null, null)
         )
         newEvents.add(
                 // this marks the end of the automatic actions regarding the set up phase.

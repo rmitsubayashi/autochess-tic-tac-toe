@@ -13,6 +13,7 @@ object SoundAssets {
     val click = AssetDescriptor<Sound>("$BASE_PATH/click.$DEFAULT_FORMAT", Sound::class.java)
     val refresh = AssetDescriptor<Sound>("$BASE_PATH/refresh.$DEFAULT_FORMAT", Sound::class.java)
     val sell = AssetDescriptor<Sound>("$BASE_PATH/sell.$DEFAULT_FORMAT", Sound::class.java)
+    val secured = AssetDescriptor<Sound>("$BASE_PATH/secured.$DEFAULT_FORMAT", Sound::class.java)
     fun fromPiece(piece: Piece): AssetDescriptor<Sound> {
         val path = piece.name
                 .toLowerCase(Locale.ROOT)

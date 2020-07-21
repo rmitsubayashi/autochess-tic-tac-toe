@@ -1,8 +1,10 @@
 package com.github.rmitsubayashi.ui.game
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
@@ -12,19 +14,22 @@ import com.github.rmitsubayashi.action.EventDataKey
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Player
+import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.util.UIClickListener
 
-class UIBoardSquare(val squareIndex: Int, private val player: Player,
-                    private val board: Board, observable: ActionObservable): Table() {
+class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private val player: Player,
+                    private val board: Board, observable: ActionObservable): Stack() {
     var piece: UIPiece? = null
+    private val mainTable = Table()
     private val placeHolder: Image = Image()
     private val pieceState: Table = Table()
     private val secured: Label
+    val secureImage: Image
     private val isEnemy: Label
     private val hp: Label
 
     init {
-        this.add(placeHolder).grow()
+        mainTable.add(placeHolder).grow()
         this.addListener(
             UIClickListener(this,
                 {
@@ -41,24 +46,31 @@ class UIBoardSquare(val squareIndex: Int, private val player: Player,
         val labelStyle = Label.LabelStyle()
         labelStyle.font = BitmapFont()
         secured = Label("S", labelStyle)
+        secureImage = Image(assetManager.get(ImageAssets.shield))
+        val color = secureImage.color
+        color.a = 0f
+        secureImage.color = color
         isEnemy = Label("E", labelStyle)
         hp = Label("", labelStyle)
+
+        this.add(mainTable)
+        this.add(secureImage)
     }
 
     fun placePiece(piece: UIPiece) {
-        this.clearChildren()
+        mainTable.clearChildren()
         this.piece = piece
         piece.setScaling(Scaling.fit)
         updatePieceState()
-        this.add(pieceState).align(Align.top)
-        this.add(piece)
+        mainTable.add(pieceState).align(Align.top)
+        mainTable.add(piece)
     }
 
     fun removePiece(): UIPiece? {
         pieceState.clearChildren()
         // if we call removeActor(actor) instead of this, the cells aren't properly cleared
-        this.clearChildren()
-        this.add(placeHolder).grow()
+        mainTable.clearChildren()
+        mainTable.add(placeHolder).grow()
         return piece
     }
 

@@ -1,13 +1,11 @@
 package com.github.rmitsubayashi.ui.game
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.GdxGame
 import com.github.rmitsubayashi.ui.assets.ImageAssets
-import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.game.action.*
+import com.github.rmitsubayashi.ui.game.action.UpdatePieceState
 import com.github.rmitsubayashi.ui.util.IStageScreen
 
 class GameScreen(game: GdxGame): IStageScreen(game) {
@@ -35,7 +33,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         subscribeAction(PlacedPiece(game.game.player1, uiBoard, uiPlayerPieces, uiPiecePool))
         subscribeAction(SoldPiece(game.game.player1, game.assetManager, uiPlayerPieces, uiPiecePool))
         subscribeAction(ToggleSetupPhaseButtons(game.game.player1, uiHUD))
-        subscribeAction(UpdatePieceState(game.game.board, uiBoard, uiPiecePool))
+        subscribeAction(UpdatePieceState(game.assetManager, game.game.board, uiBoard, uiPiecePool))
         subscribeAction(AnimateAttack(game.assetManager, uiBoard))
 
         game.game.gameProgressManager.nextPlayerTurn()

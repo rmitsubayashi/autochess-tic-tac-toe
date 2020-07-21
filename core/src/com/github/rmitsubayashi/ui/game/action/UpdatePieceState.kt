@@ -1,26 +1,24 @@
-package com.github.rmitsubayashi.ui.game
+package com.github.rmitsubayashi.ui.game.action
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.action.EmptyEventActor
 import com.github.rmitsubayashi.entity.Piece
-import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
+import com.github.rmitsubayashi.ui.assets.SoundAssets
+import com.github.rmitsubayashi.ui.game.UIBoard
+import com.github.rmitsubayashi.ui.game.UIPiecePool
 
-class UpdatePieceState(private val board: Board,
+class UpdatePieceState(private val assetManager: AssetManager, private val board: Board,
                        private val uiBoard: UIBoard, private val uiPiecePool: UIPiecePool)
     : Action(EmptyEventActor()) {
     override fun conditionMet(game: Game, event: Event): Boolean {
-        return when (event.type) {
-            EventType.pieceDamaged -> event.actor is Piece
-            EventType.enterSetupPhase -> {
-                event.data?.get(EventDataKey.DONE) == true &&
-                        event.actor is Player
-            }
-            else -> false
-        }
+        if (event.type !in listOf(EventType.pieceDamaged, EventType.pieceSecured )) return false
+        if (event.actor !is Piece) return false
+        return true
 
     }
 
@@ -47,13 +45,27 @@ class UpdatePieceState(private val board: Board,
                     uiBoard.updatePieceState(piece)
                 }
             }
-            EventType.enterSetupPhase -> {
-                // we don't know which pieces have been newly secured,
-                // so just update all of them
-                val player = event.actor as Player
-                val playerPieces = board.filter { it?.player == player }.filterNotNull()
-                for (piece in playerPieces) {
+            EventType.pieceSecured -> {
+                val piece = event.actor as Piece
+                val securedImage = uiBoard.getSecuredImage(piece)
+                if (securedImage != null) {
                     uiBoard.updatePieceState(piece)
+                    game.animationQueue.addAnimation(
+                            AnimationConfig(
+                                    Actions.alpha(0.5f),
+                                    securedImage,
+                                    0.5f
+                            ) {
+                                assetManager.get(SoundAssets.secured).play()
+                            }
+                    )
+                    game.animationQueue.addAnimation(
+                            AnimationConfig(
+                                    Actions.alpha(0f),
+                                    securedImage,
+                                    0.5f
+                            )
+                    )
                 }
             }
             else -> {}
@@ -62,6 +74,6 @@ class UpdatePieceState(private val board: Board,
     }
 
     override fun copy(): Action {
-        return UpdatePieceState(board, uiBoard, uiPiecePool)
+        return UpdatePieceState(assetManager, board, uiBoard, uiPiecePool)
     }
 }

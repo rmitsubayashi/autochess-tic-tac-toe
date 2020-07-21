@@ -16,7 +16,7 @@ class UIBoard(assetManager: AssetManager, game: Game): Table() {
         val tempList = mutableListOf<UIBoardSquare>()
         for (i in 0..2) {
             for (j in 0..2) {
-                val square = UIBoardSquare(i*3+j, game.player1, game.board, game.actionObservable)
+                val square = UIBoardSquare(assetManager, i*3+j, game.player1, game.board, game.actionObservable)
                 tempList.add(square)
                 this.add(square).grow().uniform()
             }
@@ -39,6 +39,11 @@ class UIBoard(assetManager: AssetManager, game: Game): Table() {
     fun removePiece(piece: Piece): UIPiece? {
         val square = squares.firstOrNull { it.piece?.actualPiece == piece }
         return square?.removePiece()
+    }
+
+    fun getSecuredImage(piece: Piece): Image? {
+        val square = squares.firstOrNull { it.piece?.actualPiece == piece }
+        return square?.secureImage
     }
 
     fun updatePieceState(piece: Piece) {

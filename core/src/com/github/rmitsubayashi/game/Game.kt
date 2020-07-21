@@ -3,6 +3,7 @@ package com.github.rmitsubayashi.game
 import com.github.rmitsubayashi.ability.AbilityList
 import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.ActionObservable
+import com.github.rmitsubayashi.action.Animate
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.phase.BattlePhase
 import com.github.rmitsubayashi.action.phase.SetupPhase
@@ -71,6 +72,7 @@ class Game(
         actions.add(Damaged())
         actions.add(DeclareAttack())
         actions.add(Attack())
+        actions.add(Animate())
 
         actionObservable.subscribeActions(actions)
     }

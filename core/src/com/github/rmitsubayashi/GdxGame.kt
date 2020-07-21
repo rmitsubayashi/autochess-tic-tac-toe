@@ -39,8 +39,10 @@ class GdxGame : Game() {
         assetManager.load(SoundAssets.click)
         assetManager.load(SoundAssets.sell)
         assetManager.load(SoundAssets.refresh)
+        assetManager.load(SoundAssets.secured)
         assetManager.load(ImageAssets.field)
         assetManager.load(ImageAssets.ticTacToe)
+        assetManager.load(ImageAssets.shield)
         val pieces = game.piecePool.getAllPieces()
         for (piece in pieces) {
             assetManager.load(SoundAssets.fromPiece(piece))

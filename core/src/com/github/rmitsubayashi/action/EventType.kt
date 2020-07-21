@@ -18,4 +18,7 @@ enum class EventType {
     pieceDeclaresAttack,
     pieceAttacks,
     pieceDamaged,
+    pieceSecured,
+    // other
+    shouldAnimate,
 }
