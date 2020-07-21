@@ -12,3 +12,9 @@ fun Table.removeActorAndUpdateCellStructure(actor: Actor?) {
     cells.removeValue(cell, true)
     invalidate()
 }
+
+fun Actor.setAlpha(alpha: Float) {
+    val color = this.color
+    color.a = alpha
+    this.color = color
+}

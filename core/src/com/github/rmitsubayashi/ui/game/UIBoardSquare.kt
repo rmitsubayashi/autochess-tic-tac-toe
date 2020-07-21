@@ -16,6 +16,7 @@ import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.util.UIClickListener
+import com.github.rmitsubayashi.ui.util.setAlpha
 
 class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private val player: Player,
                     private val board: Board, observable: ActionObservable): Stack() {
@@ -47,9 +48,7 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
         labelStyle.font = BitmapFont()
         secured = Label("S", labelStyle)
         secureImage = Image(assetManager.get(ImageAssets.shield))
-        val color = secureImage.color
-        color.a = 0f
-        secureImage.color = color
+        secureImage.setAlpha(0f)
         isEnemy = Label("E", labelStyle)
         hp = Label("", labelStyle)
 
