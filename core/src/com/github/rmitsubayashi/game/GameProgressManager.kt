@@ -8,8 +8,6 @@ class GameProgressManager(
         private val game: Game
 ) {
     val currPlayer: Player get() = _currPlayer
-    // since we call nextPlayerTurn(),
-    // player 1 will go first
     private var _currPlayer = game.player2
     private var nextPlayer = game.player1
     val turn: Int get() = _turn
@@ -19,13 +17,26 @@ class GameProgressManager(
 
 
     fun toBattlePhase() {
+        if (_phase == Phase.BATTLE) return
         _phase = Phase.BATTLE
         game.notifyEvent(
                 Event(EventType.enterBattlePhase, currPlayer, null)
         )
     }
 
+    fun startGame(startingPlayer: Player) {
+        if (_currPlayer != startingPlayer) {
+            nextPlayer = _currPlayer
+            _currPlayer = startingPlayer
+        }
+        _phase = Phase.SETUP
+        game.notifyEvent(
+                Event(EventType.enterSetupPhase, currPlayer, null)
+        )
+    }
+
     fun nextPlayerTurn() {
+        if (_phase == Phase.SETUP) return
         //switch player
         val temp = nextPlayer
         nextPlayer = currPlayer

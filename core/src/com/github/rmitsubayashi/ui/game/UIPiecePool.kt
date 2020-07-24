@@ -1,6 +1,5 @@
 package com.github.rmitsubayashi.ui.game
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -86,7 +85,6 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
     fun returnPieceToPool(piece: UIPiece) {
         val piecePool = getPiecePool(piece.pieceType)
         piecePool?.free(piece)
-        pieceSlots.firstOrNull { it.piece == piece }?.removePiece()
     }
 
     fun takePiece(piece: Piece): UIPiece? {

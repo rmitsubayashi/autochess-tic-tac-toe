@@ -1,11 +1,14 @@
 package com.github.rmitsubayashi.ui.game.action
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
+import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIBoard
 import com.github.rmitsubayashi.ui.game.UIPiecePool
 import com.github.rmitsubayashi.ui.game.UIPlayerPieces
+import com.github.rmitsubayashi.ui.util.round2
 
 class PlacedPiece(eventActor: EventActor,
                   private val uiBoard: UIBoard,
@@ -32,7 +35,20 @@ class PlacedPiece(eventActor: EventActor,
         }
         uiPiece ?: return emptyList()
         val square = event.data?.get(EventDataKey.SQUARE) as Int
-        uiBoard.placePiece(uiPiece, square)
+        if (event.data[EventDataKey.IS_USER_EVENT] == false) {
+            // for ai, want to place pieces one by one
+            game.animationQueue.addAnimation(
+                    AnimationConfig(
+                            Actions.delay(1f),
+                            null,
+                            1f
+                    ) {
+                        uiBoard.placePiece(uiPiece, square)
+                    }
+            )
+        } else {
+            uiBoard.placePiece(uiPiece, square)
+        }
         return emptyList()
     }
 

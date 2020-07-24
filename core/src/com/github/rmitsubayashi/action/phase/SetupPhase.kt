@@ -22,7 +22,7 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
         val playerPieces = game.board.filter { it?.player?.id == player.id }
         for (p in playerPieces) {
             if (p != null){
-                if (!game.board.isSecured(p)) {
+                if (!game.board.isSecured(p) && !p.isDead()) {
                     game.board.secure(p)
                     newEvents.add(Event(EventType.pieceSecured, p, null))
                 }

@@ -24,8 +24,12 @@ class PlacePiece(eventActor: EventActor): Action(eventActor) {
         val piece = event.actedUpon as Piece
         game.board[square] = piece
         player.pieces.remove(piece)
-        return listOf(Event(EventType.placePiece, piece, null,
-                mapOf(Pair(EventDataKey.DONE, true), Pair(EventDataKey.SQUARE, square))))
+        val isUserEvent = event.data[EventDataKey.IS_USER_EVENT]
+        val data = mutableMapOf(Pair(EventDataKey.DONE, true), Pair(EventDataKey.SQUARE, square))
+        if (isUserEvent == false) data[EventDataKey.IS_USER_EVENT] = false
+        return listOf(
+                Event(EventType.placePiece, piece, null, data)
+        )
     }
 
     override fun copy(): Action {

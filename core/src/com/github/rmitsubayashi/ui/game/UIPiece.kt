@@ -41,7 +41,7 @@ class UIPiece private constructor(val pieceType: Piece, texture: Texture, game: 
     }
 
     override fun reset() {
-        //not sure if anything is needed here
+        _actualPiece = null
     }
 
     // the piece we get from the piece pool goes here.

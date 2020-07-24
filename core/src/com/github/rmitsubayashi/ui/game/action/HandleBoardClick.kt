@@ -12,6 +12,7 @@ class HandleBoardClick(eventActor: EventActor, private val uiPlayerPieces: UIPla
         if (event.type != EventType.boardClicked) return false
         if (event.data?.get(EventDataKey.SQUARE) !is Int) return false
         if (event.actor !is Player) return false
+
         return true
     }
 
@@ -19,12 +20,14 @@ class HandleBoardClick(eventActor: EventActor, private val uiPlayerPieces: UIPla
         val square = event.data?.get(EventDataKey.SQUARE) as Int
         val squarePiece = game.board[square]
         val playerPieceSelected = uiPlayerPieces.getSelectedPiece()
-        // user has selected a piece to place on the board
+        // player has selected a piece to place on the board.
+        // the player can only place during his setup phase
         if (
                 event.actor == playerPieceSelected?.player
                 && squarePiece == null
                 && game.gameProgressManager.phase == GameProgressManager.Phase.SETUP
                 && game.gameProgressManager.currPlayer == event.actor
+                && !game.animationQueue.isAnimating()
         ) {
             return listOf(
                     Event(EventType.placePiece, event.actor, playerPieceSelected,

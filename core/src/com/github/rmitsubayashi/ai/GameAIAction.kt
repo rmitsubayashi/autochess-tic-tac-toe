@@ -17,7 +17,9 @@ class GameAIAction(eventActor: EventActor, private val ai: GameAI): Action(event
         val player = event.actor as Player
         // rolls and places pieces on the board
         ai.execute(game, player)
-        game.gameProgressManager.toBattlePhase()
+        game.animationQueue.playQueuedAnimations {
+            game.gameProgressManager.toBattlePhase()
+        }
         return emptyList()
     }
 

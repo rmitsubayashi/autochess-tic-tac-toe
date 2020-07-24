@@ -18,8 +18,9 @@ class BattlePhase(eventActor: EventActor): Action(eventActor) {
             // each attack finishes before the next piece attack
             game.notifyEvent(Event(EventType.pieceDeclaresAttack, piece, null))
         }
-        game.animationQueue.playQueuedAnimations()
-        game.gameProgressManager.nextPlayerTurn()
+        game.animationQueue.playQueuedAnimations {
+            game.gameProgressManager.nextPlayerTurn()
+        }
         return emptyList()
     }
 

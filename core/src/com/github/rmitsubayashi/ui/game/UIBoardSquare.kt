@@ -76,7 +76,10 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
     fun updatePieceState() {
         pieceState.clearChildren()
         val p = piece?.actualPiece
-        p ?: return
+        if (p == null) {
+            removePiece()
+            return
+        }
         hp.setText(p.currHP)
         pieceState.add(hp).row()
         if (board.isSecured(p)) {

@@ -110,8 +110,13 @@ class CrudeAI: GameAI {
             }
 
             game.actionObservable.notifyAllActions(
-                    Event(EventType.placePiece, player, toPlace,
-                            mapOf(Pair(EventDataKey.SQUARE, randomIndex)))
+                    Event(
+                            EventType.placePiece, player, toPlace,
+                            mapOf(
+                                    Pair(EventDataKey.SQUARE, randomIndex),
+                                    Pair(EventDataKey.IS_USER_EVENT, false)
+                            )
+                    )
             )
         }
     }

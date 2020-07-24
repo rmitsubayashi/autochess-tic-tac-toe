@@ -11,6 +11,7 @@ import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.game.UIBoard
 import com.github.rmitsubayashi.ui.game.UIPiecePool
+import com.github.rmitsubayashi.ui.util.setAlpha
 
 class UpdatePieceState(private val assetManager: AssetManager, private val board: Board,
                        private val uiBoard: UIBoard, private val uiPiecePool: UIPiecePool)
@@ -35,6 +36,7 @@ class UpdatePieceState(private val assetManager: AssetManager, private val board
                                     uiPiece,
                                     0.3f
                             ) {
+                                uiPiece.setAlpha(1f)
                                 val toRemoveUIPiece = uiBoard.removePiece(piece)
                                 if (toRemoveUIPiece != null) {
                                     uiPiecePool.returnPieceToPool(toRemoveUIPiece)
@@ -49,19 +51,19 @@ class UpdatePieceState(private val assetManager: AssetManager, private val board
                 val piece = event.actor as Piece
                 val securedImage = uiBoard.getSecuredImage(piece)
                 if (securedImage != null) {
-                    uiBoard.updatePieceState(piece)
                     game.animationQueue.addAnimation(
                             AnimationConfig(
-                                    Actions.alpha(0.5f),
+                                    Actions.alpha(0.5f, 0.5f),
                                     securedImage,
                                     0.5f
                             ) {
                                 assetManager.get(SoundAssets.secured).play()
+                                uiBoard.updatePieceState(piece)
                             }
                     )
                     game.animationQueue.addAnimation(
                             AnimationConfig(
-                                    Actions.alpha(0f),
+                                    Actions.alpha(0f, 0.5f),
                                     securedImage,
                                     0.5f
                             )

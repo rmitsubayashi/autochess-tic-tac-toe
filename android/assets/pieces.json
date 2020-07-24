@@ -14,7 +14,7 @@
       "attack": 0,
       "attackRange": "melee",
       "ability": "",
-      "cost": 1
+      "cost": 2
     },
     {
       "name": "Boar Soldier",
@@ -38,7 +38,7 @@
       "attack": 1,
       "attackRange": "ranged",
       "ability": "deal 5 damage to all opposing pieces",
-      "cost": 3
+      "cost": 1
     },
     {
       "name": "Boar Soldier",
