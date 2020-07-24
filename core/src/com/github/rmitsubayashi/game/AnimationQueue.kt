@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.game
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.github.rmitsubayashi.ui.util.round2
 
 // shows animations one by one
 class AnimationQueue {
@@ -22,12 +23,16 @@ class AnimationQueue {
                             Actions.run {
                                 animation.onAnimate()
                                 secondsDelay -= animation.duration
+                                secondsDelay = round2(secondsDelay)
                             }
                     )
             )
             secondsDelay += animation.duration
+            secondsDelay = round2(secondsDelay)
         }
 
         animationList.clear()
     }
+
+    fun isAnimating() = secondsDelay > 0
 }

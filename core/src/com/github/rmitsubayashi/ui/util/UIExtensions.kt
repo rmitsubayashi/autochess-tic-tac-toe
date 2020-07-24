@@ -2,6 +2,7 @@ package com.github.rmitsubayashi.ui.util
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import kotlin.math.round
 
 // using the default removeActor() keeps the table structure..
 // so if there is a table like [A][B][C] and we remove B,
@@ -18,3 +19,5 @@ fun Actor.setAlpha(alpha: Float) {
     color.a = alpha
     this.color = color
 }
+
+fun round2(x: Float) = round(x * 10) / 10
