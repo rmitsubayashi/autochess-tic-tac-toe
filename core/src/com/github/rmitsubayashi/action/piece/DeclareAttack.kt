@@ -10,6 +10,7 @@ class DeclareAttack: Action(EmptyEventActor()) {
         if (event.type != EventType.pieceDeclaresAttack) { return false }
         if (event.actor !is Piece) { return false }
         if (event.actor.isDead()) { return false }
+        if (event.actor.currStats.attack == 0) { return false }
         if (AttackRangeCalculator.getPossibleAttackTargets(game.board, event.actor).isEmpty()) {
             return false
         }

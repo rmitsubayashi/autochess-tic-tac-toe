@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.ui.util.round2
 
 // shows animations one by one
-class AnimationQueue() {
+class AnimationQueue {
     private lateinit var stage: Stage
     private val animationList = mutableListOf<AnimationConfig>()
     private var secondsDelay = 0f
