@@ -1,7 +1,7 @@
 package com.github.rmitsubayashi.setup.entity
 
-import com.google.gson.annotations.SerializedName
 import com.github.rmitsubayashi.game.PiecePool
+import com.google.gson.annotations.SerializedName
 
 data class JSONPiecePoolConfig(
         @SerializedName("rerollCost")

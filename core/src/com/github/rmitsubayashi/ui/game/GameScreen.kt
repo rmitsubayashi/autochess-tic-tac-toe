@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.GdxGame
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.game.action.*
-import com.github.rmitsubayashi.ui.game.action.UpdatePieceState
 import com.github.rmitsubayashi.ui.util.IStageScreen
 
 class GameScreen(game: GdxGame): IStageScreen(game) {

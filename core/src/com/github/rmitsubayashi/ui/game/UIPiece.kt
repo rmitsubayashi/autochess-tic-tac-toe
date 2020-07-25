@@ -10,7 +10,6 @@ import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.assets.ImageAssets
-import com.github.rmitsubayashi.ui.util.ImageUtils
 import com.github.rmitsubayashi.ui.util.UILongClickListener
 
 class UIPiece private constructor(val pieceType: Piece, texture: Texture, game: Game):

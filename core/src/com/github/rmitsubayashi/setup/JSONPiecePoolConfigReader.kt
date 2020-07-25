@@ -1,9 +1,9 @@
 package com.github.rmitsubayashi.setup
 
 import com.badlogic.gdx.Gdx
-import com.google.gson.Gson
 import com.github.rmitsubayashi.game.PiecePool
 import com.github.rmitsubayashi.setup.entity.JSONPiecePoolConfig
+import com.google.gson.Gson
 
 class JSONPiecePoolConfigReader(private val fileName: String): PiecePoolConfigReader {
     override fun read(): PiecePool.Configs {

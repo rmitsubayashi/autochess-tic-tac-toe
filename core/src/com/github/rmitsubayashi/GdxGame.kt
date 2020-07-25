@@ -3,7 +3,6 @@ package com.github.rmitsubayashi
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
-import com.github.rmitsubayashi.ability.AbilityList
 import com.github.rmitsubayashi.setup.JSONPieceFileReader
 import com.github.rmitsubayashi.setup.JSONPiecePoolConfigReader
 import com.github.rmitsubayashi.setup.TextPlayerLevelCostReader

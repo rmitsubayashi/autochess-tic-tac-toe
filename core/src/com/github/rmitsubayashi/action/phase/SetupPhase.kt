@@ -1,7 +1,6 @@
 package com.github.rmitsubayashi.action.phase
 
 import com.github.rmitsubayashi.action.*
-import com.github.rmitsubayashi.action.piece.Damaged
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.*

@@ -18,9 +18,9 @@ import com.github.rmitsubayashi.ai.CrudeAI
 import com.github.rmitsubayashi.ai.GameAIAction
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Player
-import com.github.rmitsubayashi.setup.PlayerLevelCostReader
 import com.github.rmitsubayashi.setup.PieceFileReader
 import com.github.rmitsubayashi.setup.PiecePoolConfigReader
+import com.github.rmitsubayashi.setup.PlayerLevelCostReader
 import kotlin.random.Random
 
 class Game(

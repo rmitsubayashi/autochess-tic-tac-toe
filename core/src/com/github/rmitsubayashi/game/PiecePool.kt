@@ -2,7 +2,6 @@ package com.github.rmitsubayashi.game
 
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
-import java.lang.Exception
 import kotlin.math.min
 import kotlin.random.Random
 

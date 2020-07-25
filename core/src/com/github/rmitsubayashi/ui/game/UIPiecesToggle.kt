@@ -1,11 +1,9 @@
 package com.github.rmitsubayashi.ui.game
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.github.rmitsubayashi.ui.util.UIClickListener
 
 class UIPiecesToggle(private val uiPlayerPieces: UIPlayerPieces, private val uiPiecePool: UIPiecePool): Table() {

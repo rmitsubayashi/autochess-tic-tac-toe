@@ -2,7 +2,6 @@ package com.github.rmitsubayashi.action.piece
 
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
-import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 
 class BuffAttack(eventActor: EventActor, private val amount: Int, private val timing: EventType)

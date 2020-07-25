@@ -8,7 +8,6 @@ import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIBoard
 import com.github.rmitsubayashi.ui.game.UIPiecePool
 import com.github.rmitsubayashi.ui.game.UIPlayerPieces
-import com.github.rmitsubayashi.ui.util.round2
 
 class PlacedPiece(eventActor: EventActor,
                   private val uiBoard: UIBoard,
