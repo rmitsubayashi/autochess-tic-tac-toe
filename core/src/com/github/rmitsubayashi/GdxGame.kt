@@ -23,6 +23,12 @@ class GdxGame : Game() {
         setScreen(MainMenuScreen(this))
     }
 
+    fun restart() {
+        setupGame()
+
+        setScreen(MainMenuScreen(this))
+    }
+
     private fun setupGame() {
         // can't read files in the constructor because the file system is still unavailable
         val pieceReader = JSONPieceFileReader("pieces.json")

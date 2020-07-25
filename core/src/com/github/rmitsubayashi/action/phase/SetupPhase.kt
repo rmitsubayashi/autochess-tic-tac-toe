@@ -36,6 +36,9 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
         val gameProgress = game.gameJudge.checkWinner()
         if ((gameProgress as? GameState.Winner)?.winner == player) {
             newEvents.add(Event(EventType.playerWins, player, null))
+            newEvents.add(
+                    Event(EventType.shouldAnimate, null, null)
+            )
             return newEvents
         }
         //tic tac toe pieces get damaged
