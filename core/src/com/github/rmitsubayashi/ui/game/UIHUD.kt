@@ -12,9 +12,12 @@ import com.github.rmitsubayashi.ui.util.UIClickListener
 class UIHUD(private val game: Game, private val player: Player): Table() {
     private val moneyLabel: Label
     private val setupFinishedButton: TextButton
+    private val scoreLabel: Label
     init {
         val labelStyle = Label.LabelStyle()
         labelStyle.font = BitmapFont()
+        scoreLabel = Label(formatScoreText(), labelStyle)
+        this.add(scoreLabel).row()
         moneyLabel = Label(player.money.toString(), labelStyle)
         this.add(moneyLabel)
         val buttonStyle = TextButton.TextButtonStyle()
@@ -34,5 +37,14 @@ class UIHUD(private val game: Game, private val player: Player): Table() {
 
     fun enableSetupFinishedButton(enabled: Boolean) {
         setupFinishedButton.setLayoutEnabled(enabled)
+    }
+
+    fun updateScore() {
+        scoreLabel.setText(formatScoreText())
+    }
+
+    private fun formatScoreText(): String {
+        val otherPlayer = if (player == game.player1) { game.player2 } else { game.player1 }
+        return "${player.score} - ${otherPlayer.score}"
     }
 }

@@ -39,6 +39,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         subscribeAction(UpdatePieceState(game.assetManager, game.game.board, uiBoard, uiPiecePool))
         subscribeAction(AnimateAttack(game.assetManager, uiBoard))
         subscribeAction(ShowTurnDisplay(uiTurnDisplay))
+        subscribeAction(UpdateScore(uiHUD))
 
         game.game.animationQueue.setStage(this.stage)
         game.game.gameProgressManager.startGame(game.game.player1)

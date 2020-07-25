@@ -30,9 +30,13 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
         //check for tic tac toes
         val ticTacToes = TicTacToeJudge.listTicTacToeIndexes(game.board, player)
         player.score += ticTacToes.size
+        if (ticTacToes.isNotEmpty()) {
+            newEvents.add(Event(EventType.scored, player, null))
+        }
         val gameProgress = game.gameJudge.checkWinner()
         if ((gameProgress as? GameState.Winner)?.winner == player) {
-            return listOf(Event(EventType.playerWins, player, null))
+            newEvents.add(Event(EventType.playerWins, player, null))
+            return newEvents
         }
         //tic tac toe pieces get damaged
         val damage = TicTacToeDamageCalculator.getDamage(game.gameProgressManager.turn)
