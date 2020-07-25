@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.ui.game.action
 
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Board
@@ -26,9 +27,25 @@ class UpdatePieceState(private val assetManager: AssetManager, private val board
         when (event.type) {
             EventType.pieceDamaged -> {
                 val piece = event.actor as Piece
+                val uiPiece = uiBoard.findPiece(piece)
+                uiPiece ?: return emptyList()
+                val originalColor = Color(uiPiece.color)
+                val red = Color(0.5f,0f,0f,1f)
+                game.animationQueue.addAnimation(
+                        AnimationConfig(
+                                Actions.color(red, 0.3f),
+                                uiPiece,
+                                0.3f
+                        )
+                )
+                game.animationQueue.addAnimation(
+                        AnimationConfig(
+                                Actions.color(originalColor, 0.3f),
+                                uiPiece,
+                                0.3f
+                        )
+                )
                 if (piece.isDead()) {
-                    val uiPiece = uiBoard.findPiece(piece)
-                    uiPiece ?: return emptyList()
                     game.animationQueue.addAnimation(
                             AnimationConfig(
                                     Actions.alpha(0f, 0.3f),
