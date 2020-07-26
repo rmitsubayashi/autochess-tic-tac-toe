@@ -2,6 +2,7 @@ package com.github.rmitsubayashi.ui.game.action
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UITurnDisplay
@@ -17,7 +18,7 @@ class ShowTurnDisplay(private val uiTurnDisplay: UITurnDisplay): Action(EmptyEve
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         uiTurnDisplay.setDisplay(
                 game.gameProgressManager.turn,
                 game.gameProgressManager.currPlayer

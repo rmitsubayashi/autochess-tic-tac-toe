@@ -15,10 +15,15 @@ class PlacePiece(eventActor: EventActor): Action(eventActor) {
         val square = event.data?.get(EventDataKey.SQUARE)
         if (square !is Int) return false
         if (game.board[square] != null) return false
+        if (game.userInputManager.isWaitingForUserInput()) return false
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
+        if (game.userInputManager.isWaitingForUserInput()) {
+            game.userInputManager.setBlockedAction(this)
+            return emptyList()
+        }
         val square = event.data?.get(EventDataKey.SQUARE) as Int
         val player = event.actor as Player
         val piece = event.actedUpon as Piece

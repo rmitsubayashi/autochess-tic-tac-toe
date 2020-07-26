@@ -4,6 +4,7 @@ import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventActor
 import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 
@@ -20,7 +21,7 @@ class LevelUp(eventActor: EventActor): Action(eventActor) {
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
         val cost = game.playerLevelManager.getLevelUpCost(player.level+1)
         player.money -= cost

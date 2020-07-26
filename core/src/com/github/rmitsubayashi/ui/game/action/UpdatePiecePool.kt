@@ -27,7 +27,7 @@ class UpdatePiecePool(
     }
 
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         when (event.type) {
             EventType.buyPiece -> {
                 val piece = event.actedUpon as Piece

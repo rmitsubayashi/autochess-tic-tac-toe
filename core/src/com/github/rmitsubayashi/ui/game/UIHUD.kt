@@ -9,7 +9,7 @@ import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.util.UIClickListener
 
 // HUD = Head-Up Display
-class UIHUD(private val game: Game, private val player: Player): Table() {
+class UIHUD(private val game: Game, private val player: Player, private val uiChoosePiece: UIChoosePiece): Table() {
     private val moneyLabel: Label
     private val setupFinishedButton: TextButton
     private val scoreLabel: Label
@@ -29,6 +29,7 @@ class UIHUD(private val game: Game, private val player: Player): Table() {
                 })
         )
         this.add(setupFinishedButton)
+        this.add(uiChoosePiece)
     }
 
     fun updatePlayerMoney() {
@@ -44,7 +45,7 @@ class UIHUD(private val game: Game, private val player: Player): Table() {
     }
 
     private fun formatScoreText(): String {
-        val otherPlayer = if (player == game.player1) { game.player2 } else { game.player1 }
-        return "${player.score} - ${otherPlayer.score}"
+        val otherPlayer = game.getOpposingPlayer(player)
+        return "${player.score} - ${otherPlayer?.score}"
     }
 }

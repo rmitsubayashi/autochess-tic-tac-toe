@@ -3,6 +3,7 @@ package com.github.rmitsubayashi.ui.game.action
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.GdxGame
 import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
@@ -15,7 +16,7 @@ class ShowResultScreen(private val game: GdxGame, private val player: Player)
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         game.animationQueue.addAnimation(
                 AnimationConfig(
                         Actions.delay(0.1f),

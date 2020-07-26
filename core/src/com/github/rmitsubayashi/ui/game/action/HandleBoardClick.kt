@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.ui.game.action
 
 import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.game.GameProgressManager
@@ -12,22 +13,27 @@ class HandleBoardClick(eventActor: EventActor, private val uiPlayerPieces: UIPla
         if (event.type != EventType.boardClicked) return false
         if (event.data?.get(EventDataKey.SQUARE) !is Int) return false
         if (event.actor !is Player) return false
+        // any interaction with the board must occur in the player's setup phase
+        if (game.gameProgressManager.currPlayer != event.actor) return false
+        if (game.gameProgressManager.phase != GameProgressManager.Phase.SETUP) return false
+        if (game.animationQueue.isAnimating()) return false
 
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val square = event.data?.get(EventDataKey.SQUARE) as Int
         val squarePiece = game.board[square]
+        // the player is choosing a piece for a piece's ability
+        if (game.userInputManager.isWaitingForUserInput()) {
+            game.userInputManager.handleActionWaitingForUserInput(squarePiece)
+            return emptyList()
+        }
         val playerPieceSelected = uiPlayerPieces.getSelectedPiece()
-        // player has selected a piece to place on the board.
-        // the player can only place during his setup phase
+        // player has selected a piece to place on the board
         if (
                 event.actor == playerPieceSelected?.player
                 && squarePiece == null
-                && game.gameProgressManager.phase == GameProgressManager.Phase.SETUP
-                && game.gameProgressManager.currPlayer == event.actor
-                && !game.animationQueue.isAnimating()
         ) {
             return listOf(
                     Event(EventType.placePiece, event.actor, playerPieceSelected,

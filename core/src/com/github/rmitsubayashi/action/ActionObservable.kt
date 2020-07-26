@@ -6,8 +6,7 @@ import java.util.*
 class ActionObservable(private val game: Game) {
     private val eventQueue = LinkedList<Event>()
     private val actionList = mutableListOf<Action>()
-    private var actionWaitingForUserInput: Action? = null
-    private lateinit var currEvent: Event
+    lateinit var currEvent: Event
     private val tempActionQueue = PriorityQueue<Action>()
 
 
@@ -23,16 +22,17 @@ class ActionObservable(private val game: Game) {
         actionList.removeAll(actions)
     }
 
-    fun waitingForUserInput(action: Action) {
-        actionWaitingForUserInput = action
-    }
-
-    fun handleActionWaitingForUserInput(userInput: List<EventActor>) {
-        actionWaitingForUserInput?.execute(game, currEvent, userInput)
-    }
-
     fun notifyAllActions(event: Event) {
         eventQueue.add(event)
+        consumeQueueEvents()
+    }
+
+    fun notifyAllActions(events: List<Event>) {
+        eventQueue.addAll(events)
+        consumeQueueEvents()
+    }
+
+    private fun consumeQueueEvents() {
         while (eventQueue.isNotEmpty()) {
             currEvent = eventQueue.pop()
             for (action in actionList) {

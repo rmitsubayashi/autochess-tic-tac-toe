@@ -21,7 +21,7 @@ class SoldPiece(eventActor: EventActor, private val assetManager: AssetManager, 
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val piece = event.actedUpon as Piece
         val uiPiece = uiPlayerPieces.removePiece(piece)
         if (uiPiece != null) {

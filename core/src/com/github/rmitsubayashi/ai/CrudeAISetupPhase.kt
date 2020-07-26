@@ -7,7 +7,7 @@ import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.AttackRangeCalculator
 import com.github.rmitsubayashi.game.Game
 
-class CrudeAI: GameAI {
+class CrudeAISetupPhase: GameAI {
     private lateinit var game: Game
     private lateinit var  player: Player
     override fun execute(game: Game, player: Player) {

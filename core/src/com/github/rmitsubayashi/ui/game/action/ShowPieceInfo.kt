@@ -13,7 +13,7 @@ class ShowPieceInfo(eventActor: EventActor, private val tooltip: UIPieceInfoTool
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val notReleased = event.data == null || event.data[EventDataKey.DONE] != true
         if (notReleased) {
             val piece = event.actor as Piece

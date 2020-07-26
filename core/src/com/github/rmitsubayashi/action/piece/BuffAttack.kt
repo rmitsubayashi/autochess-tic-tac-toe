@@ -6,6 +6,10 @@ import com.github.rmitsubayashi.game.Game
 
 class BuffAttack(eventActor: EventActor, private val amount: Int, private val timing: EventType)
     : Action(eventActor) {
+    init {
+        priority = 0
+    }
+
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != timing) return false
         if (eventActor != event.actor) return false
@@ -14,13 +18,14 @@ class BuffAttack(eventActor: EventActor, private val amount: Int, private val ti
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val piece = event.actor as Piece
         if (event.actedUpon is UnspecifiedTarget
                 && event.actedUpon.type == UnspecifiedTarget.TargetType.SELECT_ALLY_PIECE
-                && userInputResult == null
+                && userInput == null
         ) {
-            game.waitForUserInput(this)
+            val allyPieces = game.board.filter { it?.player == piece.player }.filterNotNull()
+            game.waitForUserInput(this, event, allyPieces)
             return emptyList()
         }
         val targetPieces = when (event.actedUpon){
@@ -30,7 +35,7 @@ class BuffAttack(eventActor: EventActor, private val amount: Int, private val ti
                     UnspecifiedTarget.TargetType.ALL_ALLY_PIECES ->
                         game.board.filter { it?.player?.id == piece.player?.id }
                     UnspecifiedTarget.TargetType.SELECT_ALLY_PIECE ->
-                        userInputResult?.map { it as Piece } ?: emptyList()
+                        if (userInput == null) listOf(userInput) else emptyList()
                     else -> emptyList()
                 }
 

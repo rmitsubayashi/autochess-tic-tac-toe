@@ -5,7 +5,7 @@
       "hp": 1,
       "attack": 1,
       "attackRange": "melee",
-      "ability": "deal 1 damage to an opposing piece",
+      "ability": "When played, deal 1 damage to an opposing piece",
       "cost": 1
     },
     {
@@ -37,7 +37,7 @@
       "hp": 1,
       "attack": 1,
       "attackRange": "ranged",
-      "ability": "deal 5 damage to all opposing pieces",
+      "ability": "When played, deal 5 damage to all opposing pieces",
       "cost": 1
     },
     {

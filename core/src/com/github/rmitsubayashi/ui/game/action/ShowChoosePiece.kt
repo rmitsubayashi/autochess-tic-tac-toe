@@ -1,28 +1,27 @@
 package com.github.rmitsubayashi.ui.game.action
 
-import com.github.rmitsubayashi.action.Action
-import com.github.rmitsubayashi.action.Event
-import com.github.rmitsubayashi.action.EventActor
-import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
-import com.github.rmitsubayashi.ui.game.UIHUD
+import com.github.rmitsubayashi.ui.game.UIChoosePiece
 
-class UpdateMoney(eventActor: EventActor, private val uiHUD: UIHUD): Action(eventActor) {
+class ShowChoosePiece(eventActor: EventActor, private val uiChoosePiece: UIChoosePiece)
+    : Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
-        if (event.type != EventType.moneyChanged) return false
+        if (event.type != EventType.userInputRequested) return false
         if (event.actor !is Player) return false
         if (event.actor != eventActor) return false
         return true
     }
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
-        uiHUD.updatePlayerMoney()
+        val newVisibility = event.data?.get(EventDataKey.DONE) == null || event.data[EventDataKey.DONE] == false
+        uiChoosePiece.isVisible = newVisibility
         return emptyList()
     }
 
     override fun copy(): Action {
-        return UpdateMoney(eventActor, uiHUD)
+        return ShowChoosePiece(eventActor, uiChoosePiece)
     }
 }

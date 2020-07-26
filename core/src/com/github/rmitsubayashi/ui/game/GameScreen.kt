@@ -9,12 +9,14 @@ import com.github.rmitsubayashi.ui.util.IStageScreen
 
 class GameScreen(game: GdxGame): IStageScreen(game) {
     private val uiBoard = UIBoard(game.assetManager, game.game)
-    private val uiHUD = UIHUD(game.game, game.game.player1)
+    private val uiChoosePiece = UIChoosePiece(game.game)
+    private val uiHUD = UIHUD(game.game, game.game.player1, uiChoosePiece)
     private val uiPlayerPieces = UIPlayerPieces(game.assetManager, game.game)
     private val uiPiecePool = UIPiecePool(game.assetManager, game.game, game.game.player1)
     private val uiPiecesToggle = UIPiecesToggle(uiPlayerPieces, uiPiecePool)
     private val uiPieceInfoTooltip = UIPieceInfoTooltip()
     private val uiTurnDisplay = UITurnDisplay(game.game.player1)
+
 
     init {
         val table = Table()
@@ -41,6 +43,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         subscribeAction(ShowTurnDisplay(uiTurnDisplay))
         subscribeAction(UpdateScore(uiHUD))
         subscribeAction(ShowResultScreen(game, game.game.player1))
+        subscribeAction(ShowChoosePiece(game.game.player1, uiChoosePiece))
 
         game.game.animationQueue.setStage(this.stage)
         game.game.gameProgressManager.startGame(game.game.player1)

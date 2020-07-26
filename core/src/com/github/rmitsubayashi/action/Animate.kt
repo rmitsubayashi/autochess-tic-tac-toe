@@ -1,5 +1,6 @@
 package com.github.rmitsubayashi.action
 
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 
 class Animate: Action(EmptyEventActor()) {
@@ -7,7 +8,7 @@ class Animate: Action(EmptyEventActor()) {
         return event.type == EventType.shouldAnimate
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         game.animationQueue.playQueuedAnimations()
         return emptyList()
     }

@@ -16,12 +16,13 @@ class SellPiece(eventActor: EventActor): Action(eventActor) {
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
         val piece = event.actedUpon as Piece
         game.piecePool.putBackInPool(piece)
         player.pieces.remove(piece)
         player.money += piece.cost
+        game.actionObservable.unsubscribeActions(piece.actions)
         return listOf(
                 Event(EventType.moneyChanged, event.actor, null),
                 Event(EventType.sellPiece, event.actor, piece, mapOf(Pair(EventDataKey.DONE, true)))

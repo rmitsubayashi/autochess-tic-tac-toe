@@ -4,6 +4,7 @@ import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventActor
 import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIHUD
 
@@ -20,7 +21,7 @@ class ToggleSetupPhaseButtons(eventActor: EventActor, private val uihud: UIHUD)
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val enabled = event.type == EventType.enterSetupPhase
         uihud.enableSetupFinishedButton(enabled)
         return emptyList()

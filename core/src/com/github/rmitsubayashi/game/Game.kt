@@ -14,9 +14,12 @@ import com.github.rmitsubayashi.action.player.BuyPiece
 import com.github.rmitsubayashi.action.player.PlacePiece
 import com.github.rmitsubayashi.action.player.Reroll
 import com.github.rmitsubayashi.action.player.SellPiece
-import com.github.rmitsubayashi.ai.CrudeAI
-import com.github.rmitsubayashi.ai.GameAIAction
+import com.github.rmitsubayashi.ai.CrudeAISetupPhase
+import com.github.rmitsubayashi.ai.AISetupPhase
+import com.github.rmitsubayashi.ai.AIUserInput
+import com.github.rmitsubayashi.ai.CrudeAIUserInput
 import com.github.rmitsubayashi.entity.Board
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.setup.PieceFileReader
 import com.github.rmitsubayashi.setup.PiecePoolConfigReader
@@ -35,6 +38,7 @@ class Game(
     val gameJudge = GameJudge(5, player1, player2)
     val gameProgressManager = GameProgressManager(this)
     val animationQueue = AnimationQueue()
+    val userInputManager = UserInputManager(this)
     lateinit var playerLevelManager: PlayerLevelManager
     lateinit var piecePool: PiecePool
 
@@ -68,7 +72,8 @@ class Game(
         actions.add(PlacePiece(player1))
         actions.add(PlacePiece(player2))
         actions.add(SellPiece(player1))
-        actions.add(GameAIAction(player2, CrudeAI()))
+        actions.add(AISetupPhase(player2, CrudeAISetupPhase()))
+        actions.add(AIUserInput(player2, CrudeAIUserInput()))
         actions.add(Damaged())
         actions.add(DeclareAttack())
         actions.add(Attack())
@@ -81,10 +86,8 @@ class Game(
         actionObservable.notifyAllActions(event)
     }
 
-    fun waitForUserInput(triggeredAction: Action) {
-        actionObservable.waitingForUserInput(triggeredAction)
-        //TODO ui update here based on type of user input required
-        // (for example board piece, hand piece, etc.)
+    fun waitForUserInput(triggeredAction: Action, associatedEvent: Event, possibleTargets: List<Piece>) {
+        userInputManager.waitForUserInput(triggeredAction, associatedEvent, possibleTargets)
     }
 
     // for when you know the actor but the acted upon is an unspecified target

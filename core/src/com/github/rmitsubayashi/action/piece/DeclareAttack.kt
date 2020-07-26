@@ -17,7 +17,7 @@ class DeclareAttack: Action(EmptyEventActor()) {
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val piece = event.actor as Piece
         val possibleTargets = AttackRangeCalculator.getPossibleAttackTargets(game.board, piece)
         val target = possibleTargets.random()

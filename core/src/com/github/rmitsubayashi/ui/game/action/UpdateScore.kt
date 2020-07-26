@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.ui.game.action
 
 import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIHUD
 
@@ -11,7 +12,7 @@ class UpdateScore(private val uihud: UIHUD)
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         uihud.updateScore()
         return emptyList()
     }

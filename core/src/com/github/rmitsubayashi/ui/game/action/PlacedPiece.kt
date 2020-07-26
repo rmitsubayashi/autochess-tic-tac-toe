@@ -23,7 +23,7 @@ class PlacedPiece(eventActor: EventActor,
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val piece = event.actor as Piece
         val uiPiece = if (piece.player == game.player1) {
             // should take from the player's pieces (actual player)

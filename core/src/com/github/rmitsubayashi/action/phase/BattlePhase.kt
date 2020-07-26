@@ -4,6 +4,7 @@ import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventActor
 import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 
@@ -12,7 +13,7 @@ class BattlePhase(eventActor: EventActor): Action(eventActor) {
         return event.type == EventType.enterBattlePhase && event.actor == eventActor
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val playerPieces = game.board.filter { it?.player?.id == (eventActor as Player).id }
         for (piece in playerPieces) {
             // each attack finishes before the next piece attack

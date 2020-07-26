@@ -20,7 +20,7 @@ class AnimateAttack(private val assetManager: AssetManager, private val uiBoard:
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val attackingUIPiece = uiBoard.findPiece(event.actor as Piece)
         val attackedUIPiece = uiBoard.findPiece(event.actedUpon as Piece)
         if (attackingUIPiece == null || attackedUIPiece == null) return emptyList()

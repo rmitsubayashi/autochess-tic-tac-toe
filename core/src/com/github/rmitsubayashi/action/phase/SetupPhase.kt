@@ -14,7 +14,7 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
         val newEvents = mutableListOf<Event>()
         //secure pieces that are currently on board

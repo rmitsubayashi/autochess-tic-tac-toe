@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.action.player
 
 import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 
@@ -15,7 +16,7 @@ class Reroll(eventActor: EventActor): Action(eventActor) {
         return true
     }
 
-    override fun execute(game: Game, event: Event, userInputResult: List<EventActor>?): List<Event> {
+    override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
         game.piecePool.refresh(player)
         player.money -= game.piecePool.getRerollCost()

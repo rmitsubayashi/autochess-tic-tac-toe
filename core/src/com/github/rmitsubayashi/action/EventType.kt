@@ -12,6 +12,7 @@ enum class EventType {
     pieceLongClicked,
     boardClicked,
     scored,
+    userInputRequested,
     // phase events. events should be indirectly fired from the manager
     enterBattlePhase,
     enterSetupPhase,
