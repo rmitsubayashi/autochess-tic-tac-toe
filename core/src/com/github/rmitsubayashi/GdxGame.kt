@@ -48,7 +48,6 @@ class GdxGame : Game() {
         assetManager.load(ImageAssets.field)
         assetManager.load(ImageAssets.ticTacToe)
         assetManager.load(ImageAssets.shield)
-        assetManager.load(ImageAssets.heart)
         val pieces = game.piecePool.getAllPieces()
         for (piece in pieces) {
             assetManager.load(SoundAssets.fromPiece(piece))

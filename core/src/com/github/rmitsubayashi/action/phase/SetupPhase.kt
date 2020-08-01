@@ -20,11 +20,9 @@ class SetupPhase(eventActor: EventActor): Action(eventActor) {
         //secure pieces that are currently on board
         val playerPieces = game.board.filter { it?.player?.id == player.id }
         for (p in playerPieces) {
-            if (p != null){
-                if (!game.board.isSecured(p) && !p.isDead()) {
-                    game.board.secure(p)
-                    newEvents.add(Event(EventType.pieceSecured, p, null))
-                }
+            if (p != null && !p.isDead()){
+                game.board.secure(p)
+                newEvents.add(Event(EventType.pieceSecured, p, null))
             }
         }
         //check for tic tac toes

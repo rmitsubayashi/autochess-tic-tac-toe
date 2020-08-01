@@ -24,7 +24,6 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
     private val mainTable = Table()
     private val placeHolder: Image = Image()
     private val pieceState: Table = Table()
-    private val secured: Image
     val secureImage: Image
     private val isEnemy: Label
     private val hp: Label
@@ -44,7 +43,6 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
             )
         )
         pieceState.pad(5f, 10f, 0f, 0f)
-        secured = Image(assetManager.get(ImageAssets.shield))
         secureImage = Image(assetManager.get(ImageAssets.shield))
         secureImage.setAlpha(0f)
         isEnemy = Label("E", appSkin)
@@ -80,9 +78,6 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
         }
         hp.setText("${p.currHP}/${p.currStats.hp}")
         pieceState.add(hp).row()
-        if (board.isSecured(p)) {
-            pieceState.add(secured).height(24f).width(24f).row()
-        }
         if (p.player != player) {
             pieceState.add(isEnemy).row()
         }
