@@ -1,7 +1,6 @@
 package com.github.rmitsubayashi.ui.game
 
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Pool
@@ -12,6 +11,7 @@ import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.game.PiecePool
 import com.github.rmitsubayashi.ui.util.UIClickListener
+import com.github.rmitsubayashi.ui.util.appSkin
 
 // serves as the pool of piece UI objects
 // and the part of the UI that shows the pieces the player rolled
@@ -42,15 +42,16 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
     }
 
     private fun allocatePieceSlots(slots: Int) {
+        val buttonPad = 8f
+        this.pad(0f, 0f, 0f, buttonPad)
         val tempList = mutableListOf<UIPiecePoolSlot>()
+        val refreshWidth = 50f
         for (i in 1 .. slots) {
             val slot = UIPiecePoolSlot(player, game)
-            this.add(slot).grow().uniform()
+            this.add(slot).width((480f-refreshWidth-buttonPad) / 3)
             tempList.add(slot)
         }
-        val textButtonStyle = TextButton.TextButtonStyle()
-        textButtonStyle.font = BitmapFont()
-        val rerollButton = TextButton("R", textButtonStyle)
+        val rerollButton = TextButton("R", appSkin)
         rerollButton.addListener(
                 UIClickListener(
                         rerollButton,
@@ -61,7 +62,7 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
                         }
                 )
         )
-        this.add(rerollButton).grow().uniform()
+        this.add(rerollButton).width(refreshWidth)
         pieceSlots = tempList
 
     }

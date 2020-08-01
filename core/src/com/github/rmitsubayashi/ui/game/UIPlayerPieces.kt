@@ -1,7 +1,6 @@
 package com.github.rmitsubayashi.ui.game
 
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.github.rmitsubayashi.action.Event
@@ -10,16 +9,14 @@ import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.util.UIClickListener
+import com.github.rmitsubayashi.ui.util.appSkin
 import com.github.rmitsubayashi.ui.util.removeActorAndUpdateCellStructure
 
 class UIPlayerPieces(private val assetManager: AssetManager, game: Game): Table() {
     private val pieceSlots = mutableListOf<UIPlayerPiece>()
-    private val sellButton: TextButton
+    private val sellButton = TextButton("S", appSkin)
 
     init {
-        val textButtonStyle = TextButton.TextButtonStyle()
-        textButtonStyle.font = BitmapFont()
-        sellButton = TextButton("sell", textButtonStyle)
         sellButton.addListener(
                 UIClickListener(sellButton, {
                     //for now we can't sell pieces on board

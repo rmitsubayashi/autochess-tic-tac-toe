@@ -12,6 +12,7 @@ import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.util.UILongClickListener
 
+
 class UIPiece private constructor(val pieceType: Piece, texture: Texture, game: Game):
         Image(texture), Pool.Poolable {
     // the piece type is for when the ui pool is instantiated

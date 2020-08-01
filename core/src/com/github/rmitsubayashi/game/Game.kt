@@ -14,9 +14,9 @@ import com.github.rmitsubayashi.action.player.BuyPiece
 import com.github.rmitsubayashi.action.player.PlacePiece
 import com.github.rmitsubayashi.action.player.Reroll
 import com.github.rmitsubayashi.action.player.SellPiece
-import com.github.rmitsubayashi.ai.CrudeAISetupPhase
 import com.github.rmitsubayashi.ai.AISetupPhase
 import com.github.rmitsubayashi.ai.AIUserInput
+import com.github.rmitsubayashi.ai.CrudeAISetupPhase
 import com.github.rmitsubayashi.ai.CrudeAIUserInput
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Piece

@@ -1,22 +1,17 @@
 package com.github.rmitsubayashi.ui.game
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Stats
+import com.github.rmitsubayashi.ui.util.appSkin
+import com.github.rmitsubayashi.ui.util.centerInParent
 
 class UIPieceInfoTooltip: Table() {
-    private val pieceName: Label
-    private val pieceAbility: Label
-    private val pieceStats: Label
+    private val pieceName = Label("", appSkin)
+    private val pieceAbility = Label("", appSkin)
+    private val pieceStats = Label("", appSkin)
     init {
-        val labelStyle = Label.LabelStyle()
-        labelStyle.font = BitmapFont()
-        pieceName = Label("", labelStyle)
-        pieceAbility = Label("", labelStyle)
-        pieceStats = Label("", labelStyle)
-
         this.add(pieceName).row()
         this.add(pieceAbility).row()
         this.add(pieceStats).row()
@@ -27,6 +22,9 @@ class UIPieceInfoTooltip: Table() {
         pieceName.setText(piece.name)
         pieceAbility.setText(piece.ability)
         pieceStats.setText(formatStats(piece.stats))
+        pack()
+        background = appSkin.getDrawable("half-tone-box")
+        this.centerInParent()
         this.isVisible = true
     }
 

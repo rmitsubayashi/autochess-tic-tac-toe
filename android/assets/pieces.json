@@ -2,7 +2,7 @@
   "pieces": [
     {
       "name": "Ice",
-      "hp": 1,
+      "hp": 3,
       "attack": 1,
       "attackRange": "melee",
       "ability": "When played, deal 1 damage to an opposing piece",
@@ -18,7 +18,7 @@
     },
     {
       "name": "Boar Soldier",
-      "hp": 1,
+      "hp": 2,
       "attack": 3,
       "attackRange": "ranged",
       "ability": "",
@@ -34,7 +34,7 @@
     },
     {
       "name": "Pineapple Grandpa",
-      "hp": 1,
+      "hp": 7,
       "attack": 1,
       "attackRange": "ranged",
       "ability": "When played, deal 5 damage to all opposing pieces",

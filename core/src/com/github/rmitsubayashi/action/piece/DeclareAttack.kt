@@ -1,6 +1,9 @@
 package com.github.rmitsubayashi.action.piece
 
-import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.action.Action
+import com.github.rmitsubayashi.action.EmptyEventActor
+import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.AttackRangeCalculator
 import com.github.rmitsubayashi.game.Game

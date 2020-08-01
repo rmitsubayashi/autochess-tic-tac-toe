@@ -1,5 +1,6 @@
 package com.github.rmitsubayashi.ui.util
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlin.math.round
@@ -21,3 +22,14 @@ fun Actor.setAlpha(alpha: Float) {
 }
 
 fun round2(x: Float) = round(x * 10) / 10
+
+fun Table.setBackgroundColor(color: Color) {
+    val backgroundColor = BackgroundColor("image/white.png")
+    backgroundColor.setColor(color)
+    this.background = backgroundColor
+}
+
+fun Actor.centerInParent() {
+    x = (480f - width) / 2
+    y = (800f - height) / 2
+}

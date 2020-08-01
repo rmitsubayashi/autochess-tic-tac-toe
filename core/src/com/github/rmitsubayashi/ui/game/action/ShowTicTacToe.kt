@@ -1,6 +1,5 @@
 package com.github.rmitsubayashi.ui.game.action
 
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece

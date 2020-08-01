@@ -1,11 +1,11 @@
 package com.github.rmitsubayashi.ui.game
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.GdxGame
-import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.game.action.*
 import com.github.rmitsubayashi.ui.util.IStageScreen
+import com.github.rmitsubayashi.ui.util.appSkin
+import com.github.rmitsubayashi.ui.util.setBackgroundColor
 
 class GameScreen(game: GdxGame): IStageScreen(game) {
     private val uiBoard = UIBoard(game.assetManager, game.game)
@@ -21,14 +21,12 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
     init {
         val table = Table()
         table.setFillParent(true)
-        table.background = Image(game.assetManager.get(ImageAssets.field)).drawable
-        table.add(uiHUD).row()
+        table.setBackgroundColor(appSkin.getColor("white"))
+        table.add(uiHUD).width(480f).row()
         table.add(uiBoard).width(400f).height(400f).row()
         table.add(uiPiecesToggle).height(150f).width(480f).row()
         stage.addActor(table)
-        uiPieceInfoTooltip.setFillParent(true)
         stage.addActor(uiPieceInfoTooltip)
-        uiTurnDisplay.setFillParent(true)
         stage.addActor(uiTurnDisplay)
 
         subscribeAction(UpdatePiecePool(game.game.player1, game.assetManager, uiPiecePool, game.game.piecePool, uiPlayerPieces))
@@ -40,7 +38,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         subscribeAction(ToggleSetupPhaseButtons(game.game.player1, uiHUD))
         subscribeAction(UpdatePieceState(game.assetManager, game.game.board, uiBoard, uiPiecePool))
         subscribeAction(AnimateAttack(game.assetManager, uiBoard))
-        subscribeAction(ShowTurnDisplay(uiTurnDisplay))
+        subscribeAction(ShowTurnDisplay(uiTurnDisplay, uiHUD))
         subscribeAction(ShowTicTacToe(uiHUD, uiBoard))
         subscribeAction(ShowResultScreen(game, game.game.player1))
         subscribeAction(ShowChoosePiece(game.game.player1, uiChoosePiece))

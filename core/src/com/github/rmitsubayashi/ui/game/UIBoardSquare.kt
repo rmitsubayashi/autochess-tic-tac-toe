@@ -1,7 +1,6 @@
 package com.github.rmitsubayashi.ui.game
 
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
@@ -16,6 +15,7 @@ import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.util.UIClickListener
+import com.github.rmitsubayashi.ui.util.appSkin
 import com.github.rmitsubayashi.ui.util.setAlpha
 
 class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private val player: Player,
@@ -24,7 +24,7 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
     private val mainTable = Table()
     private val placeHolder: Image = Image()
     private val pieceState: Table = Table()
-    private val secured: Label
+    private val secured: Image
     val secureImage: Image
     private val isEnemy: Label
     private val hp: Label
@@ -44,13 +44,11 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
             )
         )
         pieceState.pad(5f, 10f, 0f, 0f)
-        val labelStyle = Label.LabelStyle()
-        labelStyle.font = BitmapFont()
-        secured = Label("S", labelStyle)
+        secured = Image(assetManager.get(ImageAssets.shield))
         secureImage = Image(assetManager.get(ImageAssets.shield))
         secureImage.setAlpha(0f)
-        isEnemy = Label("E", labelStyle)
-        hp = Label("", labelStyle)
+        isEnemy = Label("E", appSkin)
+        hp = Label("", appSkin)
 
         this.add(mainTable)
         this.add(secureImage)
@@ -61,7 +59,7 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
         this.piece = piece
         piece.setScaling(Scaling.fit)
         updatePieceState()
-        mainTable.add(pieceState).align(Align.top)
+        mainTable.add(pieceState).pad(4f).align(Align.top)
         mainTable.add(piece)
     }
 
@@ -80,10 +78,10 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
             removePiece()
             return
         }
-        hp.setText(p.currHP)
+        hp.setText("${p.currHP}/${p.currStats.hp}")
         pieceState.add(hp).row()
         if (board.isSecured(p)) {
-            pieceState.add(secured).row()
+            pieceState.add(secured).height(24f).width(24f).row()
         }
         if (p.player != player) {
             pieceState.add(isEnemy).row()

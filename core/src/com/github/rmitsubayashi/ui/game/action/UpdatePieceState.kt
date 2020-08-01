@@ -3,7 +3,10 @@ package com.github.rmitsubayashi.ui.game.action
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.action.Action
+import com.github.rmitsubayashi.action.EmptyEventActor
+import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.AnimationConfig
