@@ -46,7 +46,6 @@ class ShowTicTacToe(private val uihud: UIHUD, private val uiBoard: UIBoard)
                         0.5f
                 )
         )
-        uiBoard.showTicTacToe(squares)
         return emptyList()
     }
 

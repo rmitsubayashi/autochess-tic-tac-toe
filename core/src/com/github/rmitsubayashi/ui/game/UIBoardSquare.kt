@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.ui.game
 
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -18,6 +19,7 @@ import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.util.UIClickListener
 import com.github.rmitsubayashi.ui.util.appSkin
 import com.github.rmitsubayashi.ui.util.setAlpha
+import com.github.rmitsubayashi.ui.util.setBackgroundColor
 
 class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private val player: Player,
                     observable: ActionObservable): Stack() {
@@ -84,5 +86,13 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
         if (p.player != player) {
             pieceState.add(isEnemy).row()
         }
+    }
+
+    fun highlight() {
+        mainTable.setBackgroundColor(Color(0.2f, 0.2f, 0.2f, 0.2f))
+    }
+
+    fun removeHighlight() {
+        mainTable.background = null
     }
 }

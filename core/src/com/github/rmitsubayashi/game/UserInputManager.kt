@@ -17,10 +17,21 @@ class UserInputManager(private val game: Game) {
         eventForWaitingAction = event
         this.possibleTargets.clear()
         this.possibleTargets.addAll(possibleTargets)
+        val possibleTargetIndexes = if (possibleTargets.isEmpty()) {
+            // assuming if list is empty, we are choosing any empty square
+            game.board.mapIndexed {
+                index, piece -> if (piece == null) { index } else { -1 }
+            }.filter { it != -1 }
+        } else {
+            this.possibleTargets.map {
+                game.board.indexOf(it)
+            }.filter { it != -1 }
+        }
         // assuming player input only occurs on their turn
         val currPlayer = game.gameProgressManager.currPlayer
-        game.actionObservable.notifyAllActions(
-                Event(EventType.userInputRequested, currPlayer, null)
+        game.notifyEvent(
+                Event(EventType.userInputRequested, currPlayer, null,
+                mapOf(Pair(EventDataKey.SQUARE, possibleTargetIndexes)))
         )
     }
 

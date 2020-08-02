@@ -73,8 +73,14 @@ class UIBoard(assetManager: AssetManager, game: Game): Table() {
 
     private fun getUIBoardSquare(square: Int) = squares.first { it.squareIndex == square }
 
-    fun showTicTacToe(indexes: List<Int>) {
+    fun highlightSquare(squareIndex: Int) {
+        squares[squareIndex].highlight()
+    }
 
+    fun removeHighlights() {
+        for (square in squares) {
+            square.removeHighlight()
+        }
     }
 
 
