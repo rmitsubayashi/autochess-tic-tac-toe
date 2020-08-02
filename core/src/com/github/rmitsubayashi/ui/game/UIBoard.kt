@@ -9,7 +9,7 @@ import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 
-class UIBoard(assetManager: AssetManager, private val game: Game): Table() {
+class UIBoard(assetManager: AssetManager, game: Game): Table() {
     private val squares: List<UIBoardSquare>
     val boltImage: Image
 
@@ -22,7 +22,7 @@ class UIBoard(assetManager: AssetManager, private val game: Game): Table() {
         val tempList = mutableListOf<UIBoardSquare>()
         for (i in 0..2) {
             for (j in 0..2) {
-                val square = UIBoardSquare(assetManager, i*3+j, game.player1, game.board, game.actionObservable)
+                val square = UIBoardSquare(assetManager, i*3+j, game.player1, game.actionObservable)
                 tempList.add(square)
                 this.add(square).grow().uniform()
             }

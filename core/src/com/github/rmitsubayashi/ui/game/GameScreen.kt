@@ -31,7 +31,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
 
         subscribeAction(UpdatePiecePool(game.game.player1, game.assetManager, uiPiecePool, game.game.piecePool, uiPlayerPieces))
         subscribeAction(UpdateMoney(game.game.player1, uiHUD))
-        subscribeAction(ShowPieceInfo(game.game.player1, uiPieceInfoTooltip))
+        subscribeAction(ShowPieceInfo(game.game.player1, uiPieceInfoTooltip, game.game.board))
         subscribeAction(HandleBoardClick(game.game.player1, uiPlayerPieces))
         subscribeAction(PlacedPiece(game.game.player1, uiBoard, uiPlayerPieces, uiPiecePool))
         subscribeAction(SoldPiece(game.game.player1, game.assetManager, uiPlayerPieces, uiPiecePool))

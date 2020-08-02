@@ -95,6 +95,11 @@
 		"fontColor": "black",
 		"background": "window"
 	},
+	"small": {
+		"font": "font-small",
+		"fontColor": "black"
+
+	},
 	"half-tone": {
 		"font": "font-big",
 		"fontColor": "black",

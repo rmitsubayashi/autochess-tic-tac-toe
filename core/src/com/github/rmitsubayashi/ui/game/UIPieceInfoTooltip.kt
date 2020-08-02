@@ -1,38 +1,56 @@
 package com.github.rmitsubayashi.ui.game
 
+import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.Align
 import com.github.rmitsubayashi.entity.Piece
-import com.github.rmitsubayashi.entity.Stats
 import com.github.rmitsubayashi.ui.util.appSkin
-import com.github.rmitsubayashi.ui.util.centerInParent
 
 class UIPieceInfoTooltip: Table() {
     private val pieceName = Label("", appSkin)
-    private val pieceAbility = Label("", appSkin)
+    private val pieceAbility = Label("", appSkin.get("small", Label.LabelStyle::class.java))
+    private val pieceAbilityCell: Cell<Label>
     private val pieceStats = Label("", appSkin)
     init {
         this.add(pieceName).row()
-        this.add(pieceAbility).row()
+        pieceAbilityCell = this.add(pieceAbility)
+        pieceAbilityCell.align(Align.center).row()
         this.add(pieceStats).row()
+        this.pad(8f)
         this.isVisible = false
     }
 
-    fun showTooltip(piece: Piece) {
+    fun setTooltipText(piece: Piece, isOnBoard: Boolean) {
         pieceName.setText(piece.name)
         pieceAbility.setText(piece.ability)
-        pieceStats.setText(formatStats(piece.stats))
+        pieceStats.setText(formatStats(piece, isOnBoard))
         pack()
         background = appSkin.getDrawable("half-tone-box")
-        this.centerInParent()
-        this.isVisible = true
+        width = MathUtils.clamp(width, 240f, 400f)
+        pieceAbilityCell.width(width-16f)
+        pieceAbility.setWrap(true)
     }
 
-    fun hideTooltip() {
-        this.isVisible = false
-    }
+    private fun formatStats(piece: Piece, isOnBoard: Boolean): String {
+        val hp = if (isOnBoard) {
+            "${piece.currHP}/${piece.currStats.hp}"
+        }  else {
+            piece.stats.hp.toString()
+        }
 
-    private fun formatStats(stats: Stats): String {
-        return "HP: ${stats.hp}  Atk: ${stats.attack}"
+        val attack = if (isOnBoard) {
+            piece.currStats.attack
+        } else {
+            piece.stats.attack
+        }
+
+        val cost = if (isOnBoard) {
+            ""
+        } else {
+            "  Cst: ${piece.cost}"
+        }
+        return "HP: $hp  Atk: $attack$cost"
     }
 }
