@@ -1,5 +1,6 @@
 package com.github.rmitsubayashi.ui.game
 
+import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -9,8 +10,9 @@ import com.github.rmitsubayashi.ui.util.appSkin
 class UIPiecesToggle(private val uiPlayerPieces: UIPlayerPieces, private val uiPiecePool: UIPiecePool): Table() {
     private var playerPiecesShown = false
     private var piecePoolShown = false
+    val showPiecesButton: Button
     init {
-        val showPiecesButton = TextButton("My Pieces", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
+        showPiecesButton = TextButton("My Pieces", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
         val showPoolButton = TextButton("Shop", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
         val buttonTable = Table()
         buttonTable.add(showPiecesButton).height(50f).expand().uniform()

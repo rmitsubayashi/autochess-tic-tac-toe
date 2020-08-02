@@ -29,7 +29,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         stage.addActor(uiPieceInfoTooltip)
         stage.addActor(uiTurnDisplay)
 
-        subscribeAction(UpdatePiecePool(game.game.player1, game.assetManager, uiPiecePool, game.game.piecePool, uiPlayerPieces))
+        subscribeAction(UpdatePiecePool(game.game.player1, game.assetManager, uiPiecePool, game.game.piecePool, uiPlayerPieces, uiPiecesToggle))
         subscribeAction(UpdateMoney(game.game.player1, uiHUD))
         subscribeAction(ShowPieceInfo(game.game.player1, uiPieceInfoTooltip, game.game.board))
         subscribeAction(HandleBoardClick(game.game.player1, uiPlayerPieces))

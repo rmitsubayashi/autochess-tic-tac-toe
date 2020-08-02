@@ -1,13 +1,17 @@
 package com.github.rmitsubayashi.ui.game.action
 
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.scenes.scene2d.Touchable
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
+import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.game.PiecePool
 import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.game.UIPiecePool
+import com.github.rmitsubayashi.ui.game.UIPiecesToggle
 import com.github.rmitsubayashi.ui.game.UIPlayerPieces
 
 class UpdatePiecePool(
@@ -15,7 +19,8 @@ class UpdatePiecePool(
         private val assetManager: AssetManager,
         private val uiPool: UIPiecePool,
         private val piecePool: PiecePool,
-        private val uiPlayerPieces: UIPlayerPieces
+        private val uiPlayerPieces: UIPlayerPieces,
+        private val uiPiecesToggle: UIPiecesToggle
 ): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type !in listOf(EventType.reroll, EventType.buyPiece)) return false
@@ -35,6 +40,23 @@ class UpdatePiecePool(
                 if (uiPiece != null) {
                     uiPlayerPieces.addPiece(uiPiece)
                     assetManager.get(SoundAssets.fromPiece(piece)).play()
+                    game.animationQueue.addAnimation(
+                            AnimationConfig(
+                                    Actions.sequence(
+                                            Actions.run {
+                                                uiPiecesToggle.showPiecesButton.touchable = Touchable.disabled
+                                                uiPiecesToggle.showPiecesButton.isChecked = true
+                                            },
+                                            Actions.delay(0.4f),
+                                            Actions.run {
+                                                uiPiecesToggle.showPiecesButton.touchable = Touchable.enabled
+                                                uiPiecesToggle.showPiecesButton.isChecked = false
+                                            }
+                                    ),
+                                    uiPiecesToggle.showPiecesButton,
+                                    0.4f
+                            )
+                    )
                 }
             }
             EventType.reroll -> {
@@ -51,9 +73,9 @@ class UpdatePiecePool(
             else -> {}
         }
 
-        return emptyList()
+        return listOf(Event(EventType.shouldAnimate, null, null))
     }
     override fun copy(): Action {
-        return UpdatePiecePool(eventActor, assetManager, uiPool, piecePool, uiPlayerPieces)
+        return UpdatePiecePool(eventActor, assetManager, uiPool, piecePool, uiPlayerPieces, uiPiecesToggle)
     }
 }
