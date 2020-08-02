@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.ui.game
 
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
@@ -19,7 +20,7 @@ import com.github.rmitsubayashi.ui.util.appSkin
 import com.github.rmitsubayashi.ui.util.setAlpha
 
 class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private val player: Player,
-                    private val board: Board, observable: ActionObservable): Stack() {
+                    observable: ActionObservable): Stack() {
     var piece: UIPiece? = null
     private val mainTable = Table()
     private val placeHolder: Image = Image()
@@ -50,6 +51,8 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
 
         this.add(mainTable)
         this.add(secureImage)
+        // the image blocks the click listener of the piece otherwise
+        secureImage.touchable = Touchable.disabled
     }
 
     fun placePiece(piece: UIPiece) {
