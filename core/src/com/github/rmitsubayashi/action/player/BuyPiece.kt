@@ -23,7 +23,7 @@ class BuyPiece(eventActor: EventActor): Action(eventActor) {
         val player = event.actor as Player
 
         pieceToBuy.player = player
-        player.pieces.add(pieceToBuy)
+        player.deck.add(pieceToBuy)
         player.money -= pieceToBuy.cost
         game.piecePool.takeFromPool(pieceToBuy, player)
         game.actionObservable.subscribeActions(pieceToBuy.actions)

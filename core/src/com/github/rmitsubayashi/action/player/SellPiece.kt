@@ -11,7 +11,7 @@ class SellPiece(eventActor: EventActor): Action(eventActor) {
         if (event.actor !is Player) return false
         if (eventActor != event.actor) return false
         if (event.actedUpon !is Piece) return false
-        if (!event.actor.pieces.contains(event.actedUpon)) return false
+        if (!event.actor.deck.contains(event.actedUpon)) return false
         if (event.data?.get(EventDataKey.DONE) == true) return false
         return true
     }
@@ -20,7 +20,7 @@ class SellPiece(eventActor: EventActor): Action(eventActor) {
         val player = event.actor as Player
         val piece = event.actedUpon as Piece
         game.piecePool.putBackInPool(piece)
-        player.pieces.remove(piece)
+        player.deck.remove(piece)
         player.money += piece.cost
         game.actionObservable.unsubscribeActions(piece.actions)
         return listOf(

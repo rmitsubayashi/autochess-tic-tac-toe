@@ -12,14 +12,14 @@ import com.github.rmitsubayashi.game.PiecePool
 import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.game.UIPiecePool
 import com.github.rmitsubayashi.ui.game.UIPiecesToggle
-import com.github.rmitsubayashi.ui.game.UIPlayerPieces
+import com.github.rmitsubayashi.ui.game.UIDeck
 
 class UpdatePiecePool(
         eventActor: EventActor,
         private val assetManager: AssetManager,
         private val uiPool: UIPiecePool,
         private val piecePool: PiecePool,
-        private val uiPlayerPieces: UIPlayerPieces,
+        private val uiDeck: UIDeck,
         private val uiPiecesToggle: UIPiecesToggle
 ): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
@@ -38,7 +38,7 @@ class UpdatePiecePool(
                 val piece = event.actedUpon as Piece
                 val uiPiece = uiPool.takePiece(piece)
                 if (uiPiece != null) {
-                    uiPlayerPieces.addPiece(uiPiece)
+                    uiDeck.addPiece(uiPiece)
                     assetManager.get(SoundAssets.fromPiece(piece)).play()
                     game.animationQueue.addAnimation(
                             AnimationConfig(
@@ -76,6 +76,6 @@ class UpdatePiecePool(
         return listOf(Event(EventType.shouldAnimate, null, null))
     }
     override fun copy(): Action {
-        return UpdatePiecePool(eventActor, assetManager, uiPool, piecePool, uiPlayerPieces, uiPiecesToggle)
+        return UpdatePiecePool(eventActor, assetManager, uiPool, piecePool, uiDeck, uiPiecesToggle)
     }
 }

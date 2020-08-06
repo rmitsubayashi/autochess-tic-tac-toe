@@ -11,7 +11,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
     private val uiBoard = UIBoard(game.assetManager, game.game)
     private val uiChoosePiece = UIChoosePiece(game.game)
     private val uiHUD = UIHUD(game.game, game.game.player1, uiChoosePiece)
-    private val uiPlayerPieces = UIPlayerPieces(game.assetManager, game.game)
+    private val uiPlayerPieces = UIDeck(game.assetManager, game.game)
     private val uiPiecePool = UIPiecePool(game.assetManager, game.game, game.game.player1)
     private val uiPiecesToggle = UIPiecesToggle(uiPlayerPieces, uiPiecePool)
     private val uiPieceInfoTooltip = UIPieceInfoTooltip()

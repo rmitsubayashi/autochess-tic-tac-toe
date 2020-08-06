@@ -80,7 +80,7 @@ class CrudeAISetupPhase: GameAI {
     private fun placeAvailablePiecesOnBoard() {
         // iterate over a copy because the original list will change
         // after placing pieces on the board
-        val copy = player.pieces.toList()
+        val copy = player.deck.pieces.toList()
         for (toPlace in copy) {
             // place pieces adjacent to other ally pieces if possible
             val playerPieces = game.board.filter { it?.player == player }

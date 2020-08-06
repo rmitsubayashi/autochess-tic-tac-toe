@@ -12,7 +12,7 @@ import com.github.rmitsubayashi.ui.util.UIClickListener
 import com.github.rmitsubayashi.ui.util.appSkin
 import com.github.rmitsubayashi.ui.util.removeActorAndUpdateCellStructure
 
-class UIPlayerPieces(private val assetManager: AssetManager, game: Game): Table() {
+class UIDeck(private val assetManager: AssetManager, game: Game): Table() {
     private val pieceSlots = mutableListOf<UIPlayerPiece>()
     private val sellButton = TextButton("S", appSkin)
 
