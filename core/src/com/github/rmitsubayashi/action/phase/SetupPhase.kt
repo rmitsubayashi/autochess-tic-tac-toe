@@ -1,88 +1,37 @@
 package com.github.rmitsubayashi.action.phase
 
-import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.action.Action
+import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventDataKey
+import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
-import com.github.rmitsubayashi.game.*
+import com.github.rmitsubayashi.game.Game
 
-class SetupPhase(eventActor: EventActor): Action(eventActor) {
+class SetupPhase(eventActor: Player): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
-        if (event.type != EventType.enterSetupPhase) return false
+        if (event.type != EventType.ENTER_SETUP_PHASE) return false
         if (event.actor != eventActor) return false
         if (event.data?.get(EventDataKey.DONE) == true) return false
-
         return true
     }
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
-        val newEvents = mutableListOf<Event>()
-        //secure pieces that are currently on board
-        val playerPieces = game.board.filter { it?.player?.id == player.id }
-        for (p in playerPieces) {
-            if (p != null && !p.isDead()){
-                game.board.secure(p)
-                newEvents.add(Event(EventType.pieceSecured, p, null))
-            }
-        }
-        //check for tic tac toes
-        val ticTacToes = TicTacToeJudge.listTicTacToeIndexes(game.board, player)
-        player.score += ticTacToes.size
-        for (ticTacToe in ticTacToes) {
-            newEvents.add(Event(EventType.scored, player, null, mapOf(Pair(EventDataKey.SQUARE, ticTacToe))))
-        }
-        val gameProgress = game.gameJudge.checkWinner()
-        if ((gameProgress as? GameState.Winner)?.winner == player) {
-            newEvents.add(Event(EventType.playerWins, player, null))
-            newEvents.add(
-                    Event(EventType.shouldAnimate, null, null)
-            )
-            return newEvents
-        }
-        //tic tac toe pieces get damaged
-        val damage = TicTacToeDamageCalculator.getDamage(game.gameProgressManager.turn)
-        val uniquePieces = mutableSetOf<Piece>()
-        for (ticTacToe in ticTacToes) {
-            for (pieceIndex in ticTacToe) {
-                val boardPiece = game.board[pieceIndex]
-                if (boardPiece != null){
-                    uniquePieces.add(boardPiece)
-                }
-            }
-        }
-        for (toDamagePiece in uniquePieces) {
-            toDamagePiece.currHP -= damage
-        }
-        val damagedEvents = uniquePieces.map {
-            Event(EventType.pieceDamaged, it, null)
-        }
-        newEvents.addAll(damagedEvents)
+        val newHand = player.deck.draw(4)
+        player.hand.clear()
+        player.hand.addAll(newHand)
 
-        //add money for that turn
-        player.money = player.money + MoneyCalculator.calculateStartOfTurnMoney(player)
-        newEvents.add(
-                Event(EventType.moneyChanged, player, null)
+        return listOf(
+                Event(EventType.HAND_CHANGED, player, null),
+                // this marks the end of the automatic actions regarding the setup phase.
+                // the player will still place pieces on the board.
+                // when the user is done with all manual deck setup, enter setup phase is triggered
+                Event(EventType.ENTER_SETUP_PHASE, player, null, mapOf(Pair(EventDataKey.DONE, true)))
         )
-        //the player gets new pieces from the pool.
-        //note that this is different from a regular roll because no money is spent
-        game.piecePool.refresh(player)
-        newEvents.add(
-                Event(EventType.reroll, player, null,
-                        mapOf(Pair(EventDataKey.DONE, true), Pair(EventDataKey.IS_USER_EVENT, false)))
-        )
-        newEvents.add(
-                Event(EventType.shouldAnimate, null, null)
-        )
-        newEvents.add(
-                // this marks the end of the automatic actions regarding the set up phase.
-                // the user can still roll for pieces and place them on board.
-                // when the user is done with all manual setup, enterBattlePhase is triggered
-                Event(EventType.enterSetupPhase, player, null, mapOf(Pair(EventDataKey.DONE, true)))
-        )
-        return newEvents
     }
 
     override fun copy(): Action {
-        return SetupPhase(eventActor)
+        return SetupPhase(eventActor as Player)
     }
 }

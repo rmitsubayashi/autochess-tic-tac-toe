@@ -7,52 +7,80 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.github.rmitsubayashi.ui.util.UIClickListener
 import com.github.rmitsubayashi.ui.util.appSkin
 
-class UIPiecesToggle(private val uiDeck: UIDeck, private val uiPiecePool: UIPiecePool): Table() {
-    private var playerPiecesShown = false
-    private var piecePoolShown = false
-    val showPiecesButton: Button
+class UIPiecesToggle(private val uiDeck: UIDeck, private val uiPiecePool: UIPiecePool, private val uiHand: UIHand): Table() {
+    private var deckShown = false
+    private var shopShown = false
+    private var handShown = false
+    val deckButton: Button
     init {
-        showPiecesButton = TextButton("My Pieces", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
-        val showPoolButton = TextButton("Shop", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
+        deckButton = TextButton("Deck", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
+        val shopButton = TextButton("Shop", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
+        val handButton = TextButton("Hand", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
         val buttonTable = Table()
-        buttonTable.add(showPiecesButton).height(50f).expand().uniform()
-        buttonTable.add(showPoolButton).height(50f).expand().uniform()
+        buttonTable.add(deckButton).height(50f).expand().uniform()
+        buttonTable.add(shopButton).height(50f).expand().uniform()
+        buttonTable.add(handButton).height(50f).expand().uniform()
         this.add(buttonTable).height(50f).width(480f).row()
 
         val piecesStack = Stack()
         piecesStack.addActor(uiPiecePool)
         piecesStack.addActor(uiDeck)
+        piecesStack.addActor(uiHand)
         //default should be pool since the player doesn't own any pieces
-        piecePoolShown = true
+        shopShown = true
         uiDeck.isVisible = false
-        showPoolButton.isChecked = true
+        uiHand.isVisible = false
+        shopButton.isChecked = true
         this.add(piecesStack).height(100f).width(480f)
 
-        showPiecesButton.addListener(
-                UIClickListener(showPiecesButton, {
-                    if (playerPiecesShown) {
-                        showPiecesButton.isChecked = true
+        deckButton.addListener(
+                UIClickListener(deckButton, {
+                    if (deckShown) {
+                        deckButton.isChecked = true
                         return@UIClickListener
                     }
                     uiPiecePool.isVisible = false
+                    uiHand.isVisible = false
                     uiDeck.isVisible = true
-                    playerPiecesShown = true
-                    piecePoolShown = false
-                    showPoolButton.isChecked = false
+                    deckShown = true
+                    shopShown = false
+                    handShown = false
+                    shopButton.isChecked = false
+                    handButton.isChecked = false
                 })
         )
 
-        showPoolButton.addListener(
-                UIClickListener(showPoolButton, {
-                    if (piecePoolShown) {
-                        showPoolButton.isChecked = true
+        shopButton.addListener(
+                UIClickListener(shopButton, {
+                    if (shopShown) {
+                        shopButton.isChecked = true
                         return@UIClickListener
                     }
                     uiDeck.isVisible = false
+                    uiHand.isVisible = false
                     uiPiecePool.isVisible = true
-                    playerPiecesShown = false
-                    piecePoolShown = true
-                    showPiecesButton.isChecked = false
+                    deckShown = false
+                    handShown = false
+                    shopShown = true
+                    deckButton.isChecked = false
+                    handButton.isChecked = false
+                })
+        )
+
+        handButton.addListener(
+                UIClickListener(handButton, {
+                    if (handShown) {
+                        handButton.isChecked = true
+                        return@UIClickListener
+                    }
+                    uiDeck.isVisible = false
+                    uiPiecePool.isVisible = false
+                    uiHand.isVisible = true
+                    deckShown = false
+                    handShown = true
+                    shopShown = false
+                    deckButton.isChecked = false
+                    shopButton.isChecked = false
                 })
         )
 

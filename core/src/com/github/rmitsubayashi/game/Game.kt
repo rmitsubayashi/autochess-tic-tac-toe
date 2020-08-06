@@ -5,8 +5,7 @@ import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.ActionObservable
 import com.github.rmitsubayashi.action.Animate
 import com.github.rmitsubayashi.action.Event
-import com.github.rmitsubayashi.action.phase.BattlePhase
-import com.github.rmitsubayashi.action.phase.SetupPhase
+import com.github.rmitsubayashi.action.phase.*
 import com.github.rmitsubayashi.action.piece.Attack
 import com.github.rmitsubayashi.action.piece.Damaged
 import com.github.rmitsubayashi.action.piece.DeclareAttack
@@ -61,6 +60,12 @@ class Game(
 
     private fun loadInitialActions() {
         val actions = mutableListOf<Action>()
+        actions.add(SecurePhase(player1))
+        actions.add(SecurePhase(player2))
+        actions.add(MoneyDistributionPhase(player1))
+        actions.add(MoneyDistributionPhase(player2))
+        actions.add(DeckBuildingPhase(player1))
+        actions.add(DeckBuildingPhase(player2))
         actions.add(SetupPhase(player1))
         actions.add(SetupPhase(player2))
         actions.add(BattlePhase(player1))

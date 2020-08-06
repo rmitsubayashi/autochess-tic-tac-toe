@@ -13,7 +13,7 @@ import com.github.rmitsubayashi.ui.util.appSkin
 import com.github.rmitsubayashi.ui.util.removeActorAndUpdateCellStructure
 
 class UIDeck(private val assetManager: AssetManager, game: Game): Table() {
-    private val pieceSlots = mutableListOf<UIPlayerPiece>()
+    private val pieceSlots = mutableListOf<UIDeckSlot>()
     private val sellButton = TextButton("S", appSkin)
 
     init {
@@ -30,7 +30,7 @@ class UIDeck(private val assetManager: AssetManager, game: Game): Table() {
     }
 
     fun addPiece(piece: UIPiece) {
-        val newSlot = UIPlayerPiece(piece)
+        val newSlot = UIDeckSlot(piece)
         newSlot.addListener(UIClickListener(newSlot,
             {
                 for(slot in pieceSlots) {

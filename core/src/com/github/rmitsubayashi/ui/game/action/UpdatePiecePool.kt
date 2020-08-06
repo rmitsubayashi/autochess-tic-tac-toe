@@ -23,7 +23,7 @@ class UpdatePiecePool(
         private val uiPiecesToggle: UIPiecesToggle
 ): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
-        if (event.type !in listOf(EventType.reroll, EventType.buyPiece)) return false
+        if (event.type !in listOf(EventType.SHOP_REROLL, EventType.buyPiece)) return false
         if (event.data == null || event.data[EventDataKey.DONE] != true) return false
         if (event.type == EventType.buyPiece && event.actedUpon !is Piece) return false
         if (event.actor !is Player) return false
@@ -44,22 +44,22 @@ class UpdatePiecePool(
                             AnimationConfig(
                                     Actions.sequence(
                                             Actions.run {
-                                                uiPiecesToggle.showPiecesButton.touchable = Touchable.disabled
-                                                uiPiecesToggle.showPiecesButton.isChecked = true
+                                                uiPiecesToggle.deckButton.touchable = Touchable.disabled
+                                                uiPiecesToggle.deckButton.isChecked = true
                                             },
                                             Actions.delay(0.4f),
                                             Actions.run {
-                                                uiPiecesToggle.showPiecesButton.touchable = Touchable.enabled
-                                                uiPiecesToggle.showPiecesButton.isChecked = false
+                                                uiPiecesToggle.deckButton.touchable = Touchable.enabled
+                                                uiPiecesToggle.deckButton.isChecked = false
                                             }
                                     ),
-                                    uiPiecesToggle.showPiecesButton,
+                                    uiPiecesToggle.deckButton,
                                     0.4f
                             )
                     )
                 }
             }
-            EventType.reroll -> {
+            EventType.SHOP_REROLL -> {
                 val player = event.actor as Player
                 val newPieces = piecePool.getPieces(player)
                 uiPool.refreshPieces(newPieces)

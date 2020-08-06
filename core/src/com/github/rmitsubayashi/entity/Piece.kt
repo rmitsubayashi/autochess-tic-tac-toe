@@ -20,7 +20,7 @@ class Piece(
         // make sure the actions are mapped to the new piece
         val actionsCopy = actions.map { a -> a.copy() }
         return Piece(
-                name, stats, ability, attackRange, cost, actionsCopy
+                name, stats, ability, attackRange, cost, actionsCopy, player
         ).apply {
             this.actions.forEach { it.eventActor = this }
         }

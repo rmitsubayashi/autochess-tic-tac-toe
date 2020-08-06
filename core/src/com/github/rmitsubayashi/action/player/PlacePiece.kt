@@ -28,7 +28,7 @@ class PlacePiece(eventActor: EventActor): Action(eventActor) {
         val player = event.actor as Player
         val piece = event.actedUpon as Piece
         game.board[square] = piece
-        player.deck.remove(piece)
+        player.hand.remove(piece)
         val isUserEvent = event.data[EventDataKey.IS_USER_EVENT]
         val data = mutableMapOf(Pair(EventDataKey.DONE, true), Pair(EventDataKey.SQUARE, square))
         if (isUserEvent == false) data[EventDataKey.IS_USER_EVENT] = false

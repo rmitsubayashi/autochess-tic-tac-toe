@@ -16,13 +16,13 @@ class ToggleSetupPhaseButtons(eventActor: EventActor, private val uihud: UIHUD)
         priority = 0
     }
     override fun conditionMet(game: Game, event: Event): Boolean {
-        if (event.type !in listOf(EventType.enterSetupPhase, EventType.enterBattlePhase)) return false
+        if (event.type !in listOf(EventType.ENTER_SETUP_PHASE, EventType.enterBattlePhase)) return false
         if (event.actor != eventActor) return false
         return true
     }
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
-        val enabled = event.type == EventType.enterSetupPhase
+        val enabled = event.type == EventType.ENTER_SETUP_PHASE
         uihud.enableSetupFinishedButton(enabled)
         return emptyList()
     }

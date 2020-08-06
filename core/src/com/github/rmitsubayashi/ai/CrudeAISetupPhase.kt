@@ -19,7 +19,7 @@ class CrudeAISetupPhase: GameAI {
         // (shouldn't happen though)
         if (game.piecePool.getPieces(player).isEmpty()) {
             game.actionObservable.notifyAllActions(
-                    Event(EventType.reroll, player, null)
+                    Event(EventType.SHOP_REROLL, player, null)
             )
         }
 
@@ -28,7 +28,7 @@ class CrudeAISetupPhase: GameAI {
             val min = calculateMinPiecePoolCost()
             if (playerCannotBuyPieces()) {
                 game.actionObservable.notifyAllActions(
-                        Event(EventType.reroll, player, null)
+                        Event(EventType.SHOP_REROLL, player, null)
                 )
             } else {
                 var currMin = min
@@ -38,9 +38,6 @@ class CrudeAISetupPhase: GameAI {
                     game.actionObservable.notifyAllActions(
                             Event(EventType.buyPiece, player, randomPiece)
                     )
-                    // we are placing pieces on the board as soon as we buy them
-                    // since if the board is full, we don't want to buy pieces
-                    placeAvailablePiecesOnBoard()
                     currMin = calculateMinPiecePoolCost()
                     // bought all pieces available
                     if (currMin == -1) {
@@ -49,6 +46,9 @@ class CrudeAISetupPhase: GameAI {
                 }
             }
         }
+
+        game.gameProgressManager.toSetupPhase()
+        placeAvailablePiecesOnBoard()
 
     }
 
@@ -80,7 +80,7 @@ class CrudeAISetupPhase: GameAI {
     private fun placeAvailablePiecesOnBoard() {
         // iterate over a copy because the original list will change
         // after placing pieces on the board
-        val copy = player.deck.pieces.toList()
+        val copy = player.hand.toList()
         for (toPlace in copy) {
             // place pieces adjacent to other ally pieces if possible
             val playerPieces = game.board.filter { it?.player == player }

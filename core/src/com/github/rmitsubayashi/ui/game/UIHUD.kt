@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Align
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
+import com.github.rmitsubayashi.game.GameProgressManager
 import com.github.rmitsubayashi.ui.util.UIClickListener
 import com.github.rmitsubayashi.ui.util.appSkin
 
@@ -27,7 +28,11 @@ class UIHUD(private val game: Game, private val player: Player, uiChoosePiece: U
         setupFinishedButton = TextButton("Setup finished", appSkin.get("borderless", TextButton.TextButtonStyle::class.java))
         setupFinishedButton.addListener(
                 UIClickListener(setupFinishedButton, {
-                    game.gameProgressManager.toBattlePhase()
+                    if (game.gameProgressManager.phase == GameProgressManager.Phase.DECK_BUILDING) {
+                        game.gameProgressManager.toSetupPhase()
+                    } else if (game.gameProgressManager.phase == GameProgressManager.Phase.SETUP) {
+                        game.gameProgressManager.toBattlePhase()
+                    }
                 })
         )
         this.add(setupFinishedButton).colspan(2).row()

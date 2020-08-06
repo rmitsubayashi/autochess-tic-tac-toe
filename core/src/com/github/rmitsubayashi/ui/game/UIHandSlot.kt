@@ -6,17 +6,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Scaling
 import com.github.rmitsubayashi.entity.Piece
 
-class UIPlayerPiece(private val uiPiece: UIPiece): Table() {
+class UIHandSlot: Table() {
     val selected get() = _selected
     private var _selected = false
-    val piece: Piece = uiPiece.actualPiece ?: throw Exception("need to pass actual piece")
-
-    init {
-        this.add(uiPiece)
-        uiPiece.setScaling(Scaling.fit)
-    }
+    private var uiPiece: UIPiece? = null
+    val piece : Piece? get() = _piece
+    private var _piece: Piece? = null
 
     fun setSelected(selected: Boolean) {
+        if (uiPiece == null) return
         val diff = selected != _selected
         if (diff) {
             _selected = selected
@@ -28,7 +26,17 @@ class UIPlayerPiece(private val uiPiece: UIPiece): Table() {
         }
     }
 
-    fun removePiece(): UIPiece {
+    fun setPiece(uiPiece: UIPiece) {
+        this._piece = uiPiece.actualPiece
+        this.uiPiece = uiPiece
+        // should still call removePiece() before setting a piece
+        // because we want to return the image back to the pool
+        this.clearChildren()
+        this.add(uiPiece)
+        uiPiece.setScaling(Scaling.fit)
+    }
+
+    fun removePiece(): UIPiece? {
         this.clearChildren()
         return uiPiece
     }

@@ -57,7 +57,7 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
                         rerollButton,
                         {
                             game.actionObservable.notifyAllActions(
-                                    Event(EventType.reroll, player, null)
+                                    Event(EventType.SHOP_REROLL, player, null)
                             )
                         }
                 )
@@ -86,6 +86,12 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
     fun returnPieceToPool(piece: UIPiece) {
         val piecePool = getPiecePool(piece.pieceType)
         piecePool?.free(piece)
+    }
+
+    fun returnPieceToPool(pieces: List<UIPiece>) {
+        for (p in pieces) {
+            returnPieceToPool(p)
+        }
     }
 
     fun takePiece(piece: Piece): UIPiece? {

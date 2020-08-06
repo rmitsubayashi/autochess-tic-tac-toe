@@ -7,11 +7,11 @@ import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIBoard
 import com.github.rmitsubayashi.ui.game.UIPiecePool
-import com.github.rmitsubayashi.ui.game.UIDeck
+import com.github.rmitsubayashi.ui.game.UIHand
 
 class PlacedPiece(eventActor: EventActor,
                   private val uiBoard: UIBoard,
-                  private val uiDeck: UIDeck,
+                  private val uiHand: UIHand,
                   private val uiPiecePool: UIPiecePool
 )
     : Action(eventActor) {
@@ -27,7 +27,7 @@ class PlacedPiece(eventActor: EventActor,
         val piece = event.actor as Piece
         val uiPiece = if (piece.player == game.player1) {
             // should take from the player's pieces (actual player)
-            uiDeck.removePiece(piece)
+            uiHand.removePiece(piece)
         } else {
             //should take from the piece pool (opponent player)
              uiPiecePool.createUIPiece(piece)
@@ -52,6 +52,6 @@ class PlacedPiece(eventActor: EventActor,
     }
 
     override fun copy(): Action {
-        return PlacedPiece(eventActor, uiBoard, uiDeck, uiPiecePool)
+        return PlacedPiece(eventActor, uiBoard, uiHand, uiPiecePool)
     }
 }

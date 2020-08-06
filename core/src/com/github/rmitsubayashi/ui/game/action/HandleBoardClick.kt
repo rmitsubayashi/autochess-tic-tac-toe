@@ -5,9 +5,9 @@ import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.game.GameProgressManager
-import com.github.rmitsubayashi.ui.game.UIDeck
+import com.github.rmitsubayashi.ui.game.UIHand
 
-class HandleBoardClick(eventActor: EventActor, private val uiDeck: UIDeck)
+class HandleBoardClick(eventActor: EventActor, private val uiHand: UIHand)
     : Action(eventActor){
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.boardClicked) return false
@@ -29,7 +29,7 @@ class HandleBoardClick(eventActor: EventActor, private val uiDeck: UIDeck)
             game.userInputManager.handleActionWaitingForUserInput(squarePiece)
             return emptyList()
         }
-        val playerPieceSelected = uiDeck.getSelectedPiece()
+        val playerPieceSelected = uiHand.getSelectedPiece()
         // player has selected a piece to place on the board
         if (
                 event.actor == playerPieceSelected?.player
@@ -44,6 +44,6 @@ class HandleBoardClick(eventActor: EventActor, private val uiDeck: UIDeck)
     }
 
     override fun copy(): Action {
-        return HandleBoardClick(eventActor, uiDeck)
+        return HandleBoardClick(eventActor, uiHand)
     }
 }

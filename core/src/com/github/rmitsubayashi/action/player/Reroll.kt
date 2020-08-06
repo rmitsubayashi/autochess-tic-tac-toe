@@ -7,7 +7,7 @@ import com.github.rmitsubayashi.game.Game
 
 class Reroll(eventActor: EventActor): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
-        if (event.type != EventType.reroll) return false
+        if (event.type != EventType.SHOP_REROLL) return false
         if (event.data != null && event.data[EventDataKey.DONE] == true) return false
         if (eventActor !is Player) return false
         if (event.actor != eventActor) return false
@@ -22,7 +22,7 @@ class Reroll(eventActor: EventActor): Action(eventActor) {
         player.money -= game.piecePool.getRerollCost()
         return listOf(
                 Event(EventType.moneyChanged, event.actor, null),
-                Event(EventType.reroll, event.actor, null, mapOf(Pair(EventDataKey.DONE, true)))
+                Event(EventType.SHOP_REROLL, event.actor, null, mapOf(Pair(EventDataKey.DONE, true)))
         )
     }
 

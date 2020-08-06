@@ -11,14 +11,16 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
     private val uiBoard = UIBoard(game.assetManager, game.game)
     private val uiChoosePiece = UIChoosePiece(game.game)
     private val uiHUD = UIHUD(game.game, game.game.player1, uiChoosePiece)
-    private val uiPlayerPieces = UIDeck(game.assetManager, game.game)
+    private val uiDeck = UIDeck(game.assetManager, game.game)
+    private val uiHand = UIHand(4)
     private val uiPiecePool = UIPiecePool(game.assetManager, game.game, game.game.player1)
-    private val uiPiecesToggle = UIPiecesToggle(uiPlayerPieces, uiPiecePool)
+    private val uiPiecesToggle = UIPiecesToggle(uiDeck, uiPiecePool, uiHand)
     private val uiPieceInfoTooltip = UIPieceInfoTooltip()
     private val uiTurnDisplay = UITurnDisplay(game.game.player1)
 
 
     init {
+        uiHand.debug()
         val table = Table()
         table.setFillParent(true)
         table.setBackgroundColor(appSkin.getColor("white"))
@@ -29,12 +31,12 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         stage.addActor(uiPieceInfoTooltip)
         stage.addActor(uiTurnDisplay)
 
-        subscribeAction(UpdatePiecePool(game.game.player1, game.assetManager, uiPiecePool, game.game.piecePool, uiPlayerPieces, uiPiecesToggle))
+        subscribeAction(UpdatePiecePool(game.game.player1, game.assetManager, uiPiecePool, game.game.piecePool, uiDeck, uiPiecesToggle))
         subscribeAction(UpdateMoney(game.game.player1, uiHUD))
         subscribeAction(ShowPieceInfo(game.game.player1, uiPieceInfoTooltip, game.game.board))
-        subscribeAction(HandleBoardClick(game.game.player1, uiPlayerPieces))
-        subscribeAction(PlacedPiece(game.game.player1, uiBoard, uiPlayerPieces, uiPiecePool))
-        subscribeAction(SoldPiece(game.game.player1, game.assetManager, uiPlayerPieces, uiPiecePool))
+        subscribeAction(HandleBoardClick(game.game.player1, uiHand))
+        subscribeAction(PlacedPiece(game.game.player1, uiBoard, uiHand, uiPiecePool))
+        subscribeAction(SoldPiece(game.game.player1, game.assetManager, uiDeck, uiPiecePool))
         subscribeAction(ToggleSetupPhaseButtons(game.game.player1, uiHUD))
         subscribeAction(UpdatePieceState(game.assetManager, game.game.board, uiBoard, uiPiecePool))
         subscribeAction(AnimateAttack(game.assetManager, uiBoard))
@@ -42,6 +44,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         subscribeAction(ShowTicTacToe(uiHUD, uiBoard))
         subscribeAction(ShowResultScreen(game, game.game.player1))
         subscribeAction(ShowChoosePiece(game.game.player1, uiChoosePiece, uiBoard))
+        subscribeAction(UpdateHand(game.game.player1, uiHand, uiPiecePool))
 
         game.game.animationQueue.setStage(this.stage)
         game.game.gameProgressManager.startGame(game.game.player1)
