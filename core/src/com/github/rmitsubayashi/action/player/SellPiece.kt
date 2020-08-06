@@ -1,11 +1,14 @@
 package com.github.rmitsubayashi.action.player
 
-import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.action.Action
+import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventDataKey
+import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 
-class SellPiece(eventActor: EventActor): Action(eventActor) {
+class SellPiece(eventActor: Player): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.sellPiece) return false
         if (event.actor !is Player) return false
@@ -30,6 +33,6 @@ class SellPiece(eventActor: EventActor): Action(eventActor) {
     }
 
     override fun copy(): Action {
-        return SellPiece(eventActor)
+        return SellPiece(eventActor as Player)
     }
 }

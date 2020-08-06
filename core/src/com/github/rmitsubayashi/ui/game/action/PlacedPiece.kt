@@ -6,15 +6,15 @@ import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIBoard
-import com.github.rmitsubayashi.ui.game.UIPiecePool
 import com.github.rmitsubayashi.ui.game.UIHand
+import com.github.rmitsubayashi.ui.game.UIPiecePool
 
-class PlacedPiece(eventActor: EventActor,
+class PlacedPiece(
                   private val uiBoard: UIBoard,
                   private val uiHand: UIHand,
                   private val uiPiecePool: UIPiecePool
 )
-    : Action(eventActor) {
+    : Action(EmptyEventActor()) {
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.placePiece) return false
         if (event.data?.get(EventDataKey.DONE) != true) return false
@@ -52,6 +52,6 @@ class PlacedPiece(eventActor: EventActor,
     }
 
     override fun copy(): Action {
-        return PlacedPiece(eventActor, uiBoard, uiHand, uiPiecePool)
+        return PlacedPiece(uiBoard, uiHand, uiPiecePool)
     }
 }

@@ -1,18 +1,20 @@
 package com.github.rmitsubayashi.ui.game.action
 
-import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.action.Action
+import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventDataKey
+import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.game.GameProgressManager
 import com.github.rmitsubayashi.ui.game.UIHand
 
-class HandleBoardClick(eventActor: EventActor, private val uiHand: UIHand)
+class HandleBoardClick(eventActor: Player, private val uiHand: UIHand)
     : Action(eventActor){
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.boardClicked) return false
         if (event.data?.get(EventDataKey.SQUARE) !is Int) return false
-        if (event.actor !is Player) return false
         // any interaction with the board must occur in the player's setup phase
         if (game.gameProgressManager.currPlayer != event.actor) return false
         if (game.gameProgressManager.phase != GameProgressManager.Phase.SETUP) return false
@@ -44,6 +46,6 @@ class HandleBoardClick(eventActor: EventActor, private val uiHand: UIHand)
     }
 
     override fun copy(): Action {
-        return HandleBoardClick(eventActor, uiHand)
+        return HandleBoardClick(eventActor as Player, uiHand)
     }
 }

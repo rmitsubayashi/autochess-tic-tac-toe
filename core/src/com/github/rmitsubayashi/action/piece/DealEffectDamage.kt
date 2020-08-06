@@ -4,7 +4,7 @@ import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 
-class DealEffectDamage(eventActor: EventActor, private val timing: EventType,
+class DealEffectDamage(eventActor: Piece, private val timing: EventType,
                        private val target: EventActor, private val amount: Int)
     : Action(eventActor) {
     init {
@@ -72,6 +72,6 @@ class DealEffectDamage(eventActor: EventActor, private val timing: EventType,
     }
 
     override fun copy(): Action {
-        return DealEffectDamage(eventActor, timing, target, amount)
+        return DealEffectDamage(eventActor as Piece, timing, target, amount)
     }
 }

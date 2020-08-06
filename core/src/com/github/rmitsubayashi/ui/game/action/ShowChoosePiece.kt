@@ -1,17 +1,19 @@
 package com.github.rmitsubayashi.ui.game.action
 
-import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.action.Action
+import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventDataKey
+import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIBoard
 import com.github.rmitsubayashi.ui.game.UIChoosePiece
 
-class ShowChoosePiece(eventActor: EventActor, private val uiChoosePiece: UIChoosePiece, private val uiBoard: UIBoard)
+class ShowChoosePiece(eventActor: Player, private val uiChoosePiece: UIChoosePiece, private val uiBoard: UIBoard)
     : Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.userInputRequested) return false
-        if (event.actor !is Player) return false
         if (event.actor != eventActor) return false
         if (event.data?.get(EventDataKey.DONE) == null && event.data?.get(EventDataKey.SQUARE) == null) return false
         return true
@@ -35,6 +37,6 @@ class ShowChoosePiece(eventActor: EventActor, private val uiChoosePiece: UIChoos
     }
 
     override fun copy(): Action {
-        return ShowChoosePiece(eventActor, uiChoosePiece, uiBoard)
+        return ShowChoosePiece(eventActor as Player, uiChoosePiece, uiBoard)
     }
 }

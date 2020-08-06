@@ -2,13 +2,13 @@ package com.github.rmitsubayashi.ui.game.action
 
 import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.Event
-import com.github.rmitsubayashi.action.EventActor
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
+import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIHUD
 
-class ToggleSetupPhaseButtons(eventActor: EventActor, private val uihud: UIHUD)
+class ToggleSetupPhaseButtons(eventActor: Player, private val uihud: UIHUD)
     : Action(eventActor) {
     init {
         // need to run first because when we enter the battle phase,
@@ -28,6 +28,6 @@ class ToggleSetupPhaseButtons(eventActor: EventActor, private val uihud: UIHUD)
     }
 
     override fun copy(): Action {
-        return ToggleSetupPhaseButtons(eventActor, uihud)
+        return ToggleSetupPhaseButtons(eventActor as Player, uihud)
     }
 }

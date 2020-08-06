@@ -2,15 +2,16 @@ package com.github.rmitsubayashi.action.phase
 
 import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.Event
-import com.github.rmitsubayashi.action.EventActor
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 
-class BattlePhase(eventActor: EventActor): Action(eventActor) {
+class BattlePhase(eventActor: Player): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
-        return event.type == EventType.enterBattlePhase && event.actor == eventActor
+        if (event.type != EventType.enterBattlePhase) return false
+        if (event.actor != eventActor) return false
+        return true
     }
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
@@ -26,6 +27,6 @@ class BattlePhase(eventActor: EventActor): Action(eventActor) {
     }
 
     override fun copy(): Action {
-        return BattlePhase(eventActor)
+        return BattlePhase(eventActor as Player)
     }
 }

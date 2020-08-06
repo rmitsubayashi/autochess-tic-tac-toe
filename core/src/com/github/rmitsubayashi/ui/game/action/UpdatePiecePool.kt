@@ -3,19 +3,22 @@ package com.github.rmitsubayashi.ui.game.action
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.action.Action
+import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventDataKey
+import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.game.PiecePool
 import com.github.rmitsubayashi.ui.assets.SoundAssets
+import com.github.rmitsubayashi.ui.game.UIDeck
 import com.github.rmitsubayashi.ui.game.UIPiecePool
 import com.github.rmitsubayashi.ui.game.UIPiecesToggle
-import com.github.rmitsubayashi.ui.game.UIDeck
 
 class UpdatePiecePool(
-        eventActor: EventActor,
+        eventActor: Player,
         private val assetManager: AssetManager,
         private val uiPool: UIPiecePool,
         private val piecePool: PiecePool,
@@ -26,7 +29,6 @@ class UpdatePiecePool(
         if (event.type !in listOf(EventType.SHOP_REROLL, EventType.buyPiece)) return false
         if (event.data == null || event.data[EventDataKey.DONE] != true) return false
         if (event.type == EventType.buyPiece && event.actedUpon !is Piece) return false
-        if (event.actor !is Player) return false
         if (event.actor != eventActor) return false
         return true
     }
@@ -76,6 +78,6 @@ class UpdatePiecePool(
         return listOf(Event(EventType.shouldAnimate, null, null))
     }
     override fun copy(): Action {
-        return UpdatePiecePool(eventActor, assetManager, uiPool, piecePool, uiDeck, uiPiecesToggle)
+        return UpdatePiecePool(eventActor as Player, assetManager, uiPool, piecePool, uiDeck, uiPiecesToggle)
     }
 }

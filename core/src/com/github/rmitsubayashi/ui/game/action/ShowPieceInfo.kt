@@ -6,7 +6,7 @@ import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIPieceInfoTooltip
 
-class ShowPieceInfo(eventActor: EventActor, private val tooltip: UIPieceInfoTooltip, private val board: Board): Action(eventActor) {
+class ShowPieceInfo(private val tooltip: UIPieceInfoTooltip, private val board: Board): Action(EmptyEventActor()) {
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.pieceLongClicked) return false
         if (event.actor !is Piece) return false
@@ -29,6 +29,6 @@ class ShowPieceInfo(eventActor: EventActor, private val tooltip: UIPieceInfoTool
     }
 
     override fun copy(): Action {
-        return ShowPieceInfo(eventActor, tooltip, board)
+        return ShowPieceInfo(tooltip, board)
     }
 }

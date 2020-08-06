@@ -1,10 +1,13 @@
 package com.github.rmitsubayashi.action.piece
 
-import com.github.rmitsubayashi.action.*
+import com.github.rmitsubayashi.action.Action
+import com.github.rmitsubayashi.action.Event
+import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.action.UnspecifiedTarget
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 
-class BuffAttack(eventActor: EventActor, private val amount: Int, private val timing: EventType)
+class BuffAttack(eventActor: Piece, private val amount: Int, private val timing: EventType)
     : Action(eventActor) {
     init {
         priority = 0
@@ -13,7 +16,6 @@ class BuffAttack(eventActor: EventActor, private val amount: Int, private val ti
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != timing) return false
         if (eventActor != event.actor) return false
-        if (event.actor !is Piece) return false
         if (event.actedUpon !is Piece && event.actedUpon !is UnspecifiedTarget) return false
         return true
     }
@@ -50,6 +52,6 @@ class BuffAttack(eventActor: EventActor, private val amount: Int, private val ti
     }
 
     override fun copy(): Action {
-        return BuffAttack(eventActor, amount, timing)
+        return BuffAttack(eventActor as Piece, amount, timing)
     }
 }

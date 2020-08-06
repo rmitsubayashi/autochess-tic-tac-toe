@@ -13,7 +13,6 @@ import com.github.rmitsubayashi.action.ActionObservable
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventDataKey
 import com.github.rmitsubayashi.action.EventType
-import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.util.UIClickListener

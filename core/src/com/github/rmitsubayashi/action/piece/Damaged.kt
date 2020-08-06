@@ -9,7 +9,9 @@ import com.github.rmitsubayashi.game.Game
 
 class Damaged: Action(EmptyEventActor()) {
     override fun conditionMet(game: Game, event: Event): Boolean {
-        return event.type == EventType.pieceDamaged
+        if (event.type != EventType.pieceDamaged) return false
+        if (event.actor !is Piece) return false
+        return true
     }
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {

@@ -20,7 +20,6 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
 
 
     init {
-        uiHand.debug()
         val table = Table()
         table.setFillParent(true)
         table.setBackgroundColor(appSkin.getColor("white"))
@@ -33,9 +32,9 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
 
         subscribeAction(UpdatePiecePool(game.game.player1, game.assetManager, uiPiecePool, game.game.piecePool, uiDeck, uiPiecesToggle))
         subscribeAction(UpdateMoney(game.game.player1, uiHUD))
-        subscribeAction(ShowPieceInfo(game.game.player1, uiPieceInfoTooltip, game.game.board))
+        subscribeAction(ShowPieceInfo(uiPieceInfoTooltip, game.game.board))
         subscribeAction(HandleBoardClick(game.game.player1, uiHand))
-        subscribeAction(PlacedPiece(game.game.player1, uiBoard, uiHand, uiPiecePool))
+        subscribeAction(PlacedPiece(uiBoard, uiHand, uiPiecePool))
         subscribeAction(SoldPiece(game.game.player1, game.assetManager, uiDeck, uiPiecePool))
         subscribeAction(ToggleSetupPhaseButtons(game.game.player1, uiHUD))
         subscribeAction(UpdatePieceState(game.assetManager, game.game.board, uiBoard, uiPiecePool))
