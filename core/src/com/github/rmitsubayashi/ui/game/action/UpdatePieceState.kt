@@ -3,10 +3,7 @@ package com.github.rmitsubayashi.ui.game.action
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.github.rmitsubayashi.action.Action
-import com.github.rmitsubayashi.action.EmptyEventActor
-import com.github.rmitsubayashi.action.Event
-import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.AnimationConfig
@@ -20,8 +17,9 @@ class UpdatePieceState(private val assetManager: AssetManager, private val board
                        private val uiBoard: UIBoard, private val uiPiecePool: UIPiecePool)
     : Action(EmptyEventActor()) {
     override fun conditionMet(game: Game, event: Event): Boolean {
-        if (event.type !in listOf(EventType.pieceDamaged, EventType.pieceSecured )) return false
-        if (event.actor !is Piece) return false
+        if (event.type !in listOf(EventType.pieceDamaged, EventType.SQUARE_SECURED )) return false
+        if (event.actor !is Piece && event.actor !== null) return false
+        if (event.type == EventType.SQUARE_SECURED && event.data?.get(EventDataKey.SQUARE) !is Int) return false
         return true
 
     }
@@ -63,30 +61,55 @@ class UpdatePieceState(private val assetManager: AssetManager, private val board
                             }
                     )
                 } else {
-                    uiBoard.updatePieceState(piece)
-                }
-            }
-            EventType.pieceSecured -> {
-                val piece = event.actor as Piece
-                val securedImage = uiBoard.getSecuredImage(piece)
-                if (securedImage != null) {
                     game.animationQueue.addAnimation(
                             AnimationConfig(
-                                    Actions.alpha(0.5f, 0.5f),
-                                    securedImage,
-                                    0.5f
-                            ) {
-                                assetManager.get(SoundAssets.secured).play()
-                                uiBoard.updatePieceState(piece)
-                            }
-                    )
-                    game.animationQueue.addAnimation(
-                            AnimationConfig(
-                                    Actions.alpha(0f, 0.5f),
-                                    securedImage,
-                                    0.5f
+                                    Actions.sequence(
+                                            Actions.delay(0.1f),
+                                            Actions.run { uiBoard.updatePieceState(piece) }
+                                    ),
+                                    uiBoard,
+                                    0.1f
                             )
                     )
+
+                }
+            }
+            EventType.SQUARE_SECURED -> {
+                val piece = event.actor as Piece?
+                val square = event.data?.get(EventDataKey.SQUARE) as Int
+                if (piece == null) {
+                    // unsecure
+                    game.animationQueue.addAnimation(
+                            AnimationConfig(
+                                    Actions.delay(0.1f),
+                                    uiBoard,
+                                    0.1f
+                            ) {
+                                uiBoard.secureSquare(square, null)
+                            }
+                    )
+                } else {
+                    val securedImage = uiBoard.getSecuredImage(piece)
+                    if (securedImage != null) {
+                        game.animationQueue.addAnimation(
+                                AnimationConfig(
+                                        Actions.alpha(0.5f, 0.5f),
+                                        securedImage,
+                                        0.5f
+                                ) {
+                                    assetManager.get(SoundAssets.secured).play()
+                                    uiBoard.updatePieceState(piece)
+                                    uiBoard.secureSquare(square, piece.player)
+                                }
+                        )
+                        game.animationQueue.addAnimation(
+                                AnimationConfig(
+                                        Actions.alpha(0f, 0.5f),
+                                        securedImage,
+                                        0.5f
+                                )
+                        )
+                    }
                 }
             }
             else -> {}

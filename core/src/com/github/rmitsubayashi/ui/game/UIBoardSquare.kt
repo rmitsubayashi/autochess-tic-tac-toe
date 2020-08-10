@@ -13,6 +13,7 @@ import com.github.rmitsubayashi.action.ActionObservable
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventDataKey
 import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.util.UIClickListener
@@ -21,7 +22,7 @@ import com.github.rmitsubayashi.ui.util.setAlpha
 import com.github.rmitsubayashi.ui.util.setBackgroundColor
 
 class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private val player: Player,
-                    observable: ActionObservable): Stack() {
+                    observable: ActionObservable, private val board: Board): Stack() {
     var piece: UIPiece? = null
     private val mainTable = Table()
     private val placeHolder: Image = Image()
@@ -87,11 +88,39 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
         }
     }
 
+    fun secure(player: Player) {
+        val color = if (this.player == player) {
+            Color(0.2f, 0.2f, 0.7f, 0.2f)
+        } else {
+            Color(0.7f, 0.2f, 0.2f, 0.2f)
+        }
+        mainTable.setBackgroundColor(color)
+    }
+
+    fun unsecure() {
+        mainTable.background = null
+    }
+
     fun highlight() {
         mainTable.setBackgroundColor(Color(0.2f, 0.2f, 0.2f, 0.2f))
     }
 
     fun removeHighlight() {
         mainTable.background = null
+        setSecuredBackgroundColor()
+    }
+
+    private fun setSecuredBackgroundColor() {
+        val securedPlayer = board.getSecuredPlayer(squareIndex)
+        if (securedPlayer == null) {
+            mainTable.background = null
+            return
+        }
+        val color = if (securedPlayer == player) {
+            Color(0.2f, 0.2f, 0.7f, 0.2f)
+        } else {
+            Color(0.7f, 0.2f, 0.2f, 0.2f)
+        }
+        mainTable.setBackgroundColor(color)
     }
 }

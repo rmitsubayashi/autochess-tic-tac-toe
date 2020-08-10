@@ -8,7 +8,6 @@ import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.game.GameState
-import com.github.rmitsubayashi.game.TicTacToeDamageCalculator
 import com.github.rmitsubayashi.game.TicTacToeJudge
 
 class SecurePhase(eventActor: Player): Action(eventActor) {
@@ -27,7 +26,8 @@ class SecurePhase(eventActor: Player): Action(eventActor) {
         for (p in playerPieces) {
             if (p != null && !p.isDead()){
                 game.board.secure(p)
-                newEvents.add(Event(EventType.pieceSecured, p, null))
+                val square = game.board.indexOf(p)
+                newEvents.add(Event(EventType.SQUARE_SECURED, p, null, mapOf(Pair(EventDataKey.SQUARE, square))))
             }
         }
         //check for tic tac toes
@@ -44,8 +44,7 @@ class SecurePhase(eventActor: Player): Action(eventActor) {
             )
             return newEvents
         }
-        //tic tac toe pieces get damaged
-        val damage = TicTacToeDamageCalculator.getDamage(game.gameProgressManager.turn)
+        //tic tac toe pieces disappear
         val uniquePieces = mutableSetOf<Piece>()
         for (ticTacToe in ticTacToes) {
             for (pieceIndex in ticTacToe) {
@@ -55,13 +54,24 @@ class SecurePhase(eventActor: Player): Action(eventActor) {
                 }
             }
         }
-        for (toDamagePiece in uniquePieces) {
-            toDamagePiece.currHP -= damage
+        for (toKillPiece in uniquePieces) {
+            toKillPiece.currHP -= toKillPiece.currHP
         }
         val damagedEvents = uniquePieces.map {
             Event(EventType.pieceDamaged, it, null)
         }
         newEvents.addAll(damagedEvents)
+        //tic tac toe squares are unsecured
+        val uniqueIndexes = mutableSetOf<Int>()
+        for (ticTacToe in ticTacToes) {
+            for (index in ticTacToe) {
+                uniqueIndexes.add(index)
+            }
+        }
+        for (uniqueIndex in uniqueIndexes) {
+            game.board.unsecure(uniqueIndex)
+            newEvents.add(Event(EventType.SQUARE_SECURED, null, null, mapOf(Pair(EventDataKey.SQUARE, uniqueIndex))))
+        }
         newEvents.add(
                 Event(EventType.ENTER_MONEY_DISTRIBUTION_PHASE, player, null)
         )

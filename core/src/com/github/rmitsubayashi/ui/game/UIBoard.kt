@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.entity.Piece
+import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 
@@ -22,7 +23,7 @@ class UIBoard(assetManager: AssetManager, game: Game): Table() {
         val tempList = mutableListOf<UIBoardSquare>()
         for (i in 0..2) {
             for (j in 0..2) {
-                val square = UIBoardSquare(assetManager, i*3+j, game.player1, game.actionObservable)
+                val square = UIBoardSquare(assetManager, i*3+j, game.player1, game.actionObservable, game.board)
                 tempList.add(square)
                 this.add(square).grow().uniform()
             }
@@ -60,6 +61,15 @@ class UIBoard(assetManager: AssetManager, game: Game): Table() {
     fun updatePieceState(piece: Piece) {
         val square = squares.firstOrNull { it.piece?.actualPiece == piece }
         square?.updatePieceState()
+    }
+
+    fun secureSquare(index: Int, player: Player?) {
+        val square = squares[index]
+        if (player != null) {
+            square.secure(player)
+        } else {
+            square.unsecure()
+        }
     }
 
     fun getSquareCoords(square: Int): Vector2 {
