@@ -14,9 +14,9 @@ class BuyPiece(eventActor: Player): Action(eventActor) {
         if (event.actor !is Player) return false
         if (eventActor != event.actor) return false
         if (event.actedUpon !is Piece) return false
-        val poolPieces = game.piecePool.getPieces(event.actor)
+        val poolPieces = game.getShop(event.actor)?.lastRolledPieces
         val piece = event.actedUpon
-        if (!poolPieces.contains(piece)) return false
+        if (poolPieces == null || !poolPieces.contains(piece)) return false
         if (event.actedUpon.cost > event.actor.money) return false
         return true
     }
@@ -28,8 +28,7 @@ class BuyPiece(eventActor: Player): Action(eventActor) {
         pieceToBuy.player = player
         player.deck.add(pieceToBuy)
         player.money -= pieceToBuy.cost
-        game.piecePool.takeFromPool(pieceToBuy, player)
-        game.actionObservable.subscribeActions(pieceToBuy.actions)
+        game.getShop(player)?.takeFromPool(pieceToBuy, player)
 
         return listOf(
                 Event(EventType.moneyChanged, event.actor, null),

@@ -15,6 +15,7 @@ enum class EventType {
     boardClicked,
     scored,
     userInputRequested,
+    CHOOSE_RACE,
     // phase events. events should be indirectly fired from the manager
     enterBattlePhase,
     ENTER_SETUP_PHASE,

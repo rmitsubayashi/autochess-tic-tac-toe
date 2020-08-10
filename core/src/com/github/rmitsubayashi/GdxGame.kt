@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.github.rmitsubayashi.setup.JSONPieceFileReader
-import com.github.rmitsubayashi.setup.JSONPiecePoolConfigReader
+import com.github.rmitsubayashi.setup.JSONShopConfigReader
 import com.github.rmitsubayashi.setup.TextPlayerLevelCostReader
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.assets.SoundAssets
@@ -32,9 +32,9 @@ class GdxGame : Game() {
     private fun setupGame() {
         // can't read files in the constructor because the file system is still unavailable
         val pieceReader = JSONPieceFileReader("pieces.json")
-        val piecePoolConfigReader = JSONPiecePoolConfigReader("piecePoolConfigs.json")
+        val shopConfigReader = JSONShopConfigReader("shopConfigs.json")
         val playerLevelCostReader = TextPlayerLevelCostReader("playerLevelCost.txt")
-        game = com.github.rmitsubayashi.game.Game(pieceReader, piecePoolConfigReader, playerLevelCostReader)
+        game = com.github.rmitsubayashi.game.Game(pieceReader, shopConfigReader, playerLevelCostReader)
         loadAssets()
     }
 
@@ -48,10 +48,12 @@ class GdxGame : Game() {
         assetManager.load(ImageAssets.field)
         assetManager.load(ImageAssets.ticTacToe)
         assetManager.load(ImageAssets.shield)
-        val pieces = game.piecePool.getAllPieces()
-        for (piece in pieces) {
-            assetManager.load(SoundAssets.fromPiece(piece))
-            assetManager.load(ImageAssets.fromPiece(piece))
+        val pieces = game.getShop(game.player1)?.getAllPieces()
+        if (pieces != null) {
+            for (piece in pieces) {
+                assetManager.load(SoundAssets.fromPiece(piece))
+                assetManager.load(ImageAssets.fromPiece(piece))
+            }
         }
         assetManager.finishLoading()
     }

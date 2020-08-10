@@ -1,47 +1,23 @@
 package com.github.rmitsubayashi.ui.game
 
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.utils.Pool
 import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.Game
-import com.github.rmitsubayashi.game.Shop
 import com.github.rmitsubayashi.ui.util.UIClickListener
 import com.github.rmitsubayashi.ui.util.appSkin
 
-// serves as the pool of piece UI objects
-// and the part of the UI that shows the pieces the player rolled
-class UIPiecePool(private val assetManager: AssetManager, private val game: Game, private val player: Player): Table() {
-    // each piece has its own piece pool
-    private lateinit var piecePools: List<Pair<Piece, Pool<UIPiece>>>
+class UIShop(private val game: Game, private val player: Player, private val uiPiecePool: UIPiecePool): Table() {
     private lateinit var pieceSlots: List<UIPiecePoolSlot>
 
     init {
         val shop = game.getShop(player)
         if (shop != null) {
-            populatePool(shop)
             allocatePieceSlots(shop.getPieceNumberOfferedOnReroll())
         }
-    }
-
-    private fun populatePool(shop: Shop) {
-        val allPieces = shop.getAllPieces()
-        val tempList = mutableListOf<Pair<Piece, Pool<UIPiece>>>()
-        for (piece in allPieces) {
-            tempList.add(
-                Pair(
-                    piece,
-                    object: Pool<UIPiece>() {
-                        override fun newObject(): UIPiece = UIPiece.create(assetManager, piece, game)
-                    }
-                )
-            )
-        }
-        piecePools = tempList
     }
 
     private fun allocatePieceSlots(slots: Int) {
@@ -78,22 +54,11 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
             val slot = pieceSlots[index]
             val oldPiece = slot.removePiece()
             if (oldPiece != null) {
-                returnPieceToPool(oldPiece)
+                uiPiecePool.returnPieceToPool(oldPiece)
             }
-            val uiPiece = createUIPiece(piece)
+            val uiPiece = uiPiecePool.createUIPiece(piece)
             uiPiece ?: continue
             slot.placePiece(uiPiece)
-        }
-    }
-
-    fun returnPieceToPool(piece: UIPiece) {
-        val piecePool = getPiecePool(piece.pieceType)
-        piecePool?.free(piece)
-    }
-
-    fun returnPieceToPool(pieces: List<UIPiece>) {
-        for (p in pieces) {
-            returnPieceToPool(p)
         }
     }
 
@@ -104,18 +69,5 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
             }
         }
         return null
-    }
-
-    fun createUIPiece(piece: Piece): UIPiece? {
-        val piecePool = getPiecePool(piece)
-        piecePool ?: return null
-        val uiPiece = piecePool.obtain()
-        uiPiece.setActualPiece(piece)
-        return uiPiece
-    }
-
-    private fun getPiecePool(piece: Piece): Pool<UIPiece>? {
-        val piecePool = piecePools.firstOrNull { it.first.isSamePieceType(piece) }
-        return piecePool?.second
     }
 }

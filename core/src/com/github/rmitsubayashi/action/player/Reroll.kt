@@ -12,17 +12,17 @@ class Reroll(eventActor: Player): Action(eventActor) {
     override fun conditionMet(game: Game, event: Event): Boolean {
         if (event.type != EventType.SHOP_REROLL) return false
         if (event.data != null && event.data[EventDataKey.DONE] == true) return false
-        if (eventActor !is Player) return false
         if (event.actor != eventActor) return false
-        if ((event.actor as Player).money < game.piecePool.getRerollCost()) return false
+        if ((event.actor as Player).money < game.getShop(event.actor)?.getRerollCost() ?: Integer.MAX_VALUE) return false
 
         return true
     }
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
-        game.piecePool.refresh(player)
-        player.money -= game.piecePool.getRerollCost()
+        val shop = game.getShop(player) ?: return emptyList()
+        shop.refresh()
+        player.money -= shop.getRerollCost()
         return listOf(
                 Event(EventType.moneyChanged, event.actor, null),
                 Event(EventType.SHOP_REROLL, event.actor, null, mapOf(Pair(EventDataKey.DONE, true)))

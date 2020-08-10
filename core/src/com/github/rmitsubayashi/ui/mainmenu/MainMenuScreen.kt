@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.GdxGame
-import com.github.rmitsubayashi.ui.game.GameScreen
+import com.github.rmitsubayashi.ui.chooserace.ChooseRaceScreen
 import com.github.rmitsubayashi.ui.util.Fonts
 import com.github.rmitsubayashi.ui.util.IStageScreen
 import com.github.rmitsubayashi.ui.util.UIClickListener
@@ -15,7 +15,7 @@ class MainMenuScreen(game: GdxGame): IStageScreen(game) {
             setFillParent(true)
         }
         val singlePlayer = createMenuItem("Single Player") {
-            game.setScreen(GameScreen(game))
+            game.setScreen(ChooseRaceScreen(game))
             dispose()
         }
         menuTable.add(singlePlayer).row()

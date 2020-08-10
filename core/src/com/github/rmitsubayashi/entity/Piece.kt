@@ -5,6 +5,7 @@ import com.github.rmitsubayashi.action.EventActor
 
 class Piece(
     val name: String,
+    val race: Race,
     val stats: Stats,
     val ability: String,
     val attackRange: AttackRange,
@@ -20,7 +21,7 @@ class Piece(
         // make sure the actions are mapped to the new piece
         val actionsCopy = actions.map { a -> a.copy() }
         return Piece(
-                name, stats, ability, attackRange, cost, actionsCopy, player
+                name, race, stats, ability, attackRange, cost, actionsCopy, player
         ).apply {
             this.actions.forEach { it.eventActor = this }
         }
@@ -28,6 +29,7 @@ class Piece(
 
     fun isSamePieceType(other: Piece): Boolean =
             name == other.name &&
+            race == other.race &&
             stats == other.stats &&
             ability == other.ability &&
             cost == other.cost

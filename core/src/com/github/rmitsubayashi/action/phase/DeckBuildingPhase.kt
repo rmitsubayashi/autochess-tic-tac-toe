@@ -21,7 +21,9 @@ class DeckBuildingPhase(eventActor: Player): Action(eventActor) {
         val player = event.actor as Player
         //the player gets new pieces from the pool.
         //note that this is different from a regular roll because no money is spent
-        game.piecePool.refresh(player)
+        val shop = game.getShop(player)
+        shop ?: return emptyList()
+        shop.refresh()
         val newEvents = mutableListOf<Event>()
         newEvents.add(
                 Event(EventType.SHOP_REROLL, player, null,

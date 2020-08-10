@@ -21,36 +21,38 @@ import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.setup.PieceFileReader
-import com.github.rmitsubayashi.setup.PiecePoolConfigReader
+import com.github.rmitsubayashi.setup.ShopConfigReader
 import com.github.rmitsubayashi.setup.PlayerLevelCostReader
-import kotlin.random.Random
 
 class Game(
         private val pieceFileReader: PieceFileReader,
-        private val piecePoolConfigReader: PiecePoolConfigReader,
+        private val shopConfigReader: ShopConfigReader,
         private val playerLevelCostReader: PlayerLevelCostReader
 ) {
     val actionObservable = ActionObservable(this)
     val board = Board()
     val player1 = Player(1)
     val player2 = Player(2)
+    private lateinit var player1Shop: Shop
+    private lateinit var player2Shop: Shop
     val gameJudge = GameJudge(5, player1, player2)
     val gameProgressManager = GameProgressManager(this)
     val animationQueue = AnimationQueue()
     val userInputManager = UserInputManager(this)
+    val raceSelector = RaceSelector()
     lateinit var playerLevelManager: PlayerLevelManager
-    lateinit var piecePool: PiecePool
 
     init {
-        setupPiecePool()
+        setupShop()
         setupPlayerLevelManager()
         loadInitialActions()
     }
 
-    private fun setupPiecePool() {
+    private fun setupShop() {
         val pieces = pieceFileReader.read(AbilityList())
-        val configs = piecePoolConfigReader.read()
-        piecePool = PiecePool(pieces, configs, Random.Default)
+        val configs = shopConfigReader.read()
+        player1Shop = Shop(pieces, configs, player1)
+        player2Shop = Shop(pieces, configs, player2)
     }
 
     private fun setupPlayerLevelManager() {
@@ -100,6 +102,14 @@ class Game(
         return when (player) {
             player1 -> player2
             player2 -> player1
+            else -> null
+        }
+    }
+
+    fun getShop(player: Player): Shop? {
+        return when (player) {
+            player1 -> player1Shop
+            player2 -> player2Shop
             else -> null
         }
     }

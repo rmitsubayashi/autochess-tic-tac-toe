@@ -17,8 +17,10 @@ class Damaged: Action(EmptyEventActor()) {
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val piece = event.actor as Piece
         if (piece.isDead()) {
+            piece.player?.let {
+                game.getShop(it)?.putBackInPool(piece)
+            }
             game.board.removePiece(piece)
-            game.piecePool.putBackInPool(piece)
             game.actionObservable.unsubscribeActions(piece.actions)
             return emptyList()
         }

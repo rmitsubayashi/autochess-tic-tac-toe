@@ -18,9 +18,16 @@ class SetupPhase(eventActor: Player): Action(eventActor) {
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
+        val oldHand = player.hand.toList()
         val newHand = player.deck.draw(4)
         player.hand.clear()
         player.hand.addAll(newHand)
+        for (piece in newHand) {
+            game.actionObservable.subscribeActions(piece.actions)
+        }
+        for (piece in oldHand) {
+            game.actionObservable.unsubscribeActions(piece.actions)
+        }
 
         return listOf(
                 Event(EventType.HAND_CHANGED, player, null),

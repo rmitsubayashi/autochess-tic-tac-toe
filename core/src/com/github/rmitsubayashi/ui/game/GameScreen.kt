@@ -8,13 +8,14 @@ import com.github.rmitsubayashi.ui.util.appSkin
 import com.github.rmitsubayashi.ui.util.setBackgroundColor
 
 class GameScreen(game: GdxGame): IStageScreen(game) {
+    private val uiPiecePool = UIPiecePool(game.assetManager, game.game)
     private val uiBoard = UIBoard(game.assetManager, game.game)
     private val uiChoosePiece = UIChoosePiece(game.game)
     private val uiHUD = UIHUD(game.game, game.game.player1, uiChoosePiece)
     private val uiDeck = UIDeck(game.assetManager, game.game)
     private val uiHand = UIHand(4)
-    private val uiPiecePool = UIPiecePool(game.assetManager, game.game, game.game.player1)
-    private val uiPiecesToggle = UIPiecesToggle(uiDeck, uiPiecePool, uiHand)
+    private val uiShop = UIShop(game.game, game.game.player1, uiPiecePool)
+    private val uiPiecesToggle = UIPiecesToggle(uiDeck, uiShop, uiHand)
     private val uiPieceInfoTooltip = UIPieceInfoTooltip()
     private val uiTurnDisplay = UITurnDisplay(game.game.player1)
 
@@ -30,7 +31,8 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         stage.addActor(uiPieceInfoTooltip)
         stage.addActor(uiTurnDisplay)
 
-        subscribeAction(UpdatePiecePool(game.game.player1, game.assetManager, uiPiecePool, game.game.piecePool, uiDeck, uiPiecesToggle))
+        subscribeAction(UpdateShop(game.game.player1, game.assetManager, uiShop, game.game.getShop(game.game.player1)!!,
+                uiDeck, uiPiecesToggle))
         subscribeAction(UpdateMoney(game.game.player1, uiHUD))
         subscribeAction(ShowPieceInfo(uiPieceInfoTooltip, game.game.board))
         subscribeAction(HandleBoardClick(game.game.player1, uiHand))

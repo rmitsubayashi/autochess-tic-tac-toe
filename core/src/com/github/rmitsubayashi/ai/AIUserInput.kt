@@ -17,7 +17,7 @@ class AIUserInput(eventActor: EventActor, private val ai: GameAI): Action(eventA
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
-        ai.execute(game, player)
+        ai.execute(game, player, event)
         return emptyList()
     }
 

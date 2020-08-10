@@ -17,7 +17,7 @@ import com.github.rmitsubayashi.ui.game.UIDeck
 import com.github.rmitsubayashi.ui.game.UIShop
 import com.github.rmitsubayashi.ui.game.UIPiecesToggle
 
-class UpdatePiecePool(
+class UpdateShop(
         eventActor: Player,
         private val assetManager: AssetManager,
         private val uiPool: UIShop,
@@ -62,8 +62,7 @@ class UpdatePiecePool(
                 }
             }
             EventType.SHOP_REROLL -> {
-                val player = event.actor as Player
-                val newPieces = piecePool.getPieces(player)
+                val newPieces = shop.lastRolledPieces
                 uiPool.refreshPieces(newPieces)
                 // no sound if the reroll isn't user driven
                 // (for example rerolls during the setup phase)
@@ -78,6 +77,6 @@ class UpdatePiecePool(
         return listOf(Event(EventType.shouldAnimate, null, null))
     }
     override fun copy(): Action {
-        return UpdatePiecePool(eventActor as Player, assetManager, uiPool, piecePool, uiDeck, uiPiecesToggle)
+        return UpdateShop(eventActor as Player, assetManager, uiPool, shop, uiDeck, uiPiecesToggle)
     }
 }

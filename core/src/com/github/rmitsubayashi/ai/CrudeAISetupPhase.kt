@@ -6,18 +6,21 @@ import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.AttackRangeCalculator
 import com.github.rmitsubayashi.game.Game
+import com.github.rmitsubayashi.game.Shop
 
 class CrudeAISetupPhase: GameAI {
     private lateinit var game: Game
     private lateinit var  player: Player
-    override fun execute(game: Game, player: Player) {
+    private lateinit var shop: Shop
+    override fun execute(game: Game, player: Player, event: Event) {
         // store them in variables because most private methods use them
         this.game = game
         this.player = player
+        this.shop = game.getShop(player) ?: return
 
         // reroll if somehow the player doesn't have pieces
         // (shouldn't happen though)
-        if (game.piecePool.getPieces(player).isEmpty()) {
+        if (shop.lastRolledPieces.isNullOrEmpty()) {
             game.actionObservable.notifyAllActions(
                     Event(EventType.SHOP_REROLL, player, null)
             )
@@ -33,7 +36,7 @@ class CrudeAISetupPhase: GameAI {
             } else {
                 var currMin = min
                 while (currMin <= player.money) {
-                    val possiblePieces = game.piecePool.getPieces(player).filter { it.cost <= player.money }
+                    val possiblePieces = shop.lastRolledPieces.filter { it.cost <= player.money }
                     val randomPiece = possiblePieces.random()
                     game.actionObservable.notifyAllActions(
                             Event(EventType.buyPiece, player, randomPiece)
@@ -60,14 +63,14 @@ class CrudeAISetupPhase: GameAI {
         if (playerCannotBuyPieces()) {
             // the player has to have enough money to reroll and buy a 1 cost piece
             // from the next rolled pieces
-            val rerollCost = game.piecePool.getRerollCost()
+            val rerollCost = shop.getRerollCost()
             return player.money > rerollCost
         }
         return true
     }
 
     private fun calculateMinPiecePoolCost(): Int {
-        val costs = game.piecePool.getPieces(player).map { it.cost }
+        val costs = shop.lastRolledPieces.map { it.cost }
         return costs.min() ?: -1
     }
 

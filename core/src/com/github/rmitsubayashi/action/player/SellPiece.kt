@@ -22,7 +22,7 @@ class SellPiece(eventActor: Player): Action(eventActor) {
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
         val piece = event.actedUpon as Piece
-        game.piecePool.putBackInPool(piece)
+        game.getShop(player)?.putBackInPool(piece)
         player.deck.remove(piece)
         player.money += piece.cost
         game.actionObservable.unsubscribeActions(piece.actions)

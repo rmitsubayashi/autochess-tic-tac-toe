@@ -17,7 +17,7 @@ class AISetupPhase(eventActor: EventActor, private val ai: GameAI): Action(event
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val player = event.actor as Player
         // steps through setup phase as well
-        ai.execute(game, player)
+        ai.execute(game, player, event)
         game.animationQueue.playQueuedAnimations {
             game.gameProgressManager.toBattlePhase()
         }

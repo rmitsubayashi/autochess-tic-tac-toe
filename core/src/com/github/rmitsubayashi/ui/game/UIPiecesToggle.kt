@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.github.rmitsubayashi.ui.util.UIClickListener
 import com.github.rmitsubayashi.ui.util.appSkin
 
-class UIPiecesToggle(private val uiDeck: UIDeck, private val uiPiecePool: UIPiecePool, private val uiHand: UIHand): Table() {
+class UIPiecesToggle(private val uiDeck: UIDeck, private val uiShop: UIShop, private val uiHand: UIHand): Table() {
     private var deckShown = false
     private var shopShown = false
     private var handShown = false
@@ -23,7 +23,7 @@ class UIPiecesToggle(private val uiDeck: UIDeck, private val uiPiecePool: UIPiec
         this.add(buttonTable).height(50f).width(480f).row()
 
         val piecesStack = Stack()
-        piecesStack.addActor(uiPiecePool)
+        piecesStack.addActor(uiShop)
         piecesStack.addActor(uiDeck)
         piecesStack.addActor(uiHand)
         //default should be pool since the player doesn't own any pieces
@@ -39,7 +39,7 @@ class UIPiecesToggle(private val uiDeck: UIDeck, private val uiPiecePool: UIPiec
                         deckButton.isChecked = true
                         return@UIClickListener
                     }
-                    uiPiecePool.isVisible = false
+                    uiShop.isVisible = false
                     uiHand.isVisible = false
                     uiDeck.isVisible = true
                     deckShown = true
@@ -58,7 +58,7 @@ class UIPiecesToggle(private val uiDeck: UIDeck, private val uiPiecePool: UIPiec
                     }
                     uiDeck.isVisible = false
                     uiHand.isVisible = false
-                    uiPiecePool.isVisible = true
+                    uiShop.isVisible = true
                     deckShown = false
                     handShown = false
                     shopShown = true
@@ -74,7 +74,7 @@ class UIPiecesToggle(private val uiDeck: UIDeck, private val uiPiecePool: UIPiec
                         return@UIClickListener
                     }
                     uiDeck.isVisible = false
-                    uiPiecePool.isVisible = false
+                    uiShop.isVisible = false
                     uiHand.isVisible = true
                     deckShown = false
                     handShown = true
