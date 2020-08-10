@@ -11,17 +11,17 @@ import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
 import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
-import com.github.rmitsubayashi.game.PiecePool
+import com.github.rmitsubayashi.game.Shop
 import com.github.rmitsubayashi.ui.assets.SoundAssets
 import com.github.rmitsubayashi.ui.game.UIDeck
-import com.github.rmitsubayashi.ui.game.UIPiecePool
+import com.github.rmitsubayashi.ui.game.UIShop
 import com.github.rmitsubayashi.ui.game.UIPiecesToggle
 
 class UpdatePiecePool(
         eventActor: Player,
         private val assetManager: AssetManager,
-        private val uiPool: UIPiecePool,
-        private val piecePool: PiecePool,
+        private val uiPool: UIShop,
+        private val shop: Shop,
         private val uiDeck: UIDeck,
         private val uiPiecesToggle: UIPiecesToggle
 ): Action(eventActor) {
