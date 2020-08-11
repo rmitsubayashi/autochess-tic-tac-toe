@@ -7,25 +7,29 @@ import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.game.UIHUD
-import com.github.rmitsubayashi.ui.game.UITurnDisplay
+import com.github.rmitsubayashi.ui.game.UIPhaseDisplay
 
-class ShowTurnDisplay(private val uiTurnDisplay: UITurnDisplay, private val uihud: UIHUD): Action(EmptyEventActor()) {
+class ShowPhaseDisplay(private val uiPhaseDisplay: UIPhaseDisplay, private val uihud: UIHUD): Action(EmptyEventActor()) {
     init {
         // want to call this before the action for the setup phase is called
         priority = 1
     }
     override fun conditionMet(game: Game, event: Event): Boolean {
-        if (event.type != EventType.ENTER_SECURE_PHASE) return false
+        if (event.type !in listOf(EventType.ENTER_SECURE_PHASE, EventType.enterBattlePhase)) return false
         if (event.data?.get(EventDataKey.DONE) == true) return false
         return true
     }
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
-        uiTurnDisplay.setDisplay(
-                game.gameProgressManager.currPlayer
-        )
+        if (event.type == EventType.ENTER_SECURE_PHASE) {
+            uiPhaseDisplay.setTurnDisplay(
+                    game.gameProgressManager.currPlayer
+            )
+        } else {
+            uiPhaseDisplay.setBattlePhaseText()
+        }
 
-        val height = 400f-uiTurnDisplay.height/2
+        val height = 400f-uiPhaseDisplay.height/2
         game.animationQueue.addAnimation(
                 AnimationConfig(
                         Actions.sequence(
@@ -33,13 +37,13 @@ class ShowTurnDisplay(private val uiTurnDisplay: UITurnDisplay, private val uihu
                             Actions.show(),
                             Actions.moveTo(240f-300f/2, height, 0.5f, Interpolation.fastSlow),
                             Actions.delay(0.4f),
-                            Actions.moveTo(-uiTurnDisplay.width, height, 0.5f, Interpolation.slowFast),
+                            Actions.moveTo(-uiPhaseDisplay.width, height, 0.5f, Interpolation.slowFast),
                             Actions.hide()
                         ),
-                        uiTurnDisplay,
+                        uiPhaseDisplay,
                         1.4f
                 ) {
-                    uihud.updateTurn()
+                    if (event.type == EventType.ENTER_SECURE_PHASE) uihud.updateTurn()
                 }
         )
 
@@ -47,6 +51,6 @@ class ShowTurnDisplay(private val uiTurnDisplay: UITurnDisplay, private val uihu
     }
 
     override fun copy(): Action {
-        return ShowTurnDisplay(uiTurnDisplay, uihud)
+        return ShowPhaseDisplay(uiPhaseDisplay, uihud)
     }
 }

@@ -14,8 +14,10 @@ class UIRaceOptions: Table() {
     }
 
     fun setOptions(races: List<Race>) {
+        val borderlessTextButtonStyle = TextButton.TextButtonStyle(appSkin.get("borderless", TextButton.TextButtonStyle::class.java))
+        borderlessTextButtonStyle.checkedFontColor = appSkin.getColor("gray")
         for (race in races) {
-            val textButton = TextButton(race.name, appSkin.get("borderless", TextButton.TextButtonStyle::class.java))
+            val textButton = TextButton(race.name, borderlessTextButtonStyle)
             textButton.addListener(
                     UIClickListener(textButton,
                             {

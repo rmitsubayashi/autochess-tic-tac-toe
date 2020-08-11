@@ -12,10 +12,12 @@ class UIPiecesToggle(private val uiDeck: UIDeck, private val uiShop: UIShop, pri
     private var shopShown = false
     private var handShown = false
     val deckButton: Button
+    private val handButton: Button
+    private val shopButton: Button
     init {
         deckButton = TextButton("Deck", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
-        val shopButton = TextButton("Shop", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
-        val handButton = TextButton("Hand", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
+        shopButton = TextButton("Shop", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
+        handButton = TextButton("Hand", appSkin.get("square-selectable", TextButton.TextButtonStyle::class.java))
         val buttonTable = Table()
         buttonTable.add(deckButton).height(50f).expand().uniform()
         buttonTable.add(shopButton).height(50f).expand().uniform()
@@ -52,38 +54,46 @@ class UIPiecesToggle(private val uiDeck: UIDeck, private val uiShop: UIShop, pri
 
         shopButton.addListener(
                 UIClickListener(shopButton, {
-                    if (shopShown) {
-                        shopButton.isChecked = true
-                        return@UIClickListener
-                    }
-                    uiDeck.isVisible = false
-                    uiHand.isVisible = false
-                    uiShop.isVisible = true
-                    deckShown = false
-                    handShown = false
-                    shopShown = true
-                    deckButton.isChecked = false
-                    handButton.isChecked = false
+                    clickShop()
                 })
         )
 
         handButton.addListener(
                 UIClickListener(handButton, {
-                    if (handShown) {
-                        handButton.isChecked = true
-                        return@UIClickListener
-                    }
-                    uiDeck.isVisible = false
-                    uiShop.isVisible = false
-                    uiHand.isVisible = true
-                    deckShown = false
-                    handShown = true
-                    shopShown = false
-                    deckButton.isChecked = false
-                    shopButton.isChecked = false
+                    clickHand()
                 })
         )
 
+    }
+
+    fun clickHand() {
+        if (handShown) {
+            handButton.isChecked = true
+            return
+        }
+        uiDeck.isVisible = false
+        uiShop.isVisible = false
+        uiHand.isVisible = true
+        deckShown = false
+        handShown = true
+        shopShown = false
+        deckButton.isChecked = false
+        shopButton.isChecked = false
+    }
+
+    fun clickShop() {
+        if (shopShown) {
+            shopButton.isChecked = true
+            return
+        }
+        uiDeck.isVisible = false
+        uiHand.isVisible = false
+        uiShop.isVisible = true
+        deckShown = false
+        handShown = false
+        shopShown = true
+        deckButton.isChecked = false
+        handButton.isChecked = false
     }
 
 

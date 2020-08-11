@@ -1,6 +1,7 @@
 package com.github.rmitsubayashi.ui.game
 
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.github.rmitsubayashi.action.Event
@@ -15,6 +16,7 @@ import com.github.rmitsubayashi.ui.util.removeActorAndUpdateCellStructure
 class UIDeck(private val assetManager: AssetManager, game: Game): Table() {
     private val pieceSlots = mutableListOf<UIDeckSlot>()
     private val sellButton = TextButton("S", appSkin)
+    private val emptyStateButton = Label("No pieces in your deck. Buy more at the shop!", appSkin)
 
     init {
         sellButton.addListener(
@@ -26,7 +28,7 @@ class UIDeck(private val assetManager: AssetManager, game: Game): Table() {
                     )
                 })
         )
-        this.add(sellButton)
+        showEmptyState()
     }
 
     fun addPiece(piece: UIPiece) {
@@ -45,19 +47,32 @@ class UIDeck(private val assetManager: AssetManager, game: Game): Table() {
         ))
 
         pieceSlots.add(newSlot)
-        this.add(newSlot).width(100f)
+        this.clearChildren()
+        for (slot in pieceSlots) {
+            this.add(slot).width(100f)
+        }
+        this.add(sellButton)
     }
 
     fun removePiece(piece: Piece): UIPiece? {
         val slot = pieceSlots.firstOrNull { it.piece.isSamePieceType(piece)}
         pieceSlots.remove(slot)
         val uiPiece = slot?.removePiece()
-        removeActorAndUpdateCellStructure(slot)
+        if (pieceSlots.isEmpty()) {
+            showEmptyState()
+        } else {
+            removeActorAndUpdateCellStructure(slot)
+        }
         return uiPiece
     }
 
-    fun getSelectedPiece(): Piece? {
+    private fun getSelectedPiece(): Piece? {
         val slot = pieceSlots.firstOrNull { it.selected }
         return slot?.piece
+    }
+
+    private fun showEmptyState() {
+        this.clearChildren()
+        this.add(emptyStateButton)
     }
 }

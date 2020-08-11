@@ -17,7 +17,7 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
     private val uiShop = UIShop(game.game, game.game.player1, uiPiecePool)
     private val uiPiecesToggle = UIPiecesToggle(uiDeck, uiShop, uiHand)
     private val uiPieceInfoTooltip = UIPieceInfoTooltip()
-    private val uiTurnDisplay = UITurnDisplay(game.game.player1)
+    private val uiTurnDisplay = UIPhaseDisplay(game.game.player1)
 
 
     init {
@@ -38,10 +38,10 @@ class GameScreen(game: GdxGame): IStageScreen(game) {
         subscribeAction(HandleBoardClick(game.game.player1, uiHand))
         subscribeAction(PlacedPiece(uiBoard, uiHand, uiPiecePool))
         subscribeAction(SoldPiece(game.game.player1, game.assetManager, uiDeck, uiPiecePool))
-        subscribeAction(ToggleSetupPhaseButtons(game.game.player1, uiHUD))
+        subscribeAction(ToggleSetupPhaseButtons(game.game.player1, uiHUD, uiPiecesToggle))
         subscribeAction(UpdatePieceState(game.assetManager, game.game.board, uiBoard, uiPiecePool))
         subscribeAction(AnimateAttack(game.assetManager, uiBoard))
-        subscribeAction(ShowTurnDisplay(uiTurnDisplay, uiHUD))
+        subscribeAction(ShowPhaseDisplay(uiTurnDisplay, uiHUD))
         subscribeAction(ShowTicTacToe(uiHUD, uiBoard))
         subscribeAction(ShowResultScreen(game, game.game.player1))
         subscribeAction(ShowChoosePiece(game.game.player1, uiChoosePiece, uiBoard))

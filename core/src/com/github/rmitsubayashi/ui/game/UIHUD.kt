@@ -60,4 +60,8 @@ class UIHUD(private val game: Game, private val player: Player, uiChoosePiece: U
         val playerInt = if (game.gameProgressManager.currPlayer == game.player1) 1 else 2
         turnLabel.setText("Player $playerInt's turn")
     }
+
+    fun setSetupFinishedButtonText(text: String) {
+        setupFinishedButton.setText(text)
+    }
 }
