@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Board
 import com.github.rmitsubayashi.entity.Piece
+import com.github.rmitsubayashi.entity.Stats
 import com.github.rmitsubayashi.game.AnimationConfig
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.assets.SoundAssets
@@ -20,6 +21,7 @@ class UpdatePieceState(private val assetManager: AssetManager, private val board
         if (event.type !in listOf(EventType.pieceDamaged, EventType.SQUARE_SECURED )) return false
         if (event.actor !is Piece && event.actor !== null) return false
         if (event.type == EventType.SQUARE_SECURED && event.data?.get(EventDataKey.SQUARE) !is Int) return false
+        if (event.type == EventType.pieceDamaged && event.data?.get(EventDataKey.AMOUNT) !is Int) return false
         return true
 
     }
@@ -46,7 +48,9 @@ class UpdatePieceState(private val assetManager: AssetManager, private val board
                                 0.3f
                         )
                 )
-                if (piece.isDead()) {
+                // use the saved value instead of the piece's current HP because it may have changed
+                val currHP = event.data?.get(EventDataKey.AMOUNT) as Int
+                if (currHP <= 0) {
                     game.animationQueue.addAnimation(
                             AnimationConfig(
                                     Actions.alpha(0f, 0.3f),
@@ -65,7 +69,7 @@ class UpdatePieceState(private val assetManager: AssetManager, private val board
                             AnimationConfig(
                                     Actions.sequence(
                                             Actions.delay(0.1f),
-                                            Actions.run { uiBoard.updatePieceState(piece) }
+                                            Actions.run { uiBoard.updatePieceStats(piece, Stats(currHP, piece.currStats.attack)) }
                                     ),
                                     uiBoard,
                                     0.1f
@@ -98,7 +102,6 @@ class UpdatePieceState(private val assetManager: AssetManager, private val board
                                         0.5f
                                 ) {
                                     assetManager.get(SoundAssets.secured).play()
-                                    uiBoard.updatePieceState(piece)
                                     uiBoard.secureSquare(square, piece.player)
                                 }
                         )

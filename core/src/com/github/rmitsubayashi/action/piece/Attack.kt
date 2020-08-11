@@ -1,9 +1,6 @@
 package com.github.rmitsubayashi.action.piece
 
-import com.github.rmitsubayashi.action.Action
-import com.github.rmitsubayashi.action.EmptyEventActor
-import com.github.rmitsubayashi.action.Event
-import com.github.rmitsubayashi.action.EventType
+import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 
@@ -20,8 +17,12 @@ class Attack: Action(EmptyEventActor()) {
         val piece = event.actor as Piece
         val enemyPiece = event.actedUpon as Piece
         enemyPiece.currHP = enemyPiece.currHP - piece.currStats.attack
-        val damagedEvent = Event(EventType.pieceDamaged, enemyPiece, null)
-        return listOf(damagedEvent)
+        val enemyDamagedEvent = Event(EventType.pieceDamaged, enemyPiece, null,
+            mapOf(Pair(EventDataKey.AMOUNT, enemyPiece.currHP)))
+        piece.currHP = piece.currHP - enemyPiece.currStats.attack
+        val pieceDamagedEvent = Event(EventType.pieceDamaged, piece, null,
+            mapOf(Pair(EventDataKey.AMOUNT, piece.currHP)))
+        return listOf(enemyDamagedEvent, pieceDamagedEvent)
     }
 
     override fun copy(): Attack {

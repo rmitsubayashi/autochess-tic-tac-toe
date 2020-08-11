@@ -14,7 +14,9 @@ import com.github.rmitsubayashi.action.Event
 import com.github.rmitsubayashi.action.EventDataKey
 import com.github.rmitsubayashi.action.EventType
 import com.github.rmitsubayashi.entity.Board
+import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
+import com.github.rmitsubayashi.entity.Stats
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 import com.github.rmitsubayashi.ui.util.UIClickListener
 import com.github.rmitsubayashi.ui.util.appSkin
@@ -29,7 +31,7 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
     private val pieceState: Table = Table()
     val secureImage: Image
     private val isEnemy: Label
-    private val hp: Label
+    private val stats: Label
 
     init {
         mainTable.add(placeHolder).grow()
@@ -49,7 +51,7 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
         secureImage = Image(assetManager.get(ImageAssets.shield))
         secureImage.setAlpha(0f)
         isEnemy = Label("E", appSkin)
-        hp = Label("", appSkin)
+        stats = Label("", appSkin)
 
         this.add(mainTable)
         this.add(secureImage)
@@ -61,7 +63,13 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
         mainTable.clearChildren()
         this.piece = piece
         piece.setScaling(Scaling.fit)
-        updatePieceState()
+        piece.actualPiece?.let {
+            pieceState.clearChildren()
+            pieceState.add(stats)
+            updatePieceStats(Stats(it.currHP, it.currStats.attack))
+            markIsEnemy(it)
+        }
+
         mainTable.add(pieceState).pad(4f).align(Align.top)
         mainTable.add(piece)
     }
@@ -71,19 +79,17 @@ class UIBoardSquare(assetManager: AssetManager, val squareIndex: Int, private va
         // if we call removeActor(actor) instead of this, the cells aren't properly cleared
         mainTable.clearChildren()
         mainTable.add(placeHolder).grow()
-        return piece
+        val tempPiece = piece
+        this.piece = null
+        return tempPiece
     }
 
-    fun updatePieceState() {
-        pieceState.clearChildren()
-        val p = piece?.actualPiece
-        if (p == null) {
-            removePiece()
-            return
-        }
-        hp.setText("${p.currHP}/${p.currStats.hp}")
-        pieceState.add(hp).row()
-        if (p.player != player) {
+    fun updatePieceStats(newStats: Stats) {
+        stats.setText("${newStats.attack}/${newStats.hp}")
+    }
+
+    private fun markIsEnemy(piece: Piece) {
+        if (piece.player != player) {
             pieceState.add(isEnemy).row()
         }
     }

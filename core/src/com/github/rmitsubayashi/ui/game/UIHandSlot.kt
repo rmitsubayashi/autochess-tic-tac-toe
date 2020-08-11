@@ -38,6 +38,9 @@ class UIHandSlot: Table() {
 
     fun removePiece(): UIPiece? {
         this.clearChildren()
-        return uiPiece
+        val temp = uiPiece
+        this.uiPiece = null
+        this._piece = null
+        return temp
     }
 }

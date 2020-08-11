@@ -42,7 +42,7 @@
       "hp": 7,
       "attack": 1,
       "attackRange": "ranged",
-      "ability": "When played, deal 5 damage to all opposing pieces",
+      "ability": "When played, deal 1 damage to all opposing pieces",
       "cost": 1
     },
     {

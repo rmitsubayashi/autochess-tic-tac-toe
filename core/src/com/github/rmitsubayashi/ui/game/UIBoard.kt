@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.entity.Player
+import com.github.rmitsubayashi.entity.Stats
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.ui.assets.ImageAssets
 
@@ -58,9 +59,9 @@ class UIBoard(assetManager: AssetManager, game: Game): Table() {
         return square?.secureImage
     }
 
-    fun updatePieceState(piece: Piece) {
+    fun updatePieceStats(piece: Piece, newStats: Stats) {
         val square = squares.firstOrNull { it.piece?.actualPiece == piece }
-        square?.updatePieceState()
+        square?.updatePieceStats(newStats)
     }
 
     fun secureSquare(index: Int, player: Player?) {

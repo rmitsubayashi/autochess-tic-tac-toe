@@ -64,7 +64,7 @@ class DealEffectDamage(eventActor: Piece, private val timing: EventType,
             t.currHP -= amount
         }
         val damagedEvents = actualTargets.map {
-            Event(EventType.pieceDamaged, it, null)
+            Event(EventType.pieceDamaged, it, null, mapOf(Pair(EventDataKey.AMOUNT, it.currHP)))
         }
         return damagedEvents.plus(
                 Event(EventType.shouldAnimate, null, null)

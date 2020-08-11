@@ -58,7 +58,7 @@ class SecurePhase(eventActor: Player): Action(eventActor) {
             toKillPiece.currHP -= toKillPiece.currHP
         }
         val damagedEvents = uniquePieces.map {
-            Event(EventType.pieceDamaged, it, null)
+            Event(EventType.pieceDamaged, it, null, mapOf(Pair(EventDataKey.AMOUNT, 0)))
         }
         newEvents.addAll(damagedEvents)
         //tic tac toe squares are unsecured
