@@ -196,7 +196,8 @@
 		"font": "font-big",
 		"fontColor": "black",
 		"overFontColor": "gray",
-		"disabledFontColor": "gray"
+		"disabledFontColor": "gray",
+		"checkedFontColor": "gray"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
