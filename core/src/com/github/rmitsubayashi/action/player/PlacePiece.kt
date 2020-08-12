@@ -14,7 +14,7 @@ class PlacePiece(eventActor: Player): Action(eventActor) {
         if (event.actor !is Player) return false
         if (event.actor != eventActor) return false
         if (event.actedUpon !is Piece) return false
-        if (!event.actor.deck.contains(event.actedUpon)) return false
+        if (!event.actedUpon.isToken() && !event.actor.deck.contains(event.actedUpon)) return false
         val square = event.data?.get(EventDataKey.SQUARE)
         if (square !is Int) return false
         if (game.board[square] != null) return false
@@ -31,7 +31,9 @@ class PlacePiece(eventActor: Player): Action(eventActor) {
         val player = event.actor as Player
         val piece = event.actedUpon as Piece
         game.board[square] = piece
-        player.hand.remove(piece)
+        if (!piece.isToken()) {
+            player.hand.remove(piece)
+        }
         val isUserEvent = event.data[EventDataKey.IS_USER_EVENT]
         val data = mutableMapOf(Pair(EventDataKey.DONE, true), Pair(EventDataKey.SQUARE, square))
         if (isUserEvent == false) data[EventDataKey.IS_USER_EVENT] = false

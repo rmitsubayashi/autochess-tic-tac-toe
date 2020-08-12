@@ -35,7 +35,10 @@ data class JSONPiece(
                 actions = tempList,
                 player = null
         )
-        tempList.addAll(abilityList.mapAbilityToActions(ability, piece))
+        val action = abilityList.mapAbilityToAction(ability, piece)
+        if (action != null) {
+            tempList.add(action)
+        }
         return piece
     }
 }

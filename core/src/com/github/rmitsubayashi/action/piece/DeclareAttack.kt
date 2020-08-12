@@ -14,6 +14,7 @@ class DeclareAttack: Action(EmptyEventActor()) {
         if (event.actor !is Piece) { return false }
         if (event.actor.isDead()) { return false }
         if (event.actor.currStats.attack == 0) { return false }
+        if (event.actor.passiveActionExists(Defender())) { return false }
         if (AttackRangeCalculator.getPossibleAttackTargets(game.board, event.actor).isEmpty()) {
             return false
         }
@@ -22,8 +23,18 @@ class DeclareAttack: Action(EmptyEventActor()) {
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val piece = event.actor as Piece
+
         val possibleTargets = AttackRangeCalculator.getPossibleAttackTargets(game.board, piece)
-        val target = possibleTargets.random()
+        val target = if (piece.passiveActionExists(IgnoreDefender())) {
+            possibleTargets.random()
+        } else {
+            val defenders = possibleTargets.filter { it.passiveActionExists(Defender()) }
+            if (defenders.isEmpty()) {
+                possibleTargets.random()
+            } else {
+                defenders.random()
+            }
+        }
         return listOf(Event(EventType.pieceAttacks, piece, target))
     }
 

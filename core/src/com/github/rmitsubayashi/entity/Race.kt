@@ -2,9 +2,9 @@ package com.github.rmitsubayashi.entity
 
 enum class Race(val stringVal: String) {
     SLIME("slime"),
-    //FALLEN("fallen"),
+    FALLEN("fallen");
     //BEAST("beast"),
-    UNDEAD("undead");
+    //UNDEAD("undead");
 
     companion object {
         fun fromString(str: String): Race {

@@ -7,6 +7,8 @@ data class UnspecifiedTarget(val type: TargetType): EventActor {
         ALL_PIECES,
         ALL_ALLY_PIECES,
         SELECT_ALLY_PIECE,
-        SELECT_OPPONENT_PIECE
+        SELECT_OPPONENT_PIECE,
+        ADJACENT_PIECES,
+        RANDOM_SQUARE,
     }
 }

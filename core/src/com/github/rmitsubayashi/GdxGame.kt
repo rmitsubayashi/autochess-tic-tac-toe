@@ -48,6 +48,7 @@ class GdxGame : Game() {
         assetManager.load(ImageAssets.field)
         assetManager.load(ImageAssets.ticTacToe)
         assetManager.load(ImageAssets.shield)
+        assetManager.load(ImageAssets.bolt)
         val pieces = game.getShop(game.player1)?.getAllPieces()
         if (pieces != null) {
             for (piece in pieces) {

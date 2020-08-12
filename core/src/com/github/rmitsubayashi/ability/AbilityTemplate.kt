@@ -5,5 +5,5 @@ import com.github.rmitsubayashi.entity.Piece
 
 interface AbilityTemplate {
     fun getMatcher(): Regex
-    fun parseAbility(piece: Piece, abilityDescription: String): List<Action>
+    fun parseAbility(piece: Piece, abilityDescription: String): Action?
 }

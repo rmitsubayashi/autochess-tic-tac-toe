@@ -72,6 +72,7 @@ class Shop(private val allPieces: List<Piece>, private val configs: Configs, pri
     }
 
     fun putBackInPool(piece: Piece) {
+        if (piece.isToken()) return
         val originalPiece = findOriginalPieceFromCopy(piece)
         piecesByCost[piece.cost]?.add(originalPiece)
     }

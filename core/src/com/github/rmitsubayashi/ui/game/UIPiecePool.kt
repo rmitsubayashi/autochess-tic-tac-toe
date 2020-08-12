@@ -5,10 +5,12 @@ import com.badlogic.gdx.utils.Pool
 import com.github.rmitsubayashi.entity.Piece
 import com.github.rmitsubayashi.game.Game
 import com.github.rmitsubayashi.game.Shop
+import com.github.rmitsubayashi.ui.assets.ImageAssets
+import com.github.rmitsubayashi.ui.assets.SoundAssets
 
 class UIPiecePool(private val assetManager: AssetManager, private val game: Game) {
     // each piece has its own piece pool
-    private lateinit var allPools: List<Pair<Piece, Pool<UIPiece>>>
+    private val allPools = mutableListOf<Pair<Piece, Pool<UIPiece>>>()
 
     init {
         val shop = game.getShop(game.player1)
@@ -18,20 +20,22 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
     }
 
     private fun populatePool(shop: Shop) {
-        // we want all pieces, not
+        // we want all pieces, not just the player's.
+        // if there is a problem with memory, fix
         val allPieces = shop.getAllPieces()
-        val tempList = mutableListOf<Pair<Piece, Pool<UIPiece>>>()
         for (piece in allPieces) {
-            tempList.add(
-                    Pair(
-                            piece,
-                            object: Pool<UIPiece>() {
-                                override fun newObject(): UIPiece = UIPiece.create(assetManager, piece, game)
-                            }
-                    )
-            )
+            addToPool(piece)
         }
-        allPools = tempList
+    }
+
+    private fun addToPool(piece: Piece){
+        val pair = Pair(
+                piece,
+                object: Pool<UIPiece>() {
+                    override fun newObject(): UIPiece = UIPiece.create(assetManager, piece, game)
+                }
+        )
+        allPools.add(pair)
     }
 
     fun returnPieceToPool(piece: UIPiece) {
@@ -46,11 +50,23 @@ class UIPiecePool(private val assetManager: AssetManager, private val game: Game
     }
 
     fun createUIPiece(piece: Piece): UIPiece? {
-        val piecePool = getPiecePool(piece)
-        piecePool ?: return null
-        val uiPiece = piecePool.obtain()
-        uiPiece.setActualPiece(piece)
+        var piecePool = getPiecePool(piece)
+        if (piecePool == null) {
+            if (!piece.isToken()) return null
+            // tokens are not pre-populated, so dynamically create the pool
+            loadTokenAssets(piece)
+            addToPool(piece)
+            piecePool = getPiecePool(piece)
+        }
+        val uiPiece = piecePool?.obtain()
+        uiPiece?.setActualPiece(piece)
         return uiPiece
+    }
+
+    private fun loadTokenAssets(piece: Piece) {
+        assetManager.load(SoundAssets.fromToken(piece))
+        assetManager.load(ImageAssets.fromToken(piece))
+        assetManager.finishLoading()
     }
 
     private fun getPiecePool(piece: Piece): Pool<UIPiece>? {

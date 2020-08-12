@@ -21,4 +21,11 @@ object SoundAssets {
 
         return AssetDescriptor("sound/pieces/$path.$DEFAULT_FORMAT", Sound::class.java)
     }
+    fun fromToken(piece: Piece): AssetDescriptor<Sound> {
+        val path = (piece.name + "_token")
+                .toLowerCase(Locale.ROOT)
+                .replace(' ', '_')
+
+        return AssetDescriptor("sound/pieces/$path.$DEFAULT_FORMAT", Sound::class.java)
+    }
 }

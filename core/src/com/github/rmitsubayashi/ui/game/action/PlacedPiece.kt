@@ -25,7 +25,9 @@ class PlacedPiece(
 
     override fun execute(game: Game, event: Event, userInput: Piece?): List<Event> {
         val piece = event.actor as Piece
-        val uiPiece = if (piece.player == game.player1) {
+        val uiPiece = if (piece.isToken()) {
+            uiPiecePool.createUIPiece(piece)
+        }else if (piece.player == game.player1) {
             // should take from the player's pieces (actual player)
             uiHand.removePiece(piece)
         } else {
@@ -34,8 +36,10 @@ class PlacedPiece(
         }
         uiPiece ?: return emptyList()
         val square = event.data?.get(EventDataKey.SQUARE) as Int
-        if (event.data[EventDataKey.IS_USER_EVENT] == false) {
+        val isAI = event.data[EventDataKey.IS_USER_EVENT] == false
+        if (isAI || piece.isToken()) {
             // for ai, want to place pieces one by one
+            // for token, it helps identify cause effect
             game.animationQueue.addAnimation(
                     AnimationConfig(
                             Actions.delay(1f),
@@ -48,7 +52,14 @@ class PlacedPiece(
         } else {
             uiBoard.placePiece(uiPiece, square)
         }
-        return emptyList()
+        return if (piece.isToken() && !isAI) {
+            //we want the animation right now
+            return listOf(
+                    Event(EventType.shouldAnimate, null, null)
+            )
+        } else {
+            emptyList()
+        }
     }
 
     override fun copy(): Action {

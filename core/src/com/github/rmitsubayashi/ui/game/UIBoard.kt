@@ -17,7 +17,7 @@ class UIBoard(assetManager: AssetManager, game: Game): Table() {
 
     init {
         background = Image(assetManager.get(ImageAssets.ticTacToe)).drawable
-        boltImage = Image(assetManager.get(ImageAssets.shield))
+        boltImage = Image(assetManager.get(ImageAssets.bolt))
         boltImage.width = 20f
         boltImage.height = 60f
         boltImage.isVisible = false

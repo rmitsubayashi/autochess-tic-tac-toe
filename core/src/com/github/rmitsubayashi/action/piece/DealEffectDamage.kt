@@ -2,6 +2,7 @@ package com.github.rmitsubayashi.action.piece
 
 import com.github.rmitsubayashi.action.*
 import com.github.rmitsubayashi.entity.Piece
+import com.github.rmitsubayashi.game.AttackRangeCalculator
 import com.github.rmitsubayashi.game.Game
 
 class DealEffectDamage(eventActor: Piece, private val timing: EventType,
@@ -54,6 +55,11 @@ class DealEffectDamage(eventActor: Piece, private val timing: EventType,
                     }
                     UnspecifiedTarget.TargetType.ALL_OPPONENTS -> {
                         game.board.filter { opposingPlayer?.id == it?.player?.id }.filterNotNull()
+                    }
+                    UnspecifiedTarget.TargetType.ADJACENT_PIECES -> {
+                        val pieceSquare = game.board.indexOf(piece)
+                        val adjacentSquares = AttackRangeCalculator.getAdjacentSquares(pieceSquare)
+                        adjacentSquares.mapNotNull { game.board[it] }
                     }
                     else -> emptyList()
                 }

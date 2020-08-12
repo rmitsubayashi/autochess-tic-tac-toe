@@ -2,6 +2,7 @@ package com.github.rmitsubayashi.entity
 
 import com.github.rmitsubayashi.action.Action
 import com.github.rmitsubayashi.action.EventActor
+import com.github.rmitsubayashi.action.piece.PassiveAction
 
 class Piece(
     val name: String,
@@ -16,14 +17,17 @@ class Piece(
     // the hp here is max hp
     var currStats = stats.copy()
     var currHP = stats.hp
+    private var isToken = false
 
     fun copy(): Piece {
+        val isTokenCopy = isToken
         // make sure the actions are mapped to the new piece
         val actionsCopy = actions.map { a -> a.copy() }
         return Piece(
                 name, race, stats, ability, attackRange, cost, actionsCopy, player
         ).apply {
             this.actions.forEach { it.eventActor = this }
+            this.isToken = isTokenCopy
         }
     }
 
@@ -32,7 +36,18 @@ class Piece(
             race == other.race &&
             stats == other.stats &&
             ability == other.ability &&
-            cost == other.cost
+            cost == other.cost &&
+            isToken == other.isToken
 
     fun isDead(): Boolean = currHP <= 0
+
+    fun passiveActionExists(passiveAction: PassiveAction): Boolean {
+        return actions.firstOrNull { it::class == passiveAction::class } != null
+    }
+
+    fun toToken() {
+        isToken = true
+    }
+
+    fun isToken(): Boolean = isToken
 }

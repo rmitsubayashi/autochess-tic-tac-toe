@@ -1,58 +1,49 @@
 {
   "pieces": [
     {
-      "name": "Ice",
+      "name": "Slime Defender",
       "race": "slime",
-      "hp": 3,
+      "hp": 1,
       "attack": 1,
       "attackRange": "melee",
-      "ability": "When played, deal 1 damage to an opposing piece",
+      "ability": "Defender",
       "cost": 1
     },
     {
-      "name": "Mummy",
-      "race": "undead",
-      "hp": 5,
-      "attack": 0,
+      "name": "Slime",
+      "race": "slime",
+      "hp": 1,
+      "attack": 1,
       "attackRange": "melee",
-      "ability": "",
-      "cost": 2
+      "ability": "When played, spawn a 1/1 slime in a random square",
+      "cost": 1
     },
     {
-      "name": "Boar Soldier",
+      "name": "Slime Hero",
       "race": "slime",
-      "hp": 2,
+      "hp": 1,
       "attack": 3,
-      "attackRange": "ranged",
-      "ability": "",
-      "cost": 1
-    },
-    {
-      "name": "Sea Urchin",
-      "race": "undead",
-      "hp": 3,
-      "attack": 2,
       "attackRange": "melee",
-      "ability": "",
+      "ability": "When played, deal 3 damage to an enemy piece",
       "cost": 2
     },
     {
-      "name": "Pineapple Grandpa",
-      "race": "undead",
-      "hp": 7,
+      "name": "Raven",
+      "race": "fallen",
+      "hp": 2,
       "attack": 1,
-      "attackRange": "ranged",
-      "ability": "When played, deal 1 damage to all opposing pieces",
+      "attackRange": "melee",
+      "ability": "Unaffected by defenders",
       "cost": 1
     },
     {
-      "name": "Boar Soldier",
-      "race": "slime",
-      "hp": 7,
-      "attack": 4,
+      "name": "Shadow Knight",
+      "race": "fallen",
+      "hp": 4,
+      "attack": 3,
       "attackRange": "melee",
-      "ability": "",
-      "cost": 3
+      "ability": "When played, deal 1 damage to adjacent pieces",
+      "cost": 1
     }
   ]
 }
