@@ -18,6 +18,7 @@ object TargetWordingHelper {
             opponentPiece -> UnspecifiedTarget(UnspecifiedTarget.TargetType.SELECT_OPPONENT_PIECE)
             adjacentPieces -> UnspecifiedTarget(UnspecifiedTarget.TargetType.ADJACENT_PIECES)
             randomSquare -> UnspecifiedTarget(UnspecifiedTarget.TargetType.RANDOM_SQUARE)
+            allPieces -> UnspecifiedTarget(UnspecifiedTarget.TargetType.ALL_PIECES)
             else -> null
         }
     }
